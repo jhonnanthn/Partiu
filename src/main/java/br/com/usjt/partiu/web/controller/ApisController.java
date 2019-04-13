@@ -17,14 +17,17 @@ public class ApisController {
 
 	@Inject
 	private Result result;
-	private UsuarioDao usuarioDao;
 	
 	public ApisController(){
-		usuarioDao = new UsuarioDao();
 	}
 	
 	@Path("/api/usuarioById")
 	public void usuarioById(String id_usuario) throws SQLException, NamingException {
 		result.use(Results.json()).withoutRoot().from(id_usuario).serialize();
+	}
+	
+	@Path("/api/teste")
+	public void teste(){
+		result.use(Results.json()).withoutRoot().from("está funcionando").serialize();
 	}
 }

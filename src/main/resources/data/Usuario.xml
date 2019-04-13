@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//PT-BR"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="br.com.assai.max.web.service.UsuarioMapper">
+<mapper namespace="br.com.usjt.partiu.service.UsuarioMapper">
 
     <resultMap id="result" type="string"></resultMap>
     

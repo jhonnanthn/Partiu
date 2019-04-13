@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>assai</groupId>
-	<artifactId>max</artifactId>
+	<groupId>usjt</groupId>
+	<artifactId>partiu</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>max Maven Webapp</name>
+	<name> Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
@@ -14,11 +14,6 @@
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -39,11 +34,6 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>br.com.caelum.vraptor.jasperreports</groupId>
-			<artifactId>vraptor-jasperreport</artifactId>
-			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
@@ -132,7 +122,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>max</finalName>
+		<finalName>partiu</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
