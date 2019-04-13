@@ -1,42 +1,86 @@
 package br.com.usjt.web.model;
 
 public class Usuario {
-	private String idUsuario;
-	private String matricula;
-	private String usuarioLogado;
-	private String usuarioLogin;
-	private String idFilialBase;
-	
-	public String getIdFilialBase() {
-		return idFilialBase;
+
+	private int codClient;
+	private long cpf;
+	private String name;
+	private String dta_nascimento;
+	private String email;
+	private int ddd;
+	private int telephone;
+	private char gender;
+	private String password;
+
+	public int getCodClient() {
+		return codClient;
 	}
-	public void setIdFilialBase(String idFilialBase) {
-		this.idFilialBase = idFilialBase;
+
+	public long getCpf() {
+		return cpf;
 	}
-	public String getUsuarioLogin() {
-		return usuarioLogin;
+
+	public String getName() {
+		return name;
 	}
-	public void setUsuarioLogin(String usuarioLogin) {
-		this.usuarioLogin = usuarioLogin;
+
+	public String getDta_nascimento() {
+		return dta_nascimento;
 	}
-	public String getIdUsuario() {
-		return idUsuario;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+
+	public int getDdd() {
+		return ddd;
 	}
-	public String getMatricula() {
-		return matricula;
+
+	public int getTelephone() {
+		return telephone;
 	}
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
+
+	public char getGender() {
+		return gender;
 	}
-	public String getUsuarioLogado() {
-		return usuarioLogado;
+
+	public String getPassword() {
+		return password;
 	}
-	public void setUsuarioLogado(String usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
+
+	public void setCodClient(int codClient) {
+		this.codClient = codClient;
 	}
-	
-	
+
+	public void setCpf(long cpf) {
+		this.cpf = cpf;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDta_nascimento(String dta_nascimento) {
+		this.dta_nascimento = dta_nascimento;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setDdd(int ddd) {
+		this.ddd = ddd;
+	}
+
+	public void setTelephone(int telephone) {
+		this.telephone = telephone;
+	}
+
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
