@@ -15,7 +15,6 @@ import br.com.usjt.web.model.Usuario;
 
 @Resource
 public class UsuarioController {
-
 	@Inject
 	Result result;
 
