@@ -2,7 +2,7 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias alias="Usuario" type="br.com.usjt.partiu.web.model.Usuario" />
+		<typeAlias alias="Usuario" type="br.com.usjt.web.model.Usuario" />
 	</typeAliases>
 	<environments default="development">
 		<environment id="development">
