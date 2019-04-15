@@ -16,11 +16,22 @@ public class RestauranteDAO {
 	public void createRestaurante(Restaurante restaurante) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
-			RestauranteMapper comandaMapper = session.getMapper(RestauranteMapper.class);
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 			EnderecoMapper enderecoMapper = session.getMapper(EnderecoMapper.class);
 			enderecoMapper.createEndereco(restaurante.getEndereco());
-			comandaMapper.createRestaurante(restaurante);
+			restauranteMapper.createRestaurante(restaurante);
 			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Restaurante getRestauranteByIdGarcom(int idGarcom) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			Restaurante restaurante = restauranteMapper.getRestauranteByIdGarcom(idGarcom);
+			return restaurante;
 		} finally {
 			session.close();
 		}

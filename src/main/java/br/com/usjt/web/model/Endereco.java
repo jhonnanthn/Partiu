@@ -91,4 +91,10 @@ public class Endereco {
 		this.cep = cep;
 	}
 
+	@Override
+	public String toString() {
+		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
+				+ complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", cep=" + cep + "]";
+	}
+	
 }

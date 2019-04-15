@@ -26,7 +26,7 @@ public class AutenticacaoInterceptor implements Interceptor {
 	@Override
 	public void intercept(InterceptorStack stack, ResourceMethod method,
 			Object resourceInstance) throws InterceptionException {
-		result.redirectTo(UsuarioController.class).login();
+		result.redirectTo(UsuarioController.class).index();
 	}
 
 	@Override

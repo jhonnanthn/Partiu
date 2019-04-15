@@ -9,4 +9,6 @@ public interface RestauranteMapper {
 	void createRestaurante(
 			@Param("restaurante") Restaurante restaurante);
 	
+	Restaurante getRestauranteByIdGarcom(
+			@Param("idGarcom")int idGarcom);
 }

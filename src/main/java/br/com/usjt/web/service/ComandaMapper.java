@@ -15,8 +15,10 @@ public interface ComandaMapper {
 	List<Comanda> getComandas();
 	
 	//pega todas comandas por status
-	List<Comanda> getComandasByStatus(
-			@Param ("status") char status);
+	List<Comanda> getComandasByStatusAndId(
+			@Param ("idGarcom") int garcom,
+			@Param ("status") char status
+			);
 	
 	//pega comanda por codigo
 	Comanda getComandaByCodigo(
@@ -25,5 +27,7 @@ public interface ComandaMapper {
 	//cria comanda
 	void createComanda(
 			@Param("comanda") Comanda comanda);
-
+	
+	List<Comanda> checkComanda(
+			@Param("codigo") String codigo);
 }

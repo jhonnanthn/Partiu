@@ -3,8 +3,9 @@ package br.com.usjt.web.model;
 public class Comanda {
 
 	private int id;
-	private int codigo;
+	private String codigo;
 	private char status;
+	private int mesa;
 	private Usuario garcom;
 	private String dtaEntrada;
 	private String dtaSaida;
@@ -25,11 +26,11 @@ public class Comanda {
 		this.garcom = garcom;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
@@ -56,4 +57,19 @@ public class Comanda {
 	public void setDtaSaida(String dtaSaida) {
 		this.dtaSaida = dtaSaida;
 	}
+
+	
+	
+	public int getMesa() {
+		return mesa;
+	}
+
+	public void setMesa(int mesa) {
+		this.mesa = mesa;
+	}
+
+	public Comanda() {
+		super();
+	}
+	
 }

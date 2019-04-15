@@ -19,29 +19,36 @@ public class UsuarioController {
 	@Inject
 	Result result;
 
+	@Path("/index")
 	public void index() {
-		result.redirectTo(this).login();
+		result.use(Results.json()).withoutRoot().from("Endereco Inválido").serialize();
 	}
 
 	@Path("/login")
-	public void login() {
-		System.out.println("teste");
-	}
-
-	@Path("/logout")
-	public void logout(HttpSession session) {
-		session.invalidate();
-		result.redirectTo(this).login();
-	}
-
-	@Path("/teste")
-	public void teste(HttpSession session, String matricula) {
+	public void login(String email, String senha) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		System.out.println("teste");
-		result.use(Results.json()).withoutRoot().from("success").serialize();
+		try {
+			Usuario usuario = usuarioDAO.getUsuarioOnLogin(email, senha);
+			if (usuario != null) {
+				result.use(Results.json()).withoutRoot().from(usuario).serialize();
+			}else {
+				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario inválido!").serialize();
+			}
+
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+
 	}
 
-	// Segundo Semestre
+	//Nao Usado
+	@Path("/logout")
+	public void logout() {
+
+	}
+
+	
+	//Segundo Semestre
 	@Path("/createUsuario")
 	public void createUsuario(Usuario usuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -50,19 +57,19 @@ public class UsuarioController {
 			usuarioDAO.createUsuario(usuario);
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
 		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
 
-	// Segundo Semestre
+	//Segundo Semestre
 	@Path("/updateUsuario")
-	public void updateCliente(Usuario usuario) {
-		UsuarioDAO clientDAO = new UsuarioDAO();
+	public void updateUsuario(Usuario usuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
-			clientDAO.updateCliente(usuario);
+			usuarioDAO.updateUsuario(usuario);
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Alterado com sucesso").serialize();
 		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
 
@@ -74,10 +81,11 @@ public class UsuarioController {
 			List<Usuario> usuarios = usuarioDAO.getUsuarios();
 			result.use(Results.json()).withoutRoot().from(usuarios).serialize();
 		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
 
+	
 	@Path("/getUsuarioByEmail")
 	public void getusuarioByEmail(String email) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -85,7 +93,19 @@ public class UsuarioController {
 			Usuario usuario = usuarioDAO.getusuarioByEmail(email);
 			result.use(Results.json()).withoutRoot().from(usuario).serialize();
 		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from("ERRO: EMAIL inexistente para Usuário; EMAIL: "+email+";	\n"+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/getUsuarioById")
+	public void getusuarioById(int id) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		try {
+			Usuario usuario = usuarioDAO.getusuarioById(id);
+			result.use(Results.json()).withoutRoot().from(usuario).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: ID inexistente para Usuário; ID: "+id+";	\n"+e.getMessage()).serialize();
 		}
 	}
 }
+

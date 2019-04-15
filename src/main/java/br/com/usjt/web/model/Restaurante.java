@@ -1,11 +1,9 @@
 package br.com.usjt.web.model;
 
-import java.util.List;
-
 public class Restaurante {
 	
 	private long cnpj;
-	private int dia;
+//	private int dia;
 	private int qtdMesas;
 	private String codigoComanda;
 	private String razaoSocial;
@@ -24,18 +22,18 @@ public class Restaurante {
 	public void setEspecialidade(String especialidade) {
 		this.especialidade = especialidade;
 	}
-	public int getDia() {
-		return dia;
-	}
+//	public int getDia() {
+//		return dia;
+//	}
 	public String getHrEntrada() {
 		return hrEntrada;
 	}
 	public String getHrFim() {
 		return hrFim;
 	}
-	public void setDia(int dia) {
-		this.dia = dia;
-	}
+//	public void setDia(int dia) {
+//		this.dia = dia;
+//	}
 	public void setHrEntrada(String hrEntrada) {
 		this.hrEntrada = hrEntrada;
 	}

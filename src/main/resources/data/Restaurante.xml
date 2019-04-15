@@ -28,4 +28,20 @@
 			    #{restaurante.status}
 			  )
 	</insert>
+	
+	<select id="getRestauranteByIdGarcom" resultType="br.com.usjt.web.model.Restaurante">
+		SELECT r.cnpj as cnpj, 
+			r.qtd_mesas as qtdMesas, 
+			r.codigo_cardapio as codigoComanda, 
+			r.razao_social as razaoSocial, 
+			r.nom_fantasia as nomeFantasia, 
+			r.status as status,
+			r.logotipo as logo, 
+			r.descricao as descricao, 
+			r.id_endereco as endereco
+		FROM restaurante r
+		INNER JOIN funcionario_restaurante fr
+		ON r.cnpj = fr.cnpj_restaurante
+		WHERE fr.id_funcionario = #{idGarcom}
+	</select>
 </mapper>

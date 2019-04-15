@@ -26,7 +26,7 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public void updateCliente(Usuario usuario) {
+	public void updateUsuario(Usuario usuario) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
