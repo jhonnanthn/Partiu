@@ -37,4 +37,5 @@ public class RestaurantController {
 			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
 		}
 	}
+	
 }

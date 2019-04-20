@@ -11,4 +11,7 @@ public interface RestauranteMapper {
 	
 	Restaurante getRestauranteByIdGarcom(
 			@Param("idGarcom")int idGarcom);
+	
+	int getRestauranteMesas(
+			@Param("idGarcom")int idGarcom);
 }

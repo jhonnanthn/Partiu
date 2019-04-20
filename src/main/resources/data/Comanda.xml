@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//PT-BR"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="br.com.usjt.web.service.ComandaMapper">
+
 	<insert id="createComanda">
 		INSERT
 			INTO comanda
@@ -23,17 +24,34 @@
 	
 	<select id="getComandas" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
+			id,
 			id_garcom,
 			codigo_comanda,
 			mesa,
 			status,
-			dta_entrada,
-			dta_saida
+			date_format(dta_entrada, '%d/%m/%Y') as dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
 		FROM comanda
+	</select>
+	
+	<select id="getComandaByCodigo" resultType="br.com.usjt.web.model.Comanda">
+		SELECT
+			id,
+			id_garcom,
+			codigo_comanda as codigo,
+			mesa,
+			status,
+			date_format(dta_entrada, '%d/%m/%Y') as dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+		FROM comanda
+		WHERE codigo_comanda = #{codigo}
+		ORDER BY id DESC LIMIT 1
+		
 	</select>
 	
 	<select id="checkComanda" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
+			id,
 			codigo_comanda as codigo,
 			status
 		FROM comanda
@@ -43,27 +61,17 @@
 	
 	<select id="getComandasByStatusAndId" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
+			id,
 			id_garcom as garcom,
 			codigo_comanda as codigo,
 			mesa as mesa,
 			status as status,
-			dta_entrada as dtaEntrada,
-			dta_saida as dtaSaida
+			date_format(dta_entrada, '%d/%m/%Y') as dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
 		FROM comanda
 		WHERE status = #{status}
 		AND id_garcom = #{idGarcom}
 	</select>
-	
-	<select id="getComandaByCodigo" resultType="br.com.usjt.web.model.Comanda">
-		SELECT
-			id_garcom,
-			codigo_comanda,
-			mesa,
-			status,
-			dta_entrada,
-			dta_saida
-		FROM comanda
-		WHERE codigo_comanda = #{codigo}
-	</select>
+
 	
 </mapper>

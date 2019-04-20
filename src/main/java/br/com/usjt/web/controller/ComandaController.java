@@ -38,8 +38,8 @@ public class ComandaController {
 				comanda.setStatus('A');
 				comanda.setCodigo(codigo);
 				comandaDAO.createComanda(comanda);		
-				List<Comanda> comandas = comandaDAO.getComandasByStatus(idGarcom, 'A');
-				result.use(Results.json()).withoutRoot().from(comandas).serialize();				
+				comanda = comandaDAO.getComandaByCodigo(codigo);
+				result.use(Results.json()).withoutRoot().from(comanda).serialize();				
 			} else {
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Mesa possui uma comanda não finalizada!").serialize();
 			}
@@ -54,6 +54,17 @@ public class ComandaController {
 		try {
 			List<Comanda> comandas = comandaDAO.getComandasByStatus(idGarcom, status);
 			result.use(Results.json()).withoutRoot().from(comandas).serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/getComandaByCodigo")
+	public void getComandaByCodigo(String codigo) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			Comanda comanda = comandaDAO.getComandaByCodigo(codigo);
+			result.use(Results.json()).withoutRoot().from(comanda).serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}

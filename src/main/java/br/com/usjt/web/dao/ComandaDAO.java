@@ -36,6 +36,17 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
+	
+	public Comanda getComandaByCodigo(String codigo) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			Comanda comanda = comandaMapper.getComandaByCodigo(codigo);
+			return comanda;
+		} finally {
+			session.close();
+		}
+	}
 
 	public List<Comanda> checkComanda(String codigo) {
 		SqlSession session = sqlSessionFactory.openSession();
