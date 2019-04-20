@@ -27,7 +27,7 @@ public class ComandaController {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try{
 			
-			Usuario garcom = usuarioDAO.getusuarioById(idGarcom);
+			Usuario garcom = usuarioDAO.getUsuarioByParameter("" + idGarcom, "id").get(0);
 			Restaurante restaurante = restauranteDAO.getRestauranteByIdGarcom(garcom.getId());
 			String codigo = restaurante.getCodigoComanda()+String.format("%02d" , mesa);
 			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);

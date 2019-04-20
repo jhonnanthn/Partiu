@@ -9,17 +9,10 @@ import br.com.usjt.web.model.Usuario;
 public interface UsuarioMapper {
 	// Define parametros utilizados em data.Usuario.xml
 	
-	
-	// retorna todos os usuarios
-	List<Usuario> getUsuarios();
-
-	//retorna usuario por email
-	Usuario getUsuarioByEmail(
-			@Param("email") String email);
-
 	//	retorna usuario por id
-	Usuario getUsuarioById(
-			@Param("id") int id);
+	List<Usuario> getUsuarioByParameter(
+			@Param("parametro") String parametro,
+			@Param("tipo") String tipo);
 	
 	// retorna usuario com login
 	Usuario getUsuarioOnLogin(

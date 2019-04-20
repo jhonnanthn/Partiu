@@ -32,7 +32,7 @@ public class RestaurantController {
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
 			Restaurante restaurante = restauranteDAO.getRestauranteByIdGarcom(idGarcom);
-			result.use(Results.json()).withoutRoot().from(restaurante).serialize();
+			result.use(Results.json()).withoutRoot().from(restaurante).include("endereco").serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
 		}

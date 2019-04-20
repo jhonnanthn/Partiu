@@ -2,8 +2,6 @@ package br.com.usjt.web.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import com.google.inject.Inject;
 
 import br.com.caelum.vraptor.Path;
@@ -73,38 +71,14 @@ public class UsuarioController {
 		}
 	}
 
-	// Não Utilizado
-	@Path("/getUsuarios")
-	public void getUsuarios() {
+	@Path("/getUsuario")
+	public void getUsuarioByParameter(String parametro, String tipo) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
-			List<Usuario> usuarios = usuarioDAO.getUsuarios();
-			result.use(Results.json()).withoutRoot().from(usuarios).serialize();
+			List<Usuario> usuario = usuarioDAO.getUsuarioByParameter(parametro, tipo);
+			result.use(Results.json()).withoutRoot().from(usuario).include("endereco").serialize();
 		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
-		}
-	}
-
-	
-	@Path("/getUsuarioByEmail")
-	public void getusuarioByEmail(String email) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		try {
-			Usuario usuario = usuarioDAO.getusuarioByEmail(email);
-			result.use(Results.json()).withoutRoot().from(usuario).serialize();
-		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: EMAIL inexistente para Usuário; EMAIL: "+email+";	\n"+e.getMessage()).serialize();
-		}
-	}
-	
-	@Path("/getUsuarioById")
-	public void getusuarioById(int id) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		try {
-			Usuario usuario = usuarioDAO.getusuarioById(id);
-			result.use(Results.json()).withoutRoot().from(usuario).serialize();
-		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: ID inexistente para Usuário; ID: "+id+";	\n"+e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from("ERRO: ID inexistente para Usuário; ID: "+parametro+";	\n"+e.getMessage()).serialize();
 		}
 	}
 }

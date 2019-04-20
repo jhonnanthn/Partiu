@@ -3,45 +3,77 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//PT-BR"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="br.com.usjt.web.service.RestauranteMapper">
+	
+	<resultMap id="getRestaurante" type="br.com.usjt.web.model.Restaurante">
+		<id property="cnpj" column="cnpj" />
+		<result property="qtdMesas" column="qtd_mesas" />
+		<result property="codigoComanda" column="codigo_cardapio" />
+		<result property="nomeFantasia" column="nom_fantasia" />
+		<result property="razaoSocial" column="razao_social" />
+		<result property="status" column="status" />
+		<result property="descricao" column="descricao" />
+		<result property="logo" column="logotipo" />
+		<collection property="endereco" ofType="br.com.usjt.web.model.Endereco">
+			<id property="id" column="id" />
+			<result property="logradouro" column="logradouro" />
+			<result property="numero" column="numero" />
+			<result property="complemento" column="complemento" />
+			<result property="bairro" column="bairro" />
+			<result property="cidade" column="cidade" />
+			<result property="cep" column="cep" />
+		</collection>
+	</resultMap>
+
 	<insert id="createRestaurante">
 		INSERT
-			INTO restaurante
-			  (
-				cnpj,
-				codigo_cardapio,
-			    razao_social,
-			    nom_fantasia,
-			    id_endereco,
-			    qtd_mesas,
-			    logotipo,
-			    descricao,
-			    status
-			  ) VALUES(
-			    #{restaurante.cnpj},
-			    #{restaurante.codigoComanda},
-			    #{restaurante.razaoSocial},
-			    #{restaurante.nomeFantasia},
-			    (select max(id) from endereco),
-			    #{restaurante.qtdMesas},
-			    #{restaurante.logo},
-			    #{restaurante.descricao},
-			    #{restaurante.status}
-			  )
+		INTO restaurante
+		(
+		cnpj,
+		codigo_cardapio,
+		razao_social,
+		nom_fantasia,
+		id_endereco,
+		qtd_mesas,
+		logotipo,
+		descricao,
+		status
+		) VALUES(
+		#{restaurante.cnpj},
+		#{restaurante.codigoComanda},
+		#{restaurante.razaoSocial},
+		#{restaurante.nomeFantasia},
+		(select max(id) from endereco),
+		#{restaurante.qtdMesas},
+		#{restaurante.logo},
+		#{restaurante.descricao},
+		#{restaurante.status}
+		)
 	</insert>
-	
-	<select id="getRestauranteByIdGarcom" resultType="br.com.usjt.web.model.Restaurante">
-		SELECT r.cnpj as cnpj, 
-			r.qtd_mesas as qtdMesas, 
-			r.codigo_cardapio as codigoComanda, 
-			r.razao_social as razaoSocial, 
-			r.nom_fantasia as nomeFantasia, 
-			r.status as status,
-			r.logotipo as logo, 
-			r.descricao as descricao, 
-			r.id_endereco as endereco
+
+	<select id="getRestauranteByIdGarcom" resultMap="getRestaurante">
+		SELECT 
+		r.cnpj,
+		r.qtd_mesas,
+		r.codigo_cardapio,
+		r.razao_social,
+		r.logotipo,
+		r.nom_fantasia,
+		r.status,
+		r.descricao,
+		r.id_endereco,
+        e.id,
+        e.logradouro,
+        e.numero,
+        e.complemento,
+        e.bairro,
+        e.cidade,
+        e.uf,
+        e.cep
 		FROM restaurante r
 		INNER JOIN funcionario_restaurante fr
 		ON r.cnpj = fr.cnpj_restaurante
+		INNER JOIN endereco e
+		ON r.id_endereco = e.id
 		WHERE fr.id_funcionario = #{idGarcom}
 	</select>
 </mapper>

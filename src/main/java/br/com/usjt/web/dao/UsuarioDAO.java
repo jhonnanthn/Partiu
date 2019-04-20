@@ -37,33 +37,11 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public List<Usuario> getUsuarios() {
+	public List<Usuario> getUsuarioByParameter(String parametro, String tipo) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
-			List<Usuario> Usuario = UsuarioMapper.getUsuarios();
-			return Usuario;
-		} finally {
-			session.close();
-		}
-	}
-	
-	public Usuario getusuarioByEmail(String email) {
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
-			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
-			Usuario Usuario = UsuarioMapper.getUsuarioByEmail(email);
-			return Usuario;
-		} finally {
-			session.close();
-		}
-	}
-	
-	public Usuario getusuarioById(int id) {
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
-			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
-			Usuario Usuario = UsuarioMapper.getUsuarioById(id);
+			List<Usuario> Usuario = UsuarioMapper.getUsuarioByParameter(parametro, tipo);
 			return Usuario;
 		} finally {
 			session.close();
