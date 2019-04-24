@@ -1,5 +1,7 @@
 package br.com.usjt.web.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -31,6 +33,17 @@ public class RestauranteDAO {
 		try {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 			Restaurante restaurante = restauranteMapper.getRestauranteByIdGarcom(idGarcom);
+			return restaurante;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Restaurante> getRestaurante() {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			List<Restaurante> restaurante = restauranteMapper.getRestaurante();
 			return restaurante;
 		} finally {
 			session.close();

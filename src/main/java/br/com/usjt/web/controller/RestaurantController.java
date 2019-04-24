@@ -1,5 +1,7 @@
 package br.com.usjt.web.controller;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 
 import br.com.caelum.vraptor.Path;
@@ -38,4 +40,15 @@ public class RestaurantController {
 		}
 	}
 	
+	//TODO carregar endereco, esta vindo como null
+	@Path("/getRestaurante")
+	public void getRestaurante() {
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			List<Restaurante> restaurante = restauranteDAO.getRestaurante();
+			result.use(Results.json()).withoutRoot().from(restaurante).include("endereco").serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
 }

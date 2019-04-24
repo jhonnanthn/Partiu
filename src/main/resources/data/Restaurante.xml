@@ -3,8 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//PT-BR"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="br.com.usjt.web.service.RestauranteMapper">
-	
-	<resultMap id="getRestaurante" type="br.com.usjt.web.model.Restaurante">
+	<resultMap id="restaurante" type="br.com.usjt.web.model.Restaurante">
 		<id property="cnpj" column="cnpj" />
 		<result property="qtdMesas" column="qtd_mesas" />
 		<result property="codigoComanda" column="codigo_cardapio" />
@@ -13,7 +12,7 @@
 		<result property="status" column="status" />
 		<result property="descricao" column="descricao" />
 		<result property="logo" column="logotipo" />
-		<collection property="endereco" ofType="br.com.usjt.web.model.Endereco">
+		<association property="endereco" javaType="br.com.usjt.web.model.Endereco">
 			<id property="id" column="id" />
 			<result property="logradouro" column="logradouro" />
 			<result property="numero" column="numero" />
@@ -21,7 +20,7 @@
 			<result property="bairro" column="bairro" />
 			<result property="cidade" column="cidade" />
 			<result property="cep" column="cep" />
-		</collection>
+		</association>
 	</resultMap>
 
 	<insert id="createRestaurante">
@@ -50,7 +49,7 @@
 		)
 	</insert>
 
-	<select id="getRestauranteByIdGarcom" resultMap="getRestaurante">
+	<select id="getRestauranteByIdGarcom" resultMap="restaurante">
 		SELECT 
 		r.cnpj,
 		r.qtd_mesas,
@@ -75,5 +74,31 @@
 		INNER JOIN endereco e
 		ON r.id_endereco = e.id
 		WHERE fr.id_funcionario = #{idGarcom}
+	</select>
+	
+	<select id="getRestaurante" resultMap="restaurante">
+		SELECT 
+			r.cnpj,
+			r.qtd_mesas,
+			r.codigo_cardapio,
+			r.razao_social,
+			r.logotipo,
+			r.nom_fantasia,
+			r.status,
+			r.descricao,
+			r.id_endereco,
+	        e.id,
+	        e.logradouro,
+	        e.numero,
+	        e.complemento,
+	        e.bairro,
+	        e.cidade,
+	        e.uf,
+	        e.cep
+		FROM restaurante r
+			left JOIN funcionario_restaurante fr
+			  on r.cnpj = fr.cnpj_restaurante
+			inner join endereco e
+			  on r.id_endereco = e.id
 	</select>
 </mapper>
