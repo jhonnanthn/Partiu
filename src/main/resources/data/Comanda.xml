@@ -12,15 +12,42 @@
 			    codigo_comanda,
 			    mesa,
 			    status,
-			    dta_entrada
+			    dta_entrada,
+			    dta_atualizacao
 			  ) VALUES(
 			    #{comanda.garcom.id},
 			    #{comanda.codigo},
 			    #{comanda.mesa},
 			    #{comanda.status},
+			    sysdate(),
 			    sysdate()
 			  )
 	</insert>
+	
+	<insert id="createItemPedido">
+		INSERT
+		INTO pedido
+		  (
+	        id_comanda,
+		    id_item,
+		    data,
+		    porc_desconto,
+		    status
+		  ) VALUES(
+		  	<foreach item="item" collection="item" separator=",">
+			    #{item.idComanda},
+			    #{item.id},
+			    SYSDATE(),
+			    #{item.porc_desconto},
+			    #{item.status}
+			</foreach>
+		  )		
+	</insert>
+	
+	<update id="updateComanda">
+		update comanda set id_garcom = #{comanda.id_garcom}, mesa = #{comanda.mesa}, status = #{comanda.status},
+    			dta_atualizacao = SYSDATE() where codigo_comanda = #{comanda.codigo}
+	</update>
 	
 	<select id="getComandas" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
@@ -72,6 +99,4 @@
 		WHERE status = #{status}
 		AND id_garcom = #{idGarcom}
 	</select>
-
-	
 </mapper>

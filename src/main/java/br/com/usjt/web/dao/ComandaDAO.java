@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import br.com.usjt.web.model.Comanda;
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.service.ComandaMapper;
 
 public class ComandaDAO {
@@ -56,6 +57,28 @@ public class ComandaDAO {
 			return comandas;
 		} catch (Exception e) {
 			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public void createItemPedido(List<Item> item) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.createItemPedido(item);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void updateComanda(Comanda comanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.updateComanda(comanda);
+			session.commit();
 		} finally {
 			session.close();
 		}

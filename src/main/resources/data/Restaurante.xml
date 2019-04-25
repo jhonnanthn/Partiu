@@ -27,15 +27,15 @@
 		INSERT
 		INTO restaurante
 		(
-		cnpj,
-		codigo_cardapio,
-		razao_social,
-		nom_fantasia,
-		id_endereco,
-		qtd_mesas,
-		logotipo,
-		descricao,
-		status
+			cnpj,
+			codigo_cardapio,
+			razao_social,
+			nom_fantasia,
+			id_endereco,
+			qtd_mesas,
+			logotipo,
+			descricao,
+			status
 		) VALUES(
 		#{restaurante.cnpj},
 		#{restaurante.codigoComanda},
@@ -51,23 +51,23 @@
 
 	<select id="getRestauranteByIdGarcom" resultMap="restaurante">
 		SELECT 
-		r.cnpj,
-		r.qtd_mesas,
-		r.codigo_cardapio,
-		r.razao_social,
-		r.logotipo,
-		r.nom_fantasia,
-		r.status,
-		r.descricao,
-		r.id_endereco,
-        e.id,
-        e.logradouro,
-        e.numero,
-        e.complemento,
-        e.bairro,
-        e.cidade,
-        e.uf,
-        e.cep
+			r.cnpj,
+			r.qtd_mesas,
+			r.codigo_cardapio,
+			r.razao_social,
+			r.logotipo,
+			r.nom_fantasia,
+			r.status,
+			r.descricao,
+			r.id_endereco,
+	        e.id,
+	        e.logradouro,
+	        e.numero,
+	        e.complemento,
+	        e.bairro,
+	        e.cidade,
+	        e.uf,
+	        e.cep
 		FROM restaurante r
 		INNER JOIN funcionario_restaurante fr
 		ON r.cnpj = fr.cnpj_restaurante

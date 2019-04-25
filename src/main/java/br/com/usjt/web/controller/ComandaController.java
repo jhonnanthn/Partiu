@@ -12,6 +12,7 @@ import br.com.usjt.web.dao.ComandaDAO;
 import br.com.usjt.web.dao.RestauranteDAO;
 import br.com.usjt.web.dao.UsuarioDAO;
 import br.com.usjt.web.model.Comanda;
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 import br.com.usjt.web.model.Usuario;
 
@@ -77,6 +78,19 @@ public class ComandaController {
 		try{
 			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);
 				result.use(Results.json()).withoutRoot().from(comandaCheck).serialize();							
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/createItemPedido")
+	public void createItemPedido(List<Item> item) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try{
+			comandaDAO.createItemPedido(item);
+			Comanda comanda = comandaDAO.getComandaByCodigo(item.get(0).getIdComanda());
+			comandaDAO.updateComanda(comanda);
+			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Pedido criado com sucesso").serialize();							
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}

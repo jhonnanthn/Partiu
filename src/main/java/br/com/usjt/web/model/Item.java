@@ -1,14 +1,43 @@
 package br.com.usjt.web.model;
 
 public class Item {
-	
-	int id;
-	long cnpjRestaurante;
-	String nome;
-	String categoria;
-	String status;
-	String tipo;
-	double valor;
+
+	private int id;
+	private Usuario usuario;
+	private long cnpjRestaurante;
+	private double valor;
+    private double porc_desconto;
+	private String nome;
+	private String categoria;
+	private String status;
+	private String tipo;
+	private String idComanda;
+    private String data;
+    
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public double getPorc_desconto() {
+		return porc_desconto;
+	}
+	public String getIdComanda() {
+		return idComanda;
+	}
+	public String getData() {
+		return data;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	public void setPorc_desconto(double porc_desconto) {
+		this.porc_desconto = porc_desconto;
+	}
+	public void setIdComanda(String idComanda) {
+		this.idComanda = idComanda;
+	}
+	public void setData(String data) {
+		this.data = data;
+	}
 	public int getId() {
 		return id;
 	}
