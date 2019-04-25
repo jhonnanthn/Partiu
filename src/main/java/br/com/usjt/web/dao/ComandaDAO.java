@@ -61,6 +61,32 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
+		
+	public List<Item> getPedidosComanda(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Item> itens = comandaMapper.getPedidosComanda(idComanda);
+			return itens;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public List<Item> getItensRestaurante(long cnpj) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Item> itens = comandaMapper.getItensRestaurante(cnpj);
+			return itens;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 
 	public void createItemPedido(int[] itens, int idComanda) {
 		SqlSession session = sqlSessionFactory.openSession();

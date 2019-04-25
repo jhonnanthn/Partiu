@@ -71,6 +71,28 @@ public class ComandaController {
 		}
 	}
 	
+	@Path("/getPedidosComanda")
+	public void getPedidosComanda(int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			List<Item> itens = comandaDAO.getPedidosComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from(itens).serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/getItensRestaurante")
+	public void getItensRestaurante(long cnpj) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			List<Item> itens = comandaDAO.getItensRestaurante(cnpj);
+			result.use(Results.json()).withoutRoot().from(itens).serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
 
 	@Path("/checkComanda")
 	public void checkComanda(String codigo) {

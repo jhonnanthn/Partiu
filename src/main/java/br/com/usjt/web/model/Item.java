@@ -3,16 +3,20 @@ package br.com.usjt.web.model;
 public class Item {
 
 	private int id;
-	private Usuario usuario;
 	private long cnpjRestaurante;
-	private double valor;
-    private double porc_desconto;
-	private String nome;
 	private String categoria;
-	private String status;
+	private String nome;
 	private String tipo;
+	private double valor;
+	private String status;
+
+	//Pedido
+	private Usuario usuario;
+	private int idPedido;
+    private double porc_desconto;
 	private String idComanda;
     private String data;
+    private String statusPedido;
     
 	public Usuario getUsuario() {
 		return usuario;
