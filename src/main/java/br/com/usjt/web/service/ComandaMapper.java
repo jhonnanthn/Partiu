@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import br.com.usjt.web.model.Comanda;
 import br.com.usjt.web.model.Item;
+import br.com.usjt.web.model.Pedido;
 
 public interface ComandaMapper {
 
@@ -33,8 +34,15 @@ public interface ComandaMapper {
 			@Param("codigo") String codigo);
 
 	void createItemPedido(
-			@Param("item") List<Item> item);
+			@Param("itens") int[] itens,
+			@Param("idComanda") int idComanda);
 
 	void updateComanda(
 			@Param("comanda") Comanda comanda);
+	
+	List<Pedido> getPedidosComanda(
+			 @Param("idComanda") int idComanda);
+	
+	void updateComandaDtaAtualizacao(
+			@Param("idComanda") int idComanda);
 }

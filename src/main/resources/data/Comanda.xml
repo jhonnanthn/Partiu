@@ -33,20 +33,47 @@
 		    data,
 		    porc_desconto,
 		    status
-		  ) VALUES(
-		  	<foreach item="item" collection="item" separator=",">
-			    #{item.idComanda},
-			    #{item.id},
+		  ) VALUES
+		  	<foreach item="idItem" collection="itens" separator=",">
+		  	(
+			    #{idComanda},
+			    #{idItem},
 			    SYSDATE(),
-			    #{item.porc_desconto},
-			    #{item.status}
+			    0.0,
+			    'n'
+			    )
 			</foreach>
-		  )		
+		  		
 	</insert>
 	
+	
+	<select id="getPedidosComanda" resultType="br.com.usjt.web.model.Item">
+		SELECT 
+			id,
+			id_comanda,
+			item,
+			data,
+			porc_desconto, 
+			status
+		FROM comanda
+		WHERE id_comanda = #{idComanda}
+			
+			
+	</select>
+	
+	<update id="updateComandaDtaAtualizacao">
+		UPDATE comanda SET 
+			dta_atualizacao = SYSDATE() 
+		WHERE id = #{idComanda}
+	</update>
+	
 	<update id="updateComanda">
-		update comanda set id_garcom = #{comanda.id_garcom}, mesa = #{comanda.mesa}, status = #{comanda.status},
-    			dta_atualizacao = SYSDATE() where codigo_comanda = #{comanda.codigo}
+		update comanda set 
+		id_garcom = #{comanda.id_garcom}, 
+		mesa = #{comanda.mesa}, 
+		status = #{comanda.status},
+		dta_atualizacao = SYSDATE() 
+		where codigo_comanda = #{comanda.codigo}
 	</update>
 	
 	<select id="getComandas" resultType="br.com.usjt.web.model.Comanda">

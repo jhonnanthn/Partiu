@@ -84,12 +84,14 @@ public class ComandaController {
 	}
 	
 	@Path("/createItemPedido")
-	public void createItemPedido(List<Item> item) {
+	public void createItemPedido(int[] itens, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try{
-			comandaDAO.createItemPedido(item);
-			Comanda comanda = comandaDAO.getComandaByCodigo(item.get(0).getIdComanda());
-			comandaDAO.updateComanda(comanda);
+			comandaDAO.createItemPedido(itens, idComanda);
+			comandaDAO.updateComandaDtaAtualizacao(idComanda);
+			
+			//TODO retornar nova lista de pedidos
+			
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Pedido criado com sucesso").serialize();							
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();

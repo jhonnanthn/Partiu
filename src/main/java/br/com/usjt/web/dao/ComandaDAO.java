@@ -62,11 +62,11 @@ public class ComandaDAO {
 		}
 	}
 
-	public void createItemPedido(List<Item> item) {
+	public void createItemPedido(int[] itens, int idComanda) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
-			comandaMapper.createItemPedido(item);
+			comandaMapper.createItemPedido(itens, idComanda);
 			session.commit();
 		} finally {
 			session.close();
@@ -78,6 +78,17 @@ public class ComandaDAO {
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
 			comandaMapper.updateComanda(comanda);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void updateComandaDtaAtualizacao(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.updateComandaDtaAtualizacao(idComanda);
 			session.commit();
 		} finally {
 			session.close();
