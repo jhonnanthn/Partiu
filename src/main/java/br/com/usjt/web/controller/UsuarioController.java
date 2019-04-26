@@ -16,12 +16,17 @@ public class UsuarioController {
 
 	@Inject
 	Result result;
-
+	
+	
+	// Teste para ver se webservice está rodando; Deve retornar "Endereco Invalido"
 	@Path("/index")
 	public void index() {
 		result.use(Results.json()).withoutRoot().from("Endereco Inválido").serialize();
 	}
 
+	
+	// verifica se login existe
+	// retorna usuario logado ou notificação de usuario invalido (email ou senha errado)
 	@Path("/login")
 	public void login(String email, String senha) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -70,12 +75,14 @@ public class UsuarioController {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
-
+	
+	// get usuario por parametro e valor
+	
 	@Path("/getUsuario")
-	public void getUsuarioByParameter(String parametro, String tipo) {
+	public void getUsuarioByParameter(String parametro, String valor) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
-			List<Usuario> usuario = usuarioDAO.getUsuarioByParameter(parametro, tipo);
+			List<Usuario> usuario = usuarioDAO.getUsuarioByParameter(parametro, valor);
 			result.use(Results.json()).withoutRoot().from(usuario).include("endereco").serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: ID inexistente para Usuário; ID: "+parametro+";	\n"+e.getMessage()).serialize();

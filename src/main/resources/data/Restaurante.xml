@@ -76,7 +76,7 @@
 		WHERE fr.id_funcionario = #{idGarcom}
 	</select>
 	
-	<select id="getRestaurante" resultMap="restaurante">
+	<select id="getRestaurantes" resultMap="restaurante">
 		SELECT 
 			r.cnpj,
 			r.qtd_mesas,

@@ -97,6 +97,16 @@ public class Usuario {
 	public Usuario() {
 		super();
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", tipo=" + tipo + ", cpf=" + cpf + ", nome=" + nome + ", dta_nascimento="
+				+ dta_nascimento + ", email=" + email + ", ddd=" + ddd + ", telefone=" + telefone + ", genero=" + genero
+				+ ", senha=" + senha + ", endereco=" + endereco + "]";
+	}
+	
+	
 
 	
 }

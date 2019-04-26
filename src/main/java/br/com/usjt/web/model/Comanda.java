@@ -57,8 +57,6 @@ public class Comanda {
 	public void setDtaSaida(String dtaSaida) {
 		this.dtaSaida = dtaSaida;
 	}
-
-	
 	
 	public int getMesa() {
 		return mesa;
@@ -70,6 +68,12 @@ public class Comanda {
 
 	public Comanda() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Comanda [id=" + id + ", codigo=" + codigo + ", status=" + status + ", mesa=" + mesa + ", garcom="
+				+ garcom + ", dtaEntrada=" + dtaEntrada + ", dtaSaida=" + dtaSaida + "]";
 	}
 	
 }

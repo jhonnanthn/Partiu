@@ -39,11 +39,11 @@ public class RestauranteDAO {
 		}
 	}
 
-	public List<Restaurante> getRestaurante() {
+	public List<Restaurante> getRestaurantes() {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
-			List<Restaurante> restaurante = restauranteMapper.getRestaurante();
+			List<Restaurante> restaurante = restauranteMapper.getRestaurantes();
 			return restaurante;
 		} finally {
 			session.close();

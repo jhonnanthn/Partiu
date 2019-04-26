@@ -21,17 +21,21 @@ public class ComandaController {
 	@Inject
 	Result result;
 	
+	// createComanda chamado pelo garçom
+	// retorna a comanda criada
 	@Path("/createComanda")
 	public void createComanda(int idGarcom, int mesa) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try{
-			
+		
 			Usuario garcom = usuarioDAO.getUsuarioByParameter("" + idGarcom, "id").get(0);
 			Restaurante restaurante = restauranteDAO.getRestauranteByIdGarcom(garcom.getId());
+			//codigo em String baseado no codigo AAA e mesa 00
 			String codigo = restaurante.getCodigoComanda()+String.format("%02d" , mesa);
 			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);
+			//faz verificacao se existe comanda com o número da mesa em aberto
 			if (comandaCheck.size() == 0) {
 				Comanda comanda = new Comanda();
 				comanda.setGarcom(garcom);
@@ -42,6 +46,7 @@ public class ComandaController {
 				comanda = comandaDAO.getComandaByCodigo(codigo);
 				result.use(Results.json()).withoutRoot().from(comanda).serialize();				
 			} else {
+				// Retorna msg informando ao garcom que não é possivel criar comanda com esta mesa
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Mesa possui uma comanda não finalizada!").serialize();
 			}
 		} catch(Exception e) {
@@ -49,6 +54,22 @@ public class ComandaController {
 		}
 	}
 	
+	// verifica se existe comanda em aberta com codigo AAA00 igual; utilizado antes de criar uma nova comanda
+	// retorna List<> de Comanda (sempre tem size 0 ou 1, pois ou há 1 comanda em aberto ou nenhuma)
+	@Path("/checkComanda")
+	public void checkComanda(String codigo) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try{
+			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);
+			result.use(Results.json()).withoutRoot().from(comandaCheck).serialize();							
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	
+	// getComandas por status e id; Utilizado principalmente pelo garçom para pegar as comandas em aberto
+	// Retorna List<> de comandas
 	@Path("/getComandasByStatusAndId")
 	public void getComandasByStatusAndId(int idGarcom, char status) {
 		ComandaDAO comandaDAO = new ComandaDAO();
@@ -60,6 +81,8 @@ public class ComandaController {
 		}
 	}
 	
+	//get Comanda pelo codigo AAA00; utilizado pelo cliente (inserir codigo comanda)
+	// retorna Comanda
 	@Path("/getComandaByCodigo")
 	public void getComandaByCodigo(String codigo) {
 		ComandaDAO comandaDAO = new ComandaDAO();
@@ -71,6 +94,8 @@ public class ComandaController {
 		}
 	}
 	
+	// get Itens pedidos pelos clientes; Utilizado pelo Cliente para visualizar os itens atuais da comanda
+	// retorna List<> de Item
 	@Path("/getPedidosComanda")
 	public void getPedidosComanda(int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
@@ -81,7 +106,8 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
-	
+	// get Itens de um Restaurante; Utilizado pelo garcom para ver itens disponíveis a serem adcionados
+	// retorna List<> de Itens
 	@Path("/getItensRestaurante")
 	public void getItensRestaurante(long cnpj) {
 		ComandaDAO comandaDAO = new ComandaDAO();
@@ -92,29 +118,15 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
-	
-
-	@Path("/checkComanda")
-	public void checkComanda(String codigo) {
-		ComandaDAO comandaDAO = new ComandaDAO();
-		try{
-			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);
-				result.use(Results.json()).withoutRoot().from(comandaCheck).serialize();							
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
-		}
-	}
-	
+	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
+	// retorna a nova lista de pedidos
 	@Path("/createItemPedido")
 	public void createItemPedido(int[] itens, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try{
 			comandaDAO.createItemPedido(itens, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
-			
-			//TODO retornar nova lista de pedidos
-			
-			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Pedido criado com sucesso").serialize();							
+			comandaDAO.getPedidosComanda(idComanda);
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}

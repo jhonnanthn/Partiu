@@ -94,4 +94,14 @@ public class Restaurante {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	@Override
+	public String toString() {
+		return "Restaurante [cnpj=" + cnpj + ", qtdMesas=" + qtdMesas + ", codigoComanda=" + codigoComanda
+				+ ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", status=" + status + ", logo="
+				+ logo + ", descricao=" + descricao + ", hrEntrada=" + hrEntrada + ", hrFim=" + hrFim
+				+ ", especialidade=" + especialidade + ", endereco=" + endereco + "]";
+	}
+	
+	
 }

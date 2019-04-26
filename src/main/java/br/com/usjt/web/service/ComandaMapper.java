@@ -29,22 +29,28 @@ public interface ComandaMapper {
 	void createComanda(
 			@Param("comanda") Comanda comanda);
 	
+	//verifica se existe comanda
 	List<Comanda> checkComanda(
 			@Param("codigo") String codigo);
 
+	//Cria pedido 9Garcom
 	void createItemPedido(
 			@Param("itens") int[] itens,
 			@Param("idComanda") int idComanda);
 
+	//Atualiza Comanda
 	void updateComanda(
 			@Param("comanda") Comanda comanda);
 	
+	//lista pedidos (cliente)
 	List<Item> getPedidosComanda(
 			 @Param("idComanda") int idComanda);
 	
+	//Atuaiza dta_atualizacao da comanda
 	void updateComandaDtaAtualizacao(
 			@Param("idComanda") int idComanda);
 	
+	//Lista itens do restaurante
 	List<Item> getItensRestaurante(
 			 @Param("cnpj") long cnpj);
 }

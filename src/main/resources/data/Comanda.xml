@@ -174,6 +174,7 @@
 		date_format(dta_saida, '%d/%m/%Y') as dtaSaida
 		FROM comanda
 		WHERE codigo_comanda = #{codigo}
+		AND status = 'A'
 		ORDER BY id DESC LIMIT 1
 
 	</select>

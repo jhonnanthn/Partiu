@@ -15,7 +15,8 @@ public class ComandaDAO {
 	public ComandaDAO() {
 		sqlSessionFactory = ConnectionFactory.getSqlSessionFactory();
 	}
-
+	
+	//cria Comanda
 	public void createComanda(Comanda comanda) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
@@ -26,7 +27,7 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
-
+	// Lista Comandas por status e Id
 	public List<Comanda> getComandasByStatus(int idGarcom, char status) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {

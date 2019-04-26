@@ -28,7 +28,8 @@ public class RestaurantController {
 		}
 	}
 	
-	//TODO carregar endereco, esta vindo como null
+	// get Restaurante pela idGarcom; Cada garcom só faz parte de 1 restaurante.
+	// retorna Restaurante
 	@Path("/getRestauranteByIdGarcom")
 	public void getRestauranteByIdGarcom(int idGarcom) {
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
@@ -40,12 +41,13 @@ public class RestaurantController {
 		}
 	}
 	
-	//TODO carregar endereco, esta vindo como null
-	@Path("/getRestaurante")
-	public void getRestaurante() {
+	//get lista de restaurantes
+	//Nao utilizado
+	@Path("/getRestaurantes")
+	public void getRestaurantes() {
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
-			List<Restaurante> restaurante = restauranteDAO.getRestaurante();
+			List<Restaurante> restaurante = restauranteDAO.getRestaurantes();
 			result.use(Results.json()).withoutRoot().from(restaurante).include("endereco").serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
