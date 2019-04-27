@@ -11,17 +11,17 @@ public class Item {
 	private String status;
 
 	// Pedido
-	private Usuario usuario;
 	private int idPedido;
 	private double porc_desconto;
 	private String idComanda;
 	private String data;
 	private String statusPedido;
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
+	// Usuario
+	private int idUsuario;
+	private String nomeUsuario;
+	private String emailUsuario;
+	
 	public double getPorc_desconto() {
 		return porc_desconto;
 	}
@@ -32,10 +32,6 @@ public class Item {
 
 	public String getData() {
 		return data;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public void setPorc_desconto(double porc_desconto) {
@@ -122,16 +118,58 @@ public class Item {
 		this.statusPedido = statusPedido;
 	}
 
+	
+	
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	public String getEmailUsuario() {
+		return emailUsuario;
+	}
+
+	public void setEmailUsuario(String emailUsuario) {
+		this.emailUsuario = emailUsuario;
+	}
+
 	public Item() {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Item [id=" + id + ", cnpjRestaurante=" + cnpjRestaurante + ", categoria=" + categoria + ", nome=" + nome
-				+ ", tipo=" + tipo + ", valor=" + valor + ", status=" + status + ", usuario=" + usuario + ", idPedido="
-				+ idPedido + ", porc_desconto=" + porc_desconto + ", idComanda=" + idComanda + ", data=" + data
-				+ ", statusPedido=" + statusPedido + "]";
+	public Item(int id, long cnpjRestaurante, String categoria, String nome, String tipo, double valor, String status,
+			int idPedido, double porc_desconto, String idComanda, String data, String statusPedido, int idUsuario,
+			String nomeUsuario, String emailUsuario) {
+		super();
+		this.id = id;
+		this.cnpjRestaurante = cnpjRestaurante;
+		this.categoria = categoria;
+		this.nome = nome;
+		this.tipo = tipo;
+		this.valor = valor;
+		this.status = status;
+		this.idPedido = idPedido;
+		this.porc_desconto = porc_desconto;
+		this.idComanda = idComanda;
+		this.data = data;
+		this.statusPedido = statusPedido;
+		this.idUsuario = idUsuario;
+		this.nomeUsuario = nomeUsuario;
+		this.emailUsuario = emailUsuario;
 	}
+	
+	
+	
 
 }
