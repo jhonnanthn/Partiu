@@ -20,7 +20,9 @@ public class RestauranteDAO {
 		try {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 			EnderecoMapper enderecoMapper = session.getMapper(EnderecoMapper.class);
+			//cria endereco antes
 			enderecoMapper.createEndereco(restaurante.getEndereco());
+			//cria restaurante. id do restaurante é o ultimo criado
 			restauranteMapper.createRestaurante(restaurante);
 			session.commit();
 		} finally {
