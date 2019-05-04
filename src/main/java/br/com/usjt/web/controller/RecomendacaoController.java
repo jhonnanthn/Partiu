@@ -24,7 +24,7 @@ public class RecomendacaoController {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
 			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoDiaSemana();
-			result.use(Results.json()).withoutRoot().from(restaurantes).serialize();
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
