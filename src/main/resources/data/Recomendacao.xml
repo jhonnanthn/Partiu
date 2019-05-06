@@ -26,7 +26,7 @@
 
 	<select id="getRecomendacaoDiaSemana" resultMap="restaurante">
 SELECT r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, avg(a.av_estabelecimento)
+	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 		FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
 			LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
