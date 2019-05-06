@@ -26,17 +26,19 @@
 
 	<select id="getRecomendacaoDiaSemana" resultMap="restaurante">
 SELECT r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, avg(a.av_estabelecimento)
 		FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
 			LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
 			LEFT JOIN usuario u ON u.id = fr.id_funcionario
 			LEFT JOIN comanda c ON c.id_garcom = u.id
 			LEFT JOIN avaliacao a ON a.id_comanda = c.id
+            
 			WHERE  DAYOFWEEK(sysdate()) = DAYOFWEEK(c.dta_entrada)
 				AND c.dta_entrada >= last_day(now()) + interval 1 day - interval 2 month
-				ORDER BY a.av_estabelecimento DESC
-                LIMIT 10
+                GROUP BY r.cnpj
+				ORDER BY avg(a.av_estabelecimento) DESC
+                LIMIT 8
 	</select>
 	
 	<select id="getRecomendacaoMaisVisitados" resultMap="restaurante">
