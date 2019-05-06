@@ -30,4 +30,25 @@ public class RecomendacaoController {
 		}
 	}
 	
+	@Path("/recomendacao/getRecomendacaoMaisVisitados")
+	public void getRecomendacaoMaisVisitados() {
+		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
+		try {
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoMaisVisitados();
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/recomendacao/getRecomendacaoVisitadoRecentente")
+	public void getRecomendacaoVisitadoRecentente(int idUsuario) {
+		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
+		try {
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoVisitadoRecentente(idUsuario);
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
 }

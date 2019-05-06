@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import br.com.usjt.web.model.Restaurante;
 import br.com.usjt.web.service.EnderecoMapper;
+import br.com.usjt.web.service.RecomendacaoMapper;
 import br.com.usjt.web.service.RestauranteMapper;
 public class RecomendacaoDAO {
 	private SqlSessionFactory sqlSessionFactory;
@@ -19,8 +20,30 @@ public class RecomendacaoDAO {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			//TODO mapper getRecomendacaoDiaSemana()
-			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
-			List<Restaurante> restaurante = restauranteMapper.getRestaurantes();
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoDiaSemana();
+			return restaurante;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Restaurante> getRecomendacaoMaisVisitados() {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoMaisVisitados();
+			return restaurante;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Restaurante> getRecomendacaoVisitadoRecentente(int idUsuario) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoVisitadoRecentente(idUsuario);
 			return restaurante;
 		} finally {
 			session.close();

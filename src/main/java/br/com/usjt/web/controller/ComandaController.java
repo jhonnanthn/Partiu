@@ -131,4 +131,22 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
+	
+	// irá vincular o codigo do usuário ao código da comanda que estiver ativa
+	// retorna se foi possível o vínculo
+	@Path("/vincularUsuarioComanda")
+	public void vincularUsuarioComanda(int idUsuario, String codComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try{
+			Comanda comanda = comandaDAO.getComandaByCodigo(codComanda);
+			if(comanda.getStatus() == 'A') {
+				comandaDAO.vincularUsuarioComanda(idUsuario, comanda.getId());
+				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
+			} else {
+				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Comanda está finalizada.").serialize();
+			}
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
 }

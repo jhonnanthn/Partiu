@@ -5,6 +5,7 @@
 <mapper namespace="br.com.usjt.web.service.UsuarioMapper">
 	<resultMap id="usuario" autoMapping="false" type="br.com.usjt.web.model.Usuario">
 		<id property="cpf" column="cpf" />
+		<result property="id" column="id" />
 		<result property="tipo" column="tipo" />
 		<result property="cpf" column="cpf" />
 		<result property="nome" column="nome" />
@@ -15,7 +16,7 @@
 		<result property="genero" column="genero" />
 		<result property="senha" column="senha" />
 		<association property="endereco" javaType="br.com.usjt.web.model.Endereco">
-			<id property="id" column="id" />
+			<id property="id" column="id_endereco" />
 			<result property="logradouro" column="logradouro" />
 			<result property="numero" column="numero" />
 			<result property="complemento" column="complemento" />
@@ -27,6 +28,7 @@
 	
 	<select id="getUsuarioByParameter" resultMap="usuario">
 		select 
+			usu.id,
 			usu.tipo, 
 			usu.cpf, 
 			usu.nome, 
@@ -37,7 +39,7 @@
 			usu.genero, 
 			usu.senha,
 			usu.endereco,
-	        end.id,
+	        end.id as id_endereco,
 	        end.logradouro,
 	        end.numero,
 	        end.complemento,

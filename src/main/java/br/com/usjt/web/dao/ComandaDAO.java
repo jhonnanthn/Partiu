@@ -122,4 +122,15 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
+
+	public void vincularUsuarioComanda(int idUsuario, int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.vincularUsuarioComanda(idUsuario, idComanda);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
 }

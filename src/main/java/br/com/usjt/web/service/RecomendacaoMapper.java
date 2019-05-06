@@ -10,4 +10,9 @@ public interface RecomendacaoMapper {
 
 	List<Restaurante> getRecomendacaoDiaSemana();
 
+	List<Restaurante> getRecomendacaoMaisVisitados();
+
+	List<Restaurante> getRecomendacaoVisitadoRecentente(
+			@Param("idUsuario") int idUsuario);
+
 }

@@ -3,12 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//PT-BR"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="br.com.usjt.web.service.ComandaMapper">
-
-
-
 	<resultMap id="item" type="br.com.usjt.web.model.Item">
 		<id property="id" column="id" />
-
+		
 		<result property="cnpjRestaurante" column="cnpj_restaurante" />
 		<result property="categoria" column="categoria" />
 		<result property="nome" column="nome" />
@@ -16,64 +13,56 @@
 		<result property="valor" column="valor" />
 		<result property="status" column="status" />
 
-
 		<result property="idPedido" column="idPedido" />
 		<result property="porc_desconto" column="porc_desconto" />
 		<result property="idComanda" column="id_comanda" />
 		<result property="data" column="data" />
 		<result property="status" column="status" />
-		
+
 		<result property="idUsuario" column="idUsuario" />
 		<result property="nomeUsuario" column="nomeUsuario" />
 		<result property="emailUsuario" column="emailUsuario" />
-
 	</resultMap>
 
-
-	<select id="getItensRestaurante"
-		resultType="br.com.usjt.web.model.Item">
-
+	<select id="getItensRestaurante" resultType="br.com.usjt.web.model.Item">
 		SELECT
-
-		id,
-		cnpj_restaurante,
-		categoria,
-		nome,
-		tipo,
-		valor,
-		status
-
+			id,
+			cnpj_restaurante,
+			categoria,
+			nome,
+			tipo,
+			valor,
+			status
 		FROM item
-		WHERE cnpj_restaurante = #{cnpj}
-
+		WHERE
+		cnpj_restaurante = #{cnpj}
 	</select>
 
-	<select id="getPedidosComanda"
-		resultType="br.com.usjt.web.model.Item">
-
+	<select id="getPedidosComanda" resultType="br.com.usjt.web.model.Item">
 		SELECT
-
-		p.id as idPedido,
-		p.porc_desconto,
-		p.id_comanda,
-		p.data,
-		p.status as statusPedido,
-
-		i.id,
-		i.cnpj_restaurante,
-		i.categoria,
-		i.nome,
-		i.tipo,
-		i.valor,
-		i.status,
-
-		c.id as idUsuario,
-		c.nome as nomeUsuario,
-		c.email as emailUsuario
-
-		from pedido p
+			p.id as
+			idPedido,
+			p.porc_desconto,
+			p.id_comanda,
+			p.data,
+			p.status as statusPedido,
+		
+			i.id,
+			i.cnpj_restaurante,
+			i.categoria,
+			i.nome,
+			i.tipo,
+			i.valor,
+			i.status,
+		
+			c.id as idUsuario,
+			c.nome as nomeUsuario,
+			c.email as emailUsuario
+		from
+		pedido p
 		left join pedido_usuario pu on pu.id_pedido = p.id
-		left join usuario c ON c.id = pu.id_cliente
+		left join
+		usuario c ON c.id = pu.id_cliente
 		left join item i ON i.id = p.id_item
 		WHERE p.id_comanda = #{idComanda}
 	</select>
@@ -94,8 +83,8 @@
 		#{comanda.codigo},
 		#{comanda.mesa},
 		#{comanda.status},
-		sysdate(),
-		sysdate()
+		now(),
+		now()
 		)
 	</insert>
 
@@ -118,84 +107,84 @@
 			'n'
 			)
 		</foreach>
-
 	</insert>
-
+	
+	<insert id="vincularUsuarioComanda">
+		insert usuario_comanda (cod_usuario, cod_comanda) values(#{idUsuario}, #{idComanda})
+	</insert>
+	
 	<update id="updateComandaDtaAtualizacao">
 		UPDATE comanda SET
-		dta_atualizacao = SYSDATE()
-		WHERE id
-		= #{idComanda}
+		dta_atualizacao = now()
+		WHERE id = #{idComanda}
 	</update>
 
 	<update id="updateComanda">
 		update comanda set
-		id_garcom = #{comanda.id_garcom},
-		mesa = #{comanda.mesa},
-		status = #{comanda.status},
-		dta_atualizacao =
-		SYSDATE()
+			id_garcom = #{comanda.id_garcom},
+			mesa = #{comanda.mesa},
+			status = #{comanda.status},
+			dta_atualizacao = SYSDATE()
 		where codigo_comanda = #{comanda.codigo}
 	</update>
 
-	<select id="getComandas"
-		resultType="br.com.usjt.web.model.Comanda">
+	<select id="getComandas" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
-		id,
-		id_garcom,
-		codigo_comanda,
-		mesa,
-		status,
-		date_format(dta_entrada, '%d/%m/%Y') as dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+			id,
+			id_garcom,
+			codigo_comanda,
+			mesa,
+			status,
+			date_format(dta_entrada, '%d/%m/%Y') as
+			dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
 		FROM comanda
 	</select>
 
-	<select id="getComandaByCodigo"
-		resultType="br.com.usjt.web.model.Comanda">
+	<select id="getComandaByCodigo" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
-		id,
-		id_garcom,
-		codigo_comanda as codigo,
-		mesa,
-		status,
-		date_format(dta_entrada, '%d/%m/%Y') as dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+			id,
+			id_garcom,
+			codigo_comanda as codigo,
+			mesa,
+			status,
+			date_format(dta_entrada,
+			'%d/%m/%Y') as dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as
+			dtaSaida
+		FROM comanda
+		WHERE
+			codigo_comanda = #{codigo}
+			AND status = 'A'
+			ORDER BY id DESC LIMIT 1
+	</select>
+
+	<select id="checkComanda" resultType="br.com.usjt.web.model.Comanda">
+		SELECT
+			id,
+			codigo_comanda as
+			codigo,
+			status
 		FROM comanda
 		WHERE
 		codigo_comanda = #{codigo}
 		AND status = 'A'
-		ORDER BY id DESC LIMIT 1
-
 	</select>
 
-	<select id="checkComanda"
-		resultType="br.com.usjt.web.model.Comanda">
+	<select id="getComandasByStatusAndId" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
-		id,
-		codigo_comanda as codigo,
-		status
-		FROM comanda
-		WHERE
-		codigo_comanda = #{codigo}
-		AND status = 'A'
-	</select>
-
-	<select id="getComandasByStatusAndId"
-		resultType="br.com.usjt.web.model.Comanda">
-		SELECT
-		id,
-		id_garcom as garcom,
-		codigo_comanda as codigo,
-		mesa
-		as mesa,
-		status as status,
-		date_format(dta_entrada, '%d/%m/%Y') as
-		dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+			id,
+			id_garcom as garcom,
+			codigo_comanda as codigo,
+			mesa
+			as mesa,
+			status as
+			status,
+			date_format(dta_entrada, '%d/%m/%Y') as
+			dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
 		FROM comanda
 		WHERE status = #{status}
-		AND
-		id_garcom = #{idGarcom}
+		AND id_garcom = #{idGarcom}
 	</select>
 </mapper>
