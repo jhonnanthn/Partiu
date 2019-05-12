@@ -92,4 +92,20 @@
 							ORDER BY COUNT(id_especialidade) DESC
 					)
 	</select>
+	
+	<select id="getRecomendacaoRestauranteAvaliado" resultMap="restaurante">
+		select 
+				distinct r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+	        from usuario u
+	        inner join usuario_pedido usu_ped on usu_ped.id_usuario = u.id
+	        inner join avaliacao av on av.id_cliente = u.id
+	        inner join comanda c on c.id = av.id_comanda
+	        INNER JOIN funcionario_restaurante fr ON fr.id_funcionario = c.id_garcom
+	        INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
+			INNER JOIN endereco e ON r.id_endereco = e.id
+	        group by r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento
+			limit 8
+	</select>
 </mapper>

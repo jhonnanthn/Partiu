@@ -62,4 +62,15 @@ public class RecomendacaoController {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
+	
+	@Path("/recomendacao/getRecomendacaoRestauranteAvaliado")
+	public void getRecomendacaoRestauranteAvaliado() {
+		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
+		try {
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoRestauranteAvaliado();
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
 }
