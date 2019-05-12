@@ -12,7 +12,10 @@ public interface RecomendacaoMapper {
 
 	List<Restaurante> getRecomendacaoMaisVisitados();
 
-	List<Restaurante> getRecomendacaoVisitadoRecentente(
+	List<Restaurante> getRecomendacaoVisitadoRecentemente(
+			@Param("idUsuario") int idUsuario);
+
+	List<Restaurante> getRecomendacaoEspecidadeUsuario(
 			@Param("idUsuario") int idUsuario);
 
 }

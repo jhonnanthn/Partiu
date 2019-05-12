@@ -41,11 +41,22 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/recomendacao/getRecomendacaoVisitadoRecentente")
-	public void getRecomendacaoVisitadoRecentente(int idUsuario) {
+	@Path("/recomendacao/getRecomendacaoVisitadoRecentemente")
+	public void getRecomendacaoVisitadoRecentemente(int idUsuario) {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
-			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoVisitadoRecentente(idUsuario);
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoVisitadoRecentemente(idUsuario);
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/recomendacao/getRecomendacaoEspecidadeUsuario")
+	public void getRecomendacaoEspecidadeUsuario(int idUsuario) {
+		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
+		try {
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoEspecidadeUsuario(idUsuario);
 			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();

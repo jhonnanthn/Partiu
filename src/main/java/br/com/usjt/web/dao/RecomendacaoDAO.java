@@ -39,11 +39,22 @@ public class RecomendacaoDAO {
 		}
 	}
 
-	public List<Restaurante> getRecomendacaoVisitadoRecentente(int idUsuario) {
+	public List<Restaurante> getRecomendacaoVisitadoRecentemente(int idUsuario) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
-			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoVisitadoRecentente(idUsuario);
+			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoVisitadoRecentemente(idUsuario);
+			return restaurante;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Restaurante> getRecomendacaoEspecidadeUsuario(int idUsuario) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoEspecidadeUsuario(idUsuario);
 			return restaurante;
 		} finally {
 			session.close();

@@ -25,14 +25,20 @@
 	</resultMap>
 
 	<select id="getRecomendacaoDiaSemana" resultMap="restaurante">
-		SELECT r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-	   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 		FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
-			LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
-			LEFT JOIN usuario u ON u.id = fr.id_funcionario
-			LEFT JOIN comanda c ON c.id_garcom = u.id
-			LEFT JOIN avaliacao a ON a.id_comanda = c.id
+			INNER JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
+			INNER JOIN usuario u ON u.id = fr.id_funcionario
+			INNER JOIN comanda c ON c.id_garcom = u.id
+			INNER JOIN avaliacao a ON a.id_comanda = c.id
+            
+			WHERE  DAYOFWEEK(sysdate()) = DAYOFWEEK(c.dta_entrada)
+			AND r.status = 'A'
+			GROUP BY r.cnpj
+				ORDER BY avg(a.av_estabelecimento) DESC
+                LIMIT 8
 	</select>
 	
 	<select id="getRecomendacaoMaisVisitados" resultMap="restaurante">
@@ -52,9 +58,9 @@
             limit 0,8
 	</select>
 	
-	<select id="getRecomendacaoVisitadoRecentente" resultMap="restaurante">
+	<select id="getRecomendacaoVisitadoRecentemente" resultMap="restaurante">
 		SELECT 
-			r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+			distinct r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 			e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 		FROM usuario u
 		INNER JOIN usuario_comanda com_user ON com_user.cod_usuario = u.id
@@ -65,7 +71,25 @@
 		INNER JOIN endereco e ON r.id_endereco = e.id
            where
 			u.id = #{idUsuario}
-		order by c.dta_entrada desc
         limit 0,8
+	</select>
+	
+	<select id="getRecomendacaoEspecidadeUsuario" resultMap="restaurante">
+		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+		   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+			FROM restaurante r
+				INNER JOIN endereco e ON r.id_endereco = e.id
+				INNER JOIN especialidade_restaurante esp_res ON esp_res.cnpj_restaurante = r.cnpj
+				INNER JOIN especialidade esp ON esp.id = esp_res.id_especialidade
+				WHERE esp.id in
+					(
+						select id_especialidade from especialidade_item esp_it
+							inner join item it on it.id = esp_it.id_especialidade
+							inner join pedido ped on ped.id_item = it.id
+							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id
+						  WHERE usu_ped.id_usuario = #{idUsuario}
+							GROUP BY esp_it.id_especialidade
+							ORDER BY COUNT(id_especialidade) DESC
+					)
 	</select>
 </mapper>
