@@ -50,10 +50,6 @@ public interface ComandaMapper {
 	void updateComandaDtaAtualizacao(
 			@Param("idComanda") int idComanda);
 	
-	//Lista itens do restaurante
-	List<Item> getItensRestaurante(
-			 @Param("cnpj") long cnpj);
-
 	void vincularUsuarioComanda(
 			@Param("idUsuario") int idUsuario, 
 			@Param("idComanda") int idComanda);

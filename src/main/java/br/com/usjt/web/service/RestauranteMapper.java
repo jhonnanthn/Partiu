@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 
 public interface RestauranteMapper {
@@ -20,4 +21,9 @@ public interface RestauranteMapper {
 
 	//retorna todos os restaurante
 	List<Restaurante> getRestaurantes();
+	
+	//Lista itens do restaurante
+	List<Item> getItensRestaurante(
+			 @Param("cnpj") long cnpj);
+
 }

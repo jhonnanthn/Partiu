@@ -24,29 +24,12 @@
 		<result property="emailUsuario" column="emailUsuario" />
 	</resultMap>
 
-	<select id="getItensRestaurante" resultType="br.com.usjt.web.model.Item">
-		SELECT
-			id,
-			cnpj_restaurante,
-			categoria,
-			nome,
-			tipo,
-			valor,
-			status
-		FROM item
-		WHERE
-		cnpj_restaurante = #{cnpj}
-	</select>
-
 	<select id="getPedidosComanda" resultType="br.com.usjt.web.model.Item">
-		SELECT
-			p.id as
-			idPedido,
+		SELECT	p.id as	idPedido,
 			p.porc_desconto,
 			p.id_comanda,
 			p.data,
 			p.status as statusPedido,
-		
 			i.id,
 			i.cnpj_restaurante,
 			i.categoria,
@@ -54,15 +37,12 @@
 			i.tipo,
 			i.valor,
 			i.status,
-		
 			c.id as idUsuario,
 			c.nome as nomeUsuario,
 			c.email as emailUsuario
-		from
-		pedido p
-		left join pedido_usuario pu on pu.id_pedido = p.id
-		left join
-		usuario c ON c.id = pu.id_cliente
+		from pedido p
+		left join usuario_pedido up on up.id_pedido = p.id
+		left join usuario c ON c.id = up.id_usuario
 		left join item i ON i.id = p.id_item
 		WHERE p.id_comanda = #{idComanda}
 	</select>

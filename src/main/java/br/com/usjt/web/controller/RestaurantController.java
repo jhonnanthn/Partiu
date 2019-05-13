@@ -8,7 +8,9 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import br.com.usjt.web.dao.ComandaDAO;
 import br.com.usjt.web.dao.RestauranteDAO;
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 
 @Resource
@@ -51,6 +53,19 @@ public class RestaurantController {
 			result.use(Results.json()).withoutRoot().from(restaurante).include("endereco").serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
+	// get Itens de um Restaurante; Utilizado pelo garcom para ver itens disponíveis a serem adcionados
+	// retorna List<> de Itens
+	@Path("/getItensRestaurante")
+	public void getItensRestaurante(long cnpj) {
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try {
+			List<Item> itens = restauranteDAO.getItensRestaurante(cnpj);
+			result.use(Results.json()).withoutRoot().from(itens).serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
 }

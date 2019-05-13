@@ -106,18 +106,7 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
-	// get Itens de um Restaurante; Utilizado pelo garcom para ver itens disponíveis a serem adcionados
-	// retorna List<> de Itens
-	@Path("/getItensRestaurante")
-	public void getItensRestaurante(long cnpj) {
-		ComandaDAO comandaDAO = new ComandaDAO();
-		try {
-			List<Item> itens = comandaDAO.getItensRestaurante(cnpj);
-			result.use(Results.json()).withoutRoot().from(itens).serialize();
-		}catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
-		}
-	}
+
 	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
 	// retorna a nova lista de pedidos
 	@Path("/createItemPedido")
@@ -145,6 +134,20 @@ public class ComandaController {
 			} else {
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Comanda está finalizada.").serialize();
 			}
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/testeObjetos")
+	public void vincularUsuarioComanda() {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		try{
+			Comanda comanda = comandaDAO.getComandaByCodigo("OCN01");
+			Usuario usuario = usuarioDAO.getUsuarioByParameter("id", "2").get(1);		
+			result.use(Results.json()).withoutRoot().from(comanda).serialize();
+
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}

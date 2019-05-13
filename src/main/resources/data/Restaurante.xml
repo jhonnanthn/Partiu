@@ -101,4 +101,19 @@
 			inner join endereco e
 			  on r.id_endereco = e.id
 	</select>
+	
+	<select id="getItensRestaurante" resultType="br.com.usjt.web.model.Item">
+		SELECT
+			id,
+			cnpj_restaurante as cnpjRestaurante,
+			categoria,
+			nome,
+			tipo,
+			valor,
+			status
+		FROM item
+		WHERE cnpj_restaurante = #{cnpj}
+		ORDER BY categoria
+	</select>
 </mapper>
+
