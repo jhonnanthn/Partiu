@@ -81,6 +81,20 @@ public class ComandaController {
 		}
 	}
 	
+	// getComanda por id
+	// Retorna List<> de comandas
+	//TODO Carregar Usuario (garcom) junto à comanda
+		@Path("/getComandaById")
+		public void getComandaById(int idComanda) {
+			ComandaDAO comandaDAO = new ComandaDAO();
+			try {
+				List<Comanda> comandas = comandaDAO.getComandaById(idComanda);
+				result.use(Results.json()).withoutRoot().from(comandas).serialize();
+			}catch(Exception e) {
+				result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+			}
+		}
+	
 	//get Comanda pelo codigo AAA00; utilizado pelo cliente (inserir codigo comanda)
 	// retorna Comanda
 	@Path("/getComandaByCodigo")

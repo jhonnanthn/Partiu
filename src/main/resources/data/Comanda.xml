@@ -120,6 +120,20 @@
 			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
 		FROM comanda
 	</select>
+	
+	<select id="getComandaById" resultType="br.com.usjt.web.model.Comanda">
+		SELECT
+			id,
+			codigo_comanda as codigo,
+			mesa,
+			status,
+			date_format(dta_entrada, '%d/%m/%Y') as
+			dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+		FROM comanda
+		WHERE id = #{idComanda}
+		
+	</select>
 
 	<select id="getComandaByCodigo" resultType="br.com.usjt.web.model.Comanda">
 		SELECT

@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import br.com.usjt.web.model.Comanda;
 import br.com.usjt.web.model.Item;
 import br.com.usjt.web.service.ComandaMapper;
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 public class ComandaDAO {
 	private SqlSessionFactory sqlSessionFactory;
@@ -34,6 +33,17 @@ public class ComandaDAO {
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
 			List<Comanda> comandas = comandaMapper.getComandasByStatusAndId(idGarcom, status);
+			return comandas;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public List<Comanda> getComandaById(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Comanda> comandas = comandaMapper.getComandaById(idComanda);
 			return comandas;
 		} finally {
 			session.close();

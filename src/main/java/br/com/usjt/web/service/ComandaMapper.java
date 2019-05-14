@@ -53,4 +53,7 @@ public interface ComandaMapper {
 	void vincularUsuarioComanda(
 			@Param("idUsuario") int idUsuario, 
 			@Param("idComanda") int idComanda);
+
+	List<Comanda> getComandaById(
+			@Param("idComanda") int idComanda);
 }
