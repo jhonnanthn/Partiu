@@ -8,7 +8,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import br.com.usjt.web.dao.ComandaDAO;
 import br.com.usjt.web.dao.RestauranteDAO;
 import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;

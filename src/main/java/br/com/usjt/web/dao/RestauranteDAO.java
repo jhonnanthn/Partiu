@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
-import br.com.usjt.web.service.ComandaMapper;
 import br.com.usjt.web.service.EnderecoMapper;
 import br.com.usjt.web.service.RestauranteMapper;
 public class RestauranteDAO {

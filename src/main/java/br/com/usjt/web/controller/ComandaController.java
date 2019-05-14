@@ -153,17 +153,17 @@ public class ComandaController {
 		}
 	}
 	
-	@Path("/testeObjetos")
-	public void vincularUsuarioComanda() {
-		ComandaDAO comandaDAO = new ComandaDAO();
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		try{
-			Comanda comanda = comandaDAO.getComandaByCodigo("OCN01");
-			Usuario usuario = usuarioDAO.getUsuarioByParameter("id", "2").get(1);		
-			result.use(Results.json()).withoutRoot().from(comanda).serialize();
-
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
-		}
-	}
+//	@Path("/testeObjetos")
+//	public void vincularUsuarioComanda() {
+//		ComandaDAO comandaDAO = new ComandaDAO();
+//		UsuarioDAO usuarioDAO = new UsuarioDAO();
+//		try{
+//			Comanda comanda = comandaDAO.getComandaByCodigo("OCN01");
+//			Usuario usuario = usuarioDAO.getUsuarioByParameter("id", "2").get(1);		
+//			result.use(Results.json()).withoutRoot().from(comanda).serialize();
+//
+//		} catch(Exception e) {
+//			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+//		}
+//	}
 }
