@@ -88,8 +88,8 @@ public class ComandaController {
 		public void getComandaById(int idComanda) {
 			ComandaDAO comandaDAO = new ComandaDAO();
 			try {
-				List<Comanda> comandas = comandaDAO.getComandaById(idComanda);
-				result.use(Results.json()).withoutRoot().from(comandas).serialize();
+				Comanda comanda = comandaDAO.getComandaById(idComanda);
+				result.use(Results.json()).withoutRoot().from(comanda).serialize();
 			}catch(Exception e) {
 				result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 			}

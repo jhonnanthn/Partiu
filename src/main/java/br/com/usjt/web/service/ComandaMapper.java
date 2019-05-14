@@ -54,6 +54,6 @@ public interface ComandaMapper {
 			@Param("idUsuario") int idUsuario, 
 			@Param("idComanda") int idComanda);
 
-	List<Comanda> getComandaById(
+	Comanda getComandaById(
 			@Param("idComanda") int idComanda);
 }

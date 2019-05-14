@@ -6,7 +6,7 @@
 	<resultMap id="item" type="br.com.usjt.web.model.Item">
 		<id property="id" column="id" />
 		
-		<result property="cnpjRestaurante" column="cnpj_restaurante" />
+		<result property="cnpjRestaurante" column="cnpjRestaurante" />
 		<result property="categoria" column="categoria" />
 		<result property="nome" column="nome" />
 		<result property="tipo" column="tipo" />
@@ -31,7 +31,7 @@
 			p.data,
 			p.status as statusPedido,
 			i.id,
-			i.cnpj_restaurante,
+			i.cnpj_restaurante as cnpjRestaurante,
 			i.categoria,
 			i.nome,
 			i.tipo,

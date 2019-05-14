@@ -39,11 +39,11 @@ public class ComandaDAO {
 		}
 	}
 	
-	public List<Comanda> getComandaById(int idComanda) {
+	public Comanda getComandaById(int idComanda) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
-			List<Comanda> comandas = comandaMapper.getComandaById(idComanda);
+			Comanda comandas = comandaMapper.getComandaById(idComanda);
 			return comandas;
 		} finally {
 			session.close();
@@ -79,6 +79,7 @@ public class ComandaDAO {
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
 			List<Item> itens = comandaMapper.getPedidosComanda(idComanda);
+			System.out.println(itens.get(1).getCnpjRestaurante());
 			
 			return itens;
 		} catch (Exception e) {
