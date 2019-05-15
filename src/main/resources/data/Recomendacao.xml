@@ -5,6 +5,7 @@
 <mapper namespace="br.com.usjt.web.service.RecomendacaoMapper">
 	<resultMap id="restaurante" type="br.com.usjt.web.model.Restaurante">
 		<id property="cnpj" column="cnpj" />
+		<result property="avaliacao" column="avaliacao" />
 		<result property="qtdMesas" column="qtd_mesas" />
 		<result property="codigoComanda" column="codigo_cardapio" />
 		<result property="nomeFantasia" column="nom_fantasia" />
@@ -94,9 +95,20 @@
 	</select>
 	
 	<select id="getRecomendacaoRestauranteAvaliado" resultMap="restaurante">
-		select 
-				distinct r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+		select distinct 
+			x.cnpj,	x.qtd_mesas, x.codigo_cardapio, x.razao_social, x.logotipo, x.nom_fantasia, x.status,x.descricao, x.id_endereco,
+					x.id, x.logradouro, x.numero, x.complemento, x.bairro, x.cidade, x.uf, x.cep, x.avaliacao
+			from (
+						select 
+							r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+								e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, 
+								(select avg(av_est.av_estabelecimento)
+									from avaliacao av_est where av_est.id_comanda in 
+										(select c.id from comanda c
+										    INNER JOIN funcionario_restaurante fr ON fr.id_funcionario = c.id_garcom
+										    INNER JOIN restaurante re on re.cnpj = fr. cnpj_restaurante
+										    WHERE
+										    	re.cnpj = r.cnpj)) avaliacao
 	        from usuario u
 	        inner join usuario_pedido usu_ped on usu_ped.id_usuario = u.id
 	        inner join avaliacao av on av.id_cliente = u.id
@@ -104,8 +116,9 @@
 	        INNER JOIN funcionario_restaurante fr ON fr.id_funcionario = c.id_garcom
 	        INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
 			INNER JOIN endereco e ON r.id_endereco = e.id
-	        group by r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento
+	        group by r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento, av.av_estabelecimento
+			order by avaliacao desc) x
 			limit 8
 	</select>
 </mapper>

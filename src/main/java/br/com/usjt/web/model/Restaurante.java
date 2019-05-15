@@ -3,6 +3,7 @@ package br.com.usjt.web.model;
 public class Restaurante {
 	
 	private long cnpj;
+	private double avaliacao;
 //	private int dia;
 	private int qtdMesas;
 	private String codigoComanda;
@@ -16,6 +17,12 @@ public class Restaurante {
 	private String especialidade;
 	private Endereco endereco;
 	
+	public double getAvaliacao() {
+		return avaliacao;
+	}
+	public void setAvaliacao(double avaliacao) {
+		this.avaliacao = avaliacao;
+	}
 	public String getEspecialidade() {
 		return especialidade;
 	}
