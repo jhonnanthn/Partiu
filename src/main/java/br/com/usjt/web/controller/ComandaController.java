@@ -124,10 +124,10 @@ public class ComandaController {
 	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
 	// retorna a nova lista de pedidos
 	@Path("/createItemPedido")
-	public void createItemPedido(int[] itens, int idComanda) {
+	public void createItemPedido(int[] idItens, String[] obsItens, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try{
-			comandaDAO.createItemPedido(itens, idComanda);
+			comandaDAO.createItemPedido(idItens, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
 			comandaDAO.getPedidosComanda(idComanda);
 		} catch(Exception e) {
