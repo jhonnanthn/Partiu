@@ -76,15 +76,17 @@
 		id_item,
 		data,
 		porc_desconto,
-		status
+		status,
+		observacao
 		) VALUES
-		<foreach item="idItem" collection="itens" separator=",">
+		<foreach item="item" collection="itens" separator=",">
 			(
 			#{idComanda},
-			#{idItem},
+			#{item.id},
 			SYSDATE(),
 			0.0,
-			'n'
+			'N',
+			#{item.observacao}
 			)
 		</foreach>
 	</insert>

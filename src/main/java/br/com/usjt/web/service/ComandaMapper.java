@@ -35,7 +35,7 @@ public interface ComandaMapper {
 
 	//Cria pedido 9Garcom
 	void createItemPedido(
-			@Param("itens") int[] itens,
+			@Param("itens") List<Item> itens,
 			@Param("idComanda") int idComanda);
 
 	//Atualiza Comanda

@@ -90,7 +90,7 @@ public class ComandaDAO {
 		}
 	}
 	
-	public void createItemPedido(int[] itens, int idComanda) {
+	public void createItemPedido(List<Item> itens, int idComanda) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);

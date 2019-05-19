@@ -9,6 +9,7 @@ public class Item {
 	private String tipo;
 	private double valor;
 	private String status;
+	private String observacao;
 
 	// Pedido
 	private int idPedido;
@@ -22,6 +23,14 @@ public class Item {
 	private String nomeUsuario;
 	private String emailUsuario;
 	
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
 	public double getPorc_desconto() {
 		return porc_desconto;
 	}

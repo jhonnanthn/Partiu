@@ -1,5 +1,6 @@
 package br.com.usjt.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -126,8 +127,15 @@ public class ComandaController {
 	@Path("/createItemPedido")
 	public void createItemPedido(int[] idItens, String[] obsItens, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
+		List<Item> itens = new ArrayList<>();
 		try{
-			comandaDAO.createItemPedido(idItens, idComanda);
+			for(int i = 0; i < idItens.length; i++) {
+				Item item = new Item();
+				item.setId(idItens[i]);
+				item.setObservacao(obsItens[i]);
+				itens.add(item);
+			}
+			comandaDAO.createItemPedido(itens, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
 			comandaDAO.getPedidosComanda(idComanda);
 		} catch(Exception e) {
