@@ -46,7 +46,7 @@
 		select x.* from (
 			SELECT 
 				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, count(1)
+				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, count(1) as line
 			FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
 			LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
@@ -56,7 +56,8 @@
 			group by
 				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep) x
-            limit 0,8
+		order by line desc
+   		limit 0,8
 	</select>
 	
 	<select id="getRecomendacaoVisitadoRecentemente" resultMap="restaurante">
@@ -92,6 +93,7 @@
 							GROUP BY esp_it.id_especialidade
 							ORDER BY COUNT(id_especialidade) DESC
 					)
+			limit 8
 	</select>
 	
 	<select id="getRecomendacaoRestauranteAvaliado" resultMap="restaurante">
@@ -119,6 +121,6 @@
 	        group by r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento, av.av_estabelecimento
 			order by avaliacao desc) x
-			limit 8
+		limit 8
 	</select>
 </mapper>

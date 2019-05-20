@@ -12,6 +12,7 @@ import br.com.usjt.web.dao.RecomendacaoDAO;
 import br.com.usjt.web.model.Restaurante;
 
 @Resource
+@Path("/recomendacao")
 public class RecomendacaoController {
 	@Inject
 	Result result;
@@ -19,7 +20,7 @@ public class RecomendacaoController {
 	// Controller para geração de recomendações. Sempre gera uma List<Restaurante>
 	// Todos os paths comecam com /recomendacao
 	
-	@Path("/recomendacao/getRecomendacaoDiaSemana")
+	@Path("/getRecomendacaoDiaSemana")
 	public void getRecomendacaoDiaSemana() {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
@@ -30,7 +31,7 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/recomendacao/getRecomendacaoMaisVisitados")
+	@Path("/getRecomendacaoMaisVisitados")
 	public void getRecomendacaoMaisVisitados() {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
@@ -41,7 +42,7 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/recomendacao/getRecomendacaoVisitadoRecentemente")
+	@Path("/getRecomendacaoVisitadoRecentemente")
 	public void getRecomendacaoVisitadoRecentemente(int idUsuario) {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
@@ -52,7 +53,7 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/recomendacao/getRecomendacaoEspecidadeUsuario")
+	@Path("/getRecomendacaoEspecidadeUsuario")
 	public void getRecomendacaoEspecidadeUsuario(int idUsuario) {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
@@ -63,7 +64,7 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/recomendacao/getRecomendacaoRestauranteAvaliado")
+	@Path("/getRecomendacaoRestauranteAvaliado")
 	public void getRecomendacaoRestauranteAvaliado() {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
