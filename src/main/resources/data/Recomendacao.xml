@@ -76,7 +76,7 @@
         limit 0,8
 	</select>
 	
-	<select id="getRecomendacaoEspecidadeUsuario" resultMap="restaurante">
+	<select id="getRecomendacaoEspecialidadeUsuario" resultMap="restaurante">
 		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 		   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 			FROM restaurante r

@@ -53,11 +53,11 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/getRecomendacaoEspecidadeUsuario")
-	public void getRecomendacaoEspecidadeUsuario(int idUsuario) {
+	@Path("/getRecomendacaoEspecialidadeUsuario")
+	public void getRecomendacaoEspecialidadeUsuario(int idUsuario) {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
-			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoEspecidadeUsuario(idUsuario);
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoEspecialidadeUsuario(idUsuario);
 			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
