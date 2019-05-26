@@ -88,7 +88,7 @@
 						select id_especialidade from especialidade_item esp_it
 							inner join item it on it.id = esp_it.id_especialidade
 							inner join pedido ped on ped.id_item = it.id
-							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id
+							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and usu_ped.id_comanda = ped.id_comanda
 						  WHERE usu_ped.id_usuario = #{idUsuario}
 							GROUP BY esp_it.id_especialidade
 							ORDER BY COUNT(id_especialidade) DESC
