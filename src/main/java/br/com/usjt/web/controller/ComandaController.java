@@ -137,8 +137,8 @@ public class ComandaController {
 			}
 			comandaDAO.createItemPedido(itens, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
-			comandaDAO.getPedidosComanda(idComanda);
-			result.use(Results.json()).withoutRoot().from("Vinculado com sucesso.").serialize();
+			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
@@ -158,8 +158,8 @@ public class ComandaController {
 			}
 			comandaDAO.createItemPedidoUsuario(itens, idUsuario, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
-			comandaDAO.getPedidosComanda(idComanda);
-			result.use(Results.json()).withoutRoot().from("Vinculado com sucesso.").serialize();
+			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
