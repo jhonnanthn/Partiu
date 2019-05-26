@@ -133,4 +133,15 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
+
+	public void createItemPedidoUsuario(List<Item> itens, int idUsuario, int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.createItemPedidoUsuario(itens, idUsuario, idComanda);
+			session.commit();
+		} finally {
+			session.close();
+		}		
+	}
 }

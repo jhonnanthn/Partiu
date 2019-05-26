@@ -30,6 +30,7 @@
 			p.id_comanda,
 			p.data,
 			p.status as statusPedido,
+			up.id_usuario as idUsuario,
 			i.id,
 			i.cnpj_restaurante as cnpjRestaurante,
 			i.categoria,
@@ -41,7 +42,7 @@
 			c.nome as nomeUsuario,
 			c.email as emailUsuario
 		from pedido p
-		left join usuario_pedido up on up.id_pedido = p.id
+		left join usuario_pedido up on up.id_pedido = p.id and up.id_comanda = p.id_comanda
 		left join usuario c ON c.id = up.id_usuario
 		left join item i ON i.id = p.id_item
 		WHERE p.id_comanda = #{idComanda}
@@ -83,12 +84,29 @@
 			(
 			#{idComanda},
 			#{item.id},
-			SYSDATE(),
+			now(),
 			0.0,
 			'N',
 			#{item.observacao}
 			)
 		</foreach>
+	</insert>
+	
+	<insert id="createItemPedidoUsuario">
+		INSERT
+			INTO usuario_pedido
+			(
+			id_comanda,
+			id_usuario,
+			id_pedido
+			) VALUES
+			<foreach item="item" collection="itens" separator=",">
+				(
+					#{idComanda},
+					#{idUsuario},
+					#{item.id}
+				)
+			</foreach>
 	</insert>
 	
 	<insert id="vincularUsuarioComanda">
@@ -106,7 +124,7 @@
 			id_garcom = #{comanda.id_garcom},
 			mesa = #{comanda.mesa},
 			status = #{comanda.status},
-			dta_atualizacao = SYSDATE()
+			dta_atualizacao = now()
 		where codigo_comanda = #{comanda.codigo}
 	</update>
 

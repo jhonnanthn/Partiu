@@ -138,11 +138,33 @@ public class ComandaController {
 			comandaDAO.createItemPedido(itens, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
 			comandaDAO.getPedidosComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from("Vinculado com sucesso.").serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
 	
+	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
+	// retorna a nova lista de pedidos
+	@Path("/createItemPedidoUsuario")
+	public void createItemPedidoUsuario(int[] idItens, int idUsuario, int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		List<Item> itens = new ArrayList<>();
+		try{
+			for(int i = 0; i < idItens.length; i++) {
+				Item item = new Item();
+				item.setId(idItens[i]);
+				itens.add(item);
+			}
+			comandaDAO.createItemPedidoUsuario(itens, idUsuario, idComanda);
+			comandaDAO.updateComandaDtaAtualizacao(idComanda);
+			comandaDAO.getPedidosComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from("Vinculado com sucesso.").serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+		
 	// irá vincular o codigo do usuário ao código da comanda que estiver ativa
 	// retorna se foi possível o vínculo
 	@Path("/vincularUsuarioComanda")
