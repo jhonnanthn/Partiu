@@ -11,7 +11,7 @@
 		<result property="nome" column="nome" />
 		<result property="tipo" column="tipo" />
 		<result property="valor" column="valor" />
-		<result property="status" column="status" />
+		<result property="status" column="status" />		
 
 		<result property="idPedido" column="idPedido" />
 		<result property="porc_desconto" column="porc_desconto" />
@@ -147,9 +147,9 @@
 			codigo_comanda as codigo,
 			mesa,
 			status,
-			date_format(dta_entrada, '%d/%m/%Y') as
-			dtaEntrada,
-			date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+			date_format(dta_entrada, '%d/%m/%Y') as	dtaEntrada,
+			date_format(dta_saida, '%d/%m/%Y') as dtaSaida,
+			dta_atualizacao as dtaAtualizacao
 		FROM comanda
 		WHERE id = #{idComanda}
 		

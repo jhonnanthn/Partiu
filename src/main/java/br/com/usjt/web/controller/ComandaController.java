@@ -21,7 +21,7 @@ import br.com.usjt.web.model.Usuario;
 public class ComandaController {
 	@Inject
 	Result result;
-	
+
 	// createComanda chamado pelo garçom
 	// retorna a comanda criada
 	@Path("/createComanda")
@@ -29,47 +29,51 @@ public class ComandaController {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		ComandaDAO comandaDAO = new ComandaDAO();
-		try{
-		
+		try {
+
 			Usuario garcom = usuarioDAO.getUsuarioByParameter("" + idGarcom, "id").get(0);
 			Restaurante restaurante = restauranteDAO.getRestauranteByIdGarcom(garcom.getId());
-			//codigo em String baseado no codigo AAA e mesa 00
-			String codigo = restaurante.getCodigoComanda()+String.format("%02d" , mesa);
+			// codigo em String baseado no codigo AAA e mesa 00
+			String codigo = restaurante.getCodigoComanda() + String.format("%02d", mesa);
 			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);
-			//faz verificacao se existe comanda com o número da mesa em aberto
+			// faz verificacao se existe comanda com o número da mesa em aberto
 			if (comandaCheck.size() == 0) {
 				Comanda comanda = new Comanda();
 				comanda.setGarcom(garcom);
 				comanda.setMesa(mesa);
 				comanda.setStatus('A');
 				comanda.setCodigo(codigo);
-				comandaDAO.createComanda(comanda);		
+				comandaDAO.createComanda(comanda);
 				comanda = comandaDAO.getComandaByCodigo(codigo);
-				result.use(Results.json()).withoutRoot().from(comanda).serialize();				
+				result.use(Results.json()).withoutRoot().from(comanda).serialize();
 			} else {
-				// Retorna msg informando ao garcom que não é possivel criar comanda com esta mesa
-				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Mesa possui uma comanda não finalizada!").serialize();
+				// Retorna msg informando ao garcom que não é possivel criar comanda com esta
+				// mesa
+				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Mesa possui uma comanda não finalizada!")
+						.serialize();
 			}
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-	
-	// verifica se existe comanda em aberta com codigo AAA00 igual; utilizado antes de criar uma nova comanda
-	// retorna List<> de Comanda (sempre tem size 0 ou 1, pois ou há 1 comanda em aberto ou nenhuma)
+
+	// verifica se existe comanda em aberta com codigo AAA00 igual; utilizado antes
+	// de criar uma nova comanda
+	// retorna List<> de Comanda (sempre tem size 0 ou 1, pois ou há 1 comanda em
+	// aberto ou nenhuma)
 	@Path("/checkComanda")
 	public void checkComanda(String codigo) {
 		ComandaDAO comandaDAO = new ComandaDAO();
-		try{
+		try {
 			List<Comanda> comandaCheck = comandaDAO.checkComanda(codigo);
-			result.use(Results.json()).withoutRoot().from(comandaCheck).serialize();							
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from(comandaCheck).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-	
-	
-	// getComandas por status e id; Utilizado principalmente pelo garçom para pegar as comandas em aberto
+
+	// getComandas por status e id; Utilizado principalmente pelo garçom para pegar
+	// as comandas em aberto
 	// Retorna List<> de comandas
 	@Path("/getComandasByStatusAndId")
 	public void getComandasByStatusAndId(int idGarcom, char status) {
@@ -77,26 +81,39 @@ public class ComandaController {
 		try {
 			List<Comanda> comandas = comandaDAO.getComandasByStatus(idGarcom, status);
 			result.use(Results.json()).withoutRoot().from(comandas).serialize();
-		}catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
+
+	// getComanda por id
+	// Retorna List<> de comandas
+	// TODO Carregar Usuario (garcom) junto à comanda
+	@Path("/getComandaById")
+	public void getComandaById(int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			Comanda comanda = comandaDAO.getComandaById(idComanda);
+			result.use(Results.json()).withoutRoot().from(comanda).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
+
+	//get Data de Atualização da Comanda
+	@Path("/getAtualizacaoComanda")
+	public void getAtualizacaoComanda(int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			Comanda comanda = comandaDAO.getComandaById(idComanda);
+			result.use(Results.json()).withoutRoot().from(comanda.getDtaAtualizacao()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
 	
-	// getComanda por id
-	// Retorna List<> de comandas
-	//TODO Carregar Usuario (garcom) junto à comanda
-		@Path("/getComandaById")
-		public void getComandaById(int idComanda) {
-			ComandaDAO comandaDAO = new ComandaDAO();
-			try {
-				Comanda comanda = comandaDAO.getComandaById(idComanda);
-				result.use(Results.json()).withoutRoot().from(comanda).serialize();
-			}catch(Exception e) {
-				result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
-			}
-		}
-	
-	//get Comanda pelo codigo AAA00; utilizado pelo cliente (inserir codigo comanda)
+	// get Comanda pelo codigo AAA00; utilizado pelo cliente (inserir codigo
+	// comanda)
 	// retorna Comanda
 	@Path("/getComandaByCodigo")
 	public void getComandaByCodigo(String codigo) {
@@ -104,12 +121,13 @@ public class ComandaController {
 		try {
 			Comanda comanda = comandaDAO.getComandaByCodigo(codigo);
 			result.use(Results.json()).withoutRoot().from(comanda).serialize();
-		}catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-	
-	// get Itens pedidos pelos clientes; Utilizado pelo Cliente para visualizar os itens atuais da comanda
+
+	// get Itens pedidos pelos clientes; Utilizado pelo Cliente para visualizar os
+	// itens atuais da comanda
 	// retorna List<> de Item
 	@Path("/getPedidosComanda")
 	public void getPedidosComanda(int idComanda) {
@@ -117,19 +135,20 @@ public class ComandaController {
 		try {
 			List<Item> itens = comandaDAO.getPedidosComanda(idComanda);
 			result.use(Results.json()).withoutRoot().from(itens).serialize();
-		}catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
 
-	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
+	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de
+	// itens à comanda
 	// retorna a nova lista de pedidos
 	@Path("/createItemPedido")
 	public void createItemPedido(int[] idItens, String[] obsItens, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		List<Item> itens = new ArrayList<>();
-		try{
-			for(int i = 0; i < idItens.length; i++) {
+		try {
+			for (int i = 0; i < idItens.length; i++) {
 				Item item = new Item();
 				item.setId(idItens[i]);
 				item.setObservacao(obsItens[i]);
@@ -139,19 +158,20 @@ public class ComandaController {
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
 			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
 			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-	
-	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
+
+	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de
+	// itens à comanda
 	// retorna a nova lista de pedidos
 	@Path("/createItemPedidoUsuario")
 	public void createItemPedidoUsuario(int[] idItens, int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		List<Item> itens = new ArrayList<>();
-		try{
-			for(int i = 0; i < idItens.length; i++) {
+		try {
+			for (int i = 0; i < idItens.length; i++) {
 				Item item = new Item();
 				item.setId(idItens[i]);
 				itens.add(item);
@@ -160,29 +180,29 @@ public class ComandaController {
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
 			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
 			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-		
+
 	// irá vincular o codigo do usuário ao código da comanda que estiver ativa
 	// retorna se foi possível o vínculo
 	@Path("/vincularUsuarioComanda")
 	public void vincularUsuarioComanda(int idUsuario, String codComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
-		try{
+		try {
 			Comanda comanda = comandaDAO.getComandaByCodigo(codComanda);
-			if(comanda.getStatus() == 'A') {
+			if (comanda.getStatus() == 'A') {
 				comandaDAO.vincularUsuarioComanda(idUsuario, comanda.getId());
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
 			} else {
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Comanda está finalizada.").serialize();
 			}
-		} catch(Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-	
+
 //	@Path("/testeObjetos")
 //	public void vincularUsuarioComanda() {
 //		ComandaDAO comandaDAO = new ComandaDAO();

@@ -9,6 +9,7 @@ public class Comanda {
 	private Usuario garcom;
 	private String dtaEntrada;
 	private String dtaSaida;
+	private String dtaAtualizacao;
 
 	public int getId() {
 		return id;
@@ -66,6 +67,14 @@ public class Comanda {
 		this.mesa = mesa;
 	}
 
+	public String getDtaAtualizacao() {
+		return dtaAtualizacao;
+	}
+
+	public void setDtaAtualizacao(String dtaAtualizacao) {
+		this.dtaAtualizacao = dtaAtualizacao;
+	}
+
 	public Comanda() {
 		super();
 	}
@@ -73,7 +82,8 @@ public class Comanda {
 	@Override
 	public String toString() {
 		return "Comanda [id=" + id + ", codigo=" + codigo + ", status=" + status + ", mesa=" + mesa + ", garcom="
-				+ garcom + ", dtaEntrada=" + dtaEntrada + ", dtaSaida=" + dtaSaida + "]";
+				+ garcom + ", dtaEntrada=" + dtaEntrada + ", dtaSaida=" + dtaSaida + ", dtaAtualizacao="
+				+ dtaAtualizacao + "]";
 	}
-	
+
 }
