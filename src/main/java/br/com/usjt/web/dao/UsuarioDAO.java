@@ -37,11 +37,11 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public List<Usuario> getUsuarioByParameter(String parametro, String tipo) {
+	public List<Usuario> getUsuarioByParameter(String variavel, String valor) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
-			List<Usuario> Usuario = UsuarioMapper.getUsuarioByParameter(parametro, tipo);
+			List<Usuario> Usuario = UsuarioMapper.getUsuarioByParameter(variavel, valor);
 			return Usuario;
 		} finally {
 			session.close();

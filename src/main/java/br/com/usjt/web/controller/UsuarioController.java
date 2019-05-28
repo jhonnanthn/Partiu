@@ -79,13 +79,13 @@ public class UsuarioController {
 	// get usuario por parametro e valor
 	
 	@Path("/getUsuario")
-	public void getUsuarioByParameter(String parametro, String valor) {
+	public void getUsuarioByParameter(String variavel, String valor) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
-			List<Usuario> usuario = usuarioDAO.getUsuarioByParameter(parametro, valor);
+			List<Usuario> usuario = usuarioDAO.getUsuarioByParameter(variavel, valor);
 			result.use(Results.json()).withoutRoot().from(usuario).include("endereco").serialize();
 		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: ID inexistente para Usuário; ID: "+parametro+";	\n"+e.getMessage()).serialize();
+			result.use(Results.json()).withoutRoot().from("ERRO: ID inexistente para Usuário; ID: "+valor+";	\n"+e.getMessage()).serialize();
 		}
 	}
 }

@@ -50,14 +50,14 @@
 		  from usuario usu
 		  	left join endereco end
 		      on usu.endereco = end.id 
-		  <if test="tipo != null">
+		  <if test="variavel != null">
 		  	where 
 		    	<choose>
-			  <when test="tipo == 'id'">
-			    usu.id = #{parametro}
+			  <when test="variavel == 'id'">
+			    usu.id = #{valor}
 			  </when>
-			  <when test="tipo == 'email'">
-			    usu.email = #{parametro}
+			  <when test="variavel == 'email'">
+			    usu.email = #{valor}
 			  </when>
 			</choose>
 		  </if>

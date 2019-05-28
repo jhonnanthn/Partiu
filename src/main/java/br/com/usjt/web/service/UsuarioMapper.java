@@ -11,8 +11,8 @@ public interface UsuarioMapper {
 	
 	//	retorna usuario por id
 	List<Usuario> getUsuarioByParameter(
-			@Param("parametro") String parametro,
-			@Param("tipo") String tipo);
+			@Param("variavel") String variavel,
+			@Param("valor") String valor);
 	
 	// retorna usuario com login
 	Usuario getUsuarioOnLogin(
