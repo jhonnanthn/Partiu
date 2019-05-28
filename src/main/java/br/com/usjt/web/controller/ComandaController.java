@@ -31,7 +31,7 @@ public class ComandaController {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
 
-			Usuario garcom = usuarioDAO.getUsuarioByParameter("" + idGarcom, "id").get(0);
+			Usuario garcom = usuarioDAO.getUsuarioByParameter("id", "" + idGarcom).get(0);
 			Restaurante restaurante = restauranteDAO.getRestauranteByIdGarcom(garcom.getId());
 			// codigo em String baseado no codigo AAA e mesa 00
 			String codigo = restaurante.getCodigoComanda() + String.format("%02d", mesa);
@@ -53,6 +53,7 @@ public class ComandaController {
 						.serialize();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
@@ -100,7 +101,7 @@ public class ComandaController {
 		}
 	}
 
-	//get Data de Atualização da Comanda
+	// get Data de Atualização da Comanda
 	@Path("/getAtualizacaoComanda")
 	public void getAtualizacaoComanda(int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
@@ -111,7 +112,7 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-	
+
 	// get Comanda pelo codigo AAA00; utilizado pelo cliente (inserir codigo
 	// comanda)
 	// retorna Comanda
