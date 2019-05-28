@@ -79,8 +79,6 @@ public class ComandaDAO {
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
 			List<Item> itens = comandaMapper.getPedidosComanda(idComanda);
-			System.out.println(itens.get(1).getCnpjRestaurante());
-			
 			return itens;
 		} catch (Exception e) {
 			e.printStackTrace();
