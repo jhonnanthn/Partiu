@@ -180,9 +180,8 @@
 		codigo_comanda,
 		mesa,
 		status,
-		date_format(dta_entrada, '%d/%m/%Y') as
-		dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+		date_format(dta_entrada, '%d/%m/%Y %H:%i') as dtaEntrada,
+		date_format(dta_saida, '%d/%m/%Y %H:%i') as dtaSaida
 		FROM comanda
 	</select>
 
@@ -192,9 +191,9 @@
 		codigo_comanda as codigo,
 		mesa,
 		status,
-		date_format(dta_entrada, '%d/%m/%Y') as dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as dtaSaida,
-		dta_atualizacao as dtaAtualizacao
+		date_format(dta_entrada, '%d/%m/%Y %H:%i') as dtaEntrada,
+		date_format(dta_saida, '%d/%m/%Y %H:%i') as dtaSaida,
+		date_format(dta_atualizacao, '%d/%m/%Y %H:%i') as dtaAtualizacao
 		FROM comanda
 		WHERE id = #{idComanda}
 	</select>
@@ -206,10 +205,8 @@
 		codigo_comanda as codigo,
 		mesa,
 		status,
-		date_format(dta_entrada,
-		'%d/%m/%Y') as dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as
-		dtaSaida
+		date_format(dta_entrada,'%d/%m/%Y %H:%i') as dtaEntrada,
+		date_format(dta_saida, '%d/%m/%Y %H:%i') as	dtaSaida
 		FROM comanda
 		WHERE
 		codigo_comanda = #{codigo}
@@ -238,12 +235,10 @@
 		as mesa,
 		status as
 		status,
-		date_format(dta_entrada, '%d/%m/%Y') as
-		dtaEntrada,
-		date_format(dta_saida, '%d/%m/%Y') as dtaSaida
+		date_format(dta_entrada, '%d/%m/%Y %H:%i') as dtaEntrada,
+		date_format(dta_saida, '%d/%m/%Y %H:%i') as dtaSaida
 		FROM comanda
 		WHERE status = #{status}
-		AND
-		id_garcom = #{idGarcom}
+		AND	id_garcom = #{idGarcom}
 	</select>
 </mapper>
