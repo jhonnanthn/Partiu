@@ -3,6 +3,7 @@ package br.com.usjt.web.model;
 public class Usuario {
 
 	private int id;
+	private int id_comanda;
 	private String tipo;
 	private long cpf;
 	private String nome;
@@ -12,7 +13,21 @@ public class Usuario {
 	private int telefone;
 	private char genero;
 	private String senha;
+	private String status;
 	private Endereco endereco;
+	
+	public int getId_comanda() {
+		return id_comanda;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setId_comanda(int id_comanda) {
+		this.id_comanda = id_comanda;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getId() {
 		return id;
 	}

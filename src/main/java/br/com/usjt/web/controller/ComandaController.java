@@ -203,6 +203,50 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
+	
+	// finaliza um Pedido referente aos itens selecionados pelo garcom, na adição de itens à comanda
+	// retorna a nova lista de pedidos
+	@Path("/finalizarItemPedidoUsuario")
+	public void finalizarItemPedidoUsuario(int idUsuario, int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try{
+			comandaDAO.finalizarItemPedidoUsuario(idComanda, idUsuario);
+			List<Usuario> usuarios = comandaDAO.getUsuarioByComanda(idComanda);
+			boolean finalizarComanda = true;
+			for(Usuario usuario: usuarios) {
+				if(usuario.getStatus().equals("A")) {
+					finalizarComanda = false;
+				}
+			}
+			
+			if(finalizarComanda) {
+				comandaDAO.finalizarComanda(idComanda);
+				
+			}
+			result.use(Results.json()).withoutRoot().from("Comanda do usuário finalizada com sucesso.").serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	// remover um pedido da comanda
+	// retorna a nova lista de pedidos
+	@Path("/removerPedidoComanda")
+	public void removerPedidoComanda(int idPedido, int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try{
+			comandaDAO.removerPedidoComandaByUsuario(idPedido);
+			comandaDAO.removerPedidoComanda(idPedido);
+			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
+			comandaDAO.updateComandaDtaAtualizacao(idComanda);
+			
+			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+		
+	
 
 //	@Path("/testeObjetos")
 //	public void vincularUsuarioComanda() {

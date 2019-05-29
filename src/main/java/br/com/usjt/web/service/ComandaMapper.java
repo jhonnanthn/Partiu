@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import br.com.usjt.web.model.Comanda;
 import br.com.usjt.web.model.Item;
+import br.com.usjt.web.model.Usuario;
 
 public interface ComandaMapper {
 
@@ -61,4 +62,24 @@ public interface ComandaMapper {
 			@Param("itens") List<Item> itens,
 			@Param("idUsuario") int idUsuario,
 			@Param("idComanda") int idComanda);
+
+	List<Usuario> getUsuarioByComanda(
+			@Param("idComanda") int idComanda);
+
+	void finalizarComandaUsuario(
+			@Param("idComanda") int idComanda, 
+			@Param("idUsuario") int idUsuario);
+
+	void finalizarComanda(
+			@Param("idComanda") int idComanda);
+
+	void removerPedidoComandaByUsuario(
+			@Param("idPedido") int idPedido);
+
+	void removerPedidoComanda(
+			@Param("idPedido") int idPedido);
+
+	void finalizarItemPedidoUsuario(
+			@Param("idComanda") int idComanda, 
+			@Param("idUsuario") int idUsuario);
 }

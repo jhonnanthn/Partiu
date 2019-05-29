@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import br.com.usjt.web.model.Comanda;
 import br.com.usjt.web.model.Item;
+import br.com.usjt.web.model.Usuario;
 import br.com.usjt.web.service.ComandaMapper;
 
 public class ComandaDAO {
@@ -141,5 +142,65 @@ public class ComandaDAO {
 		} finally {
 			session.close();
 		}		
+	}
+	
+	public List<Usuario> getUsuarioByComanda(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Usuario> usuario = comandaMapper.getUsuarioByComanda(idComanda);
+			
+			return usuario;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public void finalizarItemPedidoUsuario(int idComanda, int idUsuario) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.finalizarComandaUsuario(idComanda, idUsuario);
+			comandaMapper.finalizarItemPedidoUsuario(idComanda, idUsuario);
+			session.commit();
+		} finally {
+			session.close();
+		}	
+	}
+
+	public void finalizarComanda(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.finalizarComanda(idComanda);
+			session.commit();
+		} finally {
+			session.close();
+		}	
+	}
+
+	public void removerPedidoComandaByUsuario(int idPedido) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.removerPedidoComandaByUsuario(idPedido);
+			session.commit();
+		} finally {
+			session.close();
+		}	
+	}
+
+	public void removerPedidoComanda(int idPedido) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.removerPedidoComanda(idPedido);
+			session.commit();
+		} finally {
+			session.close();
+		}	
 	}
 }
