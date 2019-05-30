@@ -28,6 +28,20 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
+	
+	public Integer[] getIdsUsuarioComanda(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			session.commit();
+			return comandaMapper.getIdsUsuarioComanda(idComanda);
+			
+		} finally {
+			session.close();
+		}
+	}
+	
+	
 	// Lista Comandas por status e Id
 	public List<Comanda> getComandasByStatus(int idGarcom, char status) {
 		SqlSession session = sqlSessionFactory.openSession();

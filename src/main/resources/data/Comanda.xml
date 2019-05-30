@@ -114,8 +114,7 @@
 	</insert>
 
 	<insert id="vincularUsuarioComanda">
-		insert usuario_comanda (cod_usuario, cod_comanda,
-		status) values(#{idUsuario}, #{idComanda}, 'A')
+		insert usuario_comanda (cod_usuario, cod_comanda) values(#{idUsuario}, #{idComanda})
 	</insert>
 
 	<update id="updateComandaDtaAtualizacao">
@@ -240,5 +239,9 @@
 		FROM comanda
 		WHERE status = #{status}
 		AND	id_garcom = #{idGarcom}
+	</select>
+	
+	<select id="getIdsUsuarioComanda" resultType="Integer">
+		SELECT cod_usuario FROM usuario_comanda where cod_comanda = #{idComanda};
 	</select>
 </mapper>

@@ -82,4 +82,7 @@ public interface ComandaMapper {
 	void finalizarItemPedidoUsuario(
 			@Param("idComanda") int idComanda, 
 			@Param("idUsuario") int idUsuario);
+	
+	Integer[] getIdsUsuarioComanda(
+			@Param("idComanda") int idComanda);
 }

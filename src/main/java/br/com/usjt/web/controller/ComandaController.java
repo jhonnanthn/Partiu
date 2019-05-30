@@ -73,6 +73,18 @@ public class ComandaController {
 		}
 	}
 
+	@Path("/getIdsUsuarioComanda")
+	public void getIdsUsuarioComanda(int idComanda) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			Integer[] test = comandaDAO.getIdsUsuarioComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from(test).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e).serialize();
+			e.printStackTrace();
+		}
+	}
+
 	// getComandas por status e id; Utilizado principalmente pelo garçom para pegar
 	// as comandas em aberto
 	// Retorna List<> de comandas
@@ -189,17 +201,15 @@ public class ComandaController {
 	// irá vincular o codigo do usuário ao código da comanda que estiver ativa
 	// retorna se foi possível o vínculo
 	@Path("/vincularUsuarioComanda")
-	public void vincularUsuarioComanda(int idUsuario, String codComanda) {
+	public void vincularUsuarioComanda(int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
-			Comanda comanda = comandaDAO.getComandaByCodigo(codComanda);
-			if (comanda.getStatus() == 'A') {
-				comandaDAO.vincularUsuarioComanda(idUsuario, comanda.getId());
-				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
-			} else {
-				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Comanda está finalizada.").serialize();
-			}
-		} catch (Exception e) {
+			comandaDAO.vincularUsuarioComanda(idUsuario, idComanda);
+			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
+
+		} catch (
+
+		Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
