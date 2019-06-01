@@ -77,8 +77,8 @@ public class ComandaController {
 	public void getIdsUsuarioComanda(int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
-			Integer[] test = comandaDAO.getIdsUsuarioComanda(idComanda);
-			result.use(Results.json()).withoutRoot().from(test).serialize();
+			Integer[] ids = comandaDAO.getIdsUsuarioComanda(idComanda);
+			result.use(Results.json()).withoutRoot().from(ids).serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e).serialize();
 			e.printStackTrace();
@@ -204,8 +204,24 @@ public class ComandaController {
 	public void vincularUsuarioComanda(int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
-			comandaDAO.vincularUsuarioComanda(idUsuario, idComanda);
-			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
+			Integer[] ids = comandaDAO.getIdsUsuarioComanda(idComanda);
+			boolean jaExiste =  false;
+			for (Integer id : ids) {
+				if (id == idUsuario) {
+					jaExiste = true;
+					return;
+				}
+			}
+			
+			
+			if (!jaExiste) {
+				comandaDAO.vincularUsuarioComanda(idUsuario, idComanda);
+				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
+			}else {
+				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario Já Presente na Comanda.").serialize();
+			}
+			
+			
 
 		} catch (
 
