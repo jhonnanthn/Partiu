@@ -147,11 +147,11 @@ public class ComandaDAO {
 		}
 	}
 
-	public void createItemPedidoUsuario(List<Item> itens, int idUsuario, int idComanda) {
+	public void createItemPedidoUsuario(List<Item> itens, double porcentagemPagar, int idUsuario, int idComanda) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
-			comandaMapper.createItemPedidoUsuario(itens, idUsuario, idComanda);
+			comandaMapper.createItemPedidoUsuario(itens, porcentagemPagar, idUsuario, idComanda);
 			session.commit();
 		} finally {
 			session.close();

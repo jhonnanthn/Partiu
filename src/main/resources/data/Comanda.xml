@@ -102,13 +102,15 @@
 		(
 		id_comanda,
 		id_usuario,
-		id_pedido
+		id_pedido,
+		porc_paga
 		) VALUES
 		<foreach item="item" collection="itens" separator=",">
 			(
 			#{idComanda},
 			#{idUsuario},
-			#{item.id}
+			#{item.id},
+			0
 			)
 		</foreach>
 	</insert>
@@ -146,7 +148,7 @@
 		usuario_pedido where id_usuario = #{idUsuario} and id_comanda =
 		#{idComanda})
 	</update>
-
+	
 	<update id="updateStatusPedidoById">
 		UPDATE pedido SET
 		status = #{status}

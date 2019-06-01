@@ -60,6 +60,7 @@ public interface ComandaMapper {
 
 	void createItemPedidoUsuario(
 			@Param("itens") List<Item> itens,
+			@Param("porcentagemPagar") double porcentagemPagar, 
 			@Param("idUsuario") int idUsuario,
 			@Param("idComanda") int idComanda);
 

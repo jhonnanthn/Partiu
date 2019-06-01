@@ -189,7 +189,7 @@ public class ComandaController {
 				item.setId(idItens[i]);
 				itens.add(item);
 			}
-			comandaDAO.createItemPedidoUsuario(itens, idUsuario, idComanda);
+			comandaDAO.createItemPedidoUsuario(itens, 100, idUsuario, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
 			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
 			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
@@ -212,16 +212,12 @@ public class ComandaController {
 					return;
 				}
 			}
-			
-			
 			if (!jaExiste) {
 				comandaDAO.vincularUsuarioComanda(idUsuario, idComanda);
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Vinculado com sucesso.").serialize();
 			}else {
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario Já Presente na Comanda.").serialize();
 			}
-			
-			
 
 		} catch (
 
@@ -236,7 +232,7 @@ public class ComandaController {
 	@Path("/finalizarItemPedidoUsuario")
 	public void finalizarItemPedidoUsuario(int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
-		try {
+		try {			
 			comandaDAO.finalizarItemPedidoUsuario(idComanda, idUsuario);
 			List<Usuario> usuarios = comandaDAO.getUsuarioByComanda(idComanda);
 			boolean finalizarComanda = true;
@@ -276,7 +272,7 @@ public class ComandaController {
 	// Marcar pedido como check
 	// retorna pedido marcado pelo usuário
 	@Path("/updateStatusPedidoById")
-	public void updateStatusPedidoById(int idPedido, String status) {
+	public void updateStatusPedidoById(int idComanda, int idPedido, String status) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
 			Item pedido = comandaDAO.getPedidoById(idPedido);
@@ -285,7 +281,9 @@ public class ComandaController {
 			} else if(pedido.getStatus().equals("P")) {
 				result.use(Results.json()).withoutRoot().from("Pedido já está pago.").serialize();
 			} else {
-				comandaDAO.updateStatusPedidoById(idPedido, "S");
+				comandaDAO.updateStatusPedidoById(idPedido, status);
+				List<Item> itens = comandaDAO.getPedidosComanda(idComanda);
+				result.use(Results.json()).withoutRoot().from(itens).serialize();
 			}
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
