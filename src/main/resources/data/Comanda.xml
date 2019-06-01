@@ -147,6 +147,12 @@
 		#{idComanda})
 	</update>
 
+	<update id="updateStatusPedidoById">
+		UPDATE pedido SET
+		status = #{status}
+		WHERE id = #{idPedido}
+	</update>
+	
 	<update id="finalizarComandaUsuario">
 		UPDATE usuario_comanda SET
 		status = 'I'
@@ -239,6 +245,24 @@
 		FROM comanda
 		WHERE status = #{status}
 		AND	id_garcom = #{idGarcom}
+	</select>
+	
+	<select id="getPedidoById" resultType="br.com.usjt.web.model.Item">
+	    select
+			p.id,
+            p.id_item,
+            date_format(p.data, '%d/%m/%Y %H:%i') as data,
+            p.porc_desconto,
+            p.status,
+            p.observacao,
+            i.categoria,
+            i.nome,
+            i.tipo,
+            i.valor
+        from pedido p
+		 inner join item i on p.id_item = i.id
+		where
+			p.id = #{idPedido}
 	</select>
 	
 	<select id="getIdsUsuarioComanda" resultType="Integer">

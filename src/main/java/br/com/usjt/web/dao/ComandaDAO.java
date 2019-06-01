@@ -217,4 +217,29 @@ public class ComandaDAO {
 			session.close();
 		}	
 	}
+
+	public void updateStatusPedidoById(int idPedido, String status) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.updateStatusPedidoById(idPedido, status);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	public Item getPedidoById(int idPedido) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			Item item = comandaMapper.getPedidoById(idPedido);
+			return item;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }

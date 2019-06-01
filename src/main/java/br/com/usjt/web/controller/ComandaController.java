@@ -272,6 +272,25 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
+	
+	// Marcar pedido como check
+	// retorna pedido marcado pelo usuário
+	@Path("/updateStatusPedidoById")
+	public void updateStatusPedidoById(int idPedido, String status) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			Item pedido = comandaDAO.getPedidoById(idPedido);
+			if(pedido.getStatus().equals("S") && status.equals("S")) {
+				result.use(Results.json()).withoutRoot().from("Pedido já selecionado.").serialize();
+			} else if(pedido.getStatus().equals("P")) {
+				result.use(Results.json()).withoutRoot().from("Pedido já está pago.").serialize();
+			} else {
+				comandaDAO.updateStatusPedidoById(idPedido, "S");
+			}
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
 
 //	@Path("/testeObjetos")
 //	public void vincularUsuarioComanda() {

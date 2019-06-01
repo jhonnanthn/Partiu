@@ -85,4 +85,11 @@ public interface ComandaMapper {
 	
 	Integer[] getIdsUsuarioComanda(
 			@Param("idComanda") int idComanda);
+
+	void updateStatusPedidoById(
+			@Param("idPedido") int idPedido, 
+			@Param("status") String status);
+
+	Item getPedidoById(
+			@Param("idPedido") int idPedido);
 }
