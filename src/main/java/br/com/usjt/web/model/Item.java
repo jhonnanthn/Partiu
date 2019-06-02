@@ -8,7 +8,7 @@ public class Item {
 	private String nome;
 	private String tipo;
 	private double valor;
-	private double porcPaga;
+	
 	private String status;
 	private String observacao;
 
@@ -23,7 +23,18 @@ public class Item {
 	private int idUsuario;
 	private String nomeUsuario;
 	private String emailUsuario;
+	private double porcPaga;
+	private String statusPedidoUsuario;
 	
+	
+	public String getStatusPedidoUsuario() {
+		return statusPedidoUsuario;
+	}
+
+	public void setStatusPedidoUsuario(String statusPedidoUsuario) {
+		this.statusPedidoUsuario = statusPedidoUsuario;
+	}
+
 	public double getPorcPaga() {
 		return porcPaga;
 	}

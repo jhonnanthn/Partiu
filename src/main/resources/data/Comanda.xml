@@ -30,7 +30,8 @@
 		p.porc_desconto,
 		p.id_comanda,
 		p.data,
-		up.status as statusPedido,
+		p.status as statusPedido,
+		up.status as statusPedidoUsuario,
 		up.id_usuario as idUsuario,
         up.porc_paga as porcPaga,
 		i.id,
@@ -40,7 +41,6 @@
 		i.tipo,
 		i.valor,
 		i.status,
-		c.id as idUsuario,
 		c.nome as nomeUsuario,
 		c.email as emailUsuario
 		from pedido p

@@ -19,7 +19,7 @@ public class RecomendacaoController {
 	
 	// Controller para geração de recomendações. Sempre gera uma List<Restaurante>
 	// Todos os paths comecam com /recomendacao
-	
+	//TODO inserir novamente imagens NOS XMLs
 	@Path("/getRecomendacaoDiaSemana")
 	public void getRecomendacaoDiaSemana() {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
