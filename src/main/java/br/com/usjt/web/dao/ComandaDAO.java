@@ -196,11 +196,11 @@ public class ComandaDAO {
 		}	
 	}
 
-	public void removerPedidoComandaByUsuario(int idPedido) {
+	public void removerPedidoComandaByUsuario(int idUsuario, int idPedido) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
-			comandaMapper.removerPedidoComandaByUsuario(idPedido);
+			comandaMapper.removerPedidoComandaByUsuario(idUsuario, idPedido);
 			session.commit();
 		} finally {
 			session.close();
@@ -238,6 +238,31 @@ public class ComandaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Item> getPedidosByUsuario(int idComanda, int idUsuario) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Item> item = comandaMapper.getPedidosByUsuario(idComanda, idUsuario);
+			return item;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public void updatePedidoUsuarioByIdPedido(int idComanda, int idPedido, int idUsuario, double porcPaga) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.updatePedidoUsuarioByIdPedido(idComanda, idPedido, idUsuario, porcPaga);
+			session.commit();
 		} finally {
 			session.close();
 		}

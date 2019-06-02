@@ -30,8 +30,9 @@
 		p.porc_desconto,
 		p.id_comanda,
 		p.data,
-		p.status as statusPedido,
+		up.status as statusPedido,
 		up.id_usuario as idUsuario,
+        up.porc_paga as porcPaga,
 		i.id,
 		i.cnpj_restaurante as cnpjRestaurante,
 		i.categoria,
@@ -103,14 +104,16 @@
 		id_comanda,
 		id_usuario,
 		id_pedido,
-		porc_paga
+		porc_paga,
+		status
 		) VALUES
 		<foreach item="item" collection="itens" separator=",">
 			(
 			#{idComanda},
 			#{idUsuario},
 			#{item.id},
-			0
+			#{porcAPagar},
+			'N'
 			)
 		</foreach>
 	</insert>
@@ -143,10 +146,16 @@
 
 	<update id="finalizarItemPedidoUsuario">
 		UPDATE pedido SET
-		status = 'P'
-		WHERE id_comanda = #{idComanda} and id in (select id_pedido from
-		usuario_pedido where id_usuario = #{idUsuario} and id_comanda =
-		#{idComanda})
+			status = 'P'
+			WHERE id_comanda = #{idComanda} and id in (select id_pedido from
+				usuario_pedido where id_usuario = #{idUsuario} and id_comanda =
+				#{idComanda} and porc_paga = 100)
+	</update>
+	
+	<update id="updatePedidoUsuarioByIdPedido">
+		UPDATE usuario_pedido SET
+		porc_paga = #{porcPaga}		
+		WHERE id_comanda = #{idComanda} and id_pedido = #{idPedido} and status != 'P'
 	</update>
 	
 	<update id="updateStatusPedidoById">
@@ -156,14 +165,14 @@
 	</update>
 	
 	<update id="finalizarComandaUsuario">
-		UPDATE usuario_comanda SET
-		status = 'I'
+		UPDATE usuario_pedido SET
+		status = 'P'
 		WHERE
-		cod_comanda = #{idComanda} and cod_usuario = #{idUsuario}
+		id_comanda = #{idComanda} and id_usuario = #{idUsuario}
 	</update>
 
 	<delete id="removerPedidoComandaByUsuario">
-		delete from usuario_pedido where id_pedido = #{idPedido}
+		delete from usuario_pedido where id_pedido = #{idPedido} and id_usuario = #{idUsuario}
 	</delete>
 
 	<delete id="removerPedidoComanda">
@@ -174,11 +183,10 @@
 		SELECT
 		cod_usuario as id,
 		cod_comanda as id_comanda,
-		status
+		(select count(1) from pedido where status != 'P' and id_comanda = #{idComanda}) as status
 		FROM usuario_comanda
 		WHERE cod_comanda = #{idComanda}
 	</select>
-
 
 	<select id="getComandas" resultType="br.com.usjt.web.model.Comanda">
 		SELECT

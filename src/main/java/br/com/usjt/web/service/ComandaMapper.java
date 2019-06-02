@@ -60,7 +60,7 @@ public interface ComandaMapper {
 
 	void createItemPedidoUsuario(
 			@Param("itens") List<Item> itens,
-			@Param("porcentagemPagar") double porcentagemPagar, 
+			@Param("porcAPagar") double porcAPagar, 
 			@Param("idUsuario") int idUsuario,
 			@Param("idComanda") int idComanda);
 
@@ -75,6 +75,7 @@ public interface ComandaMapper {
 			@Param("idComanda") int idComanda);
 
 	void removerPedidoComandaByUsuario(
+			@Param("idUsuario") int idUsuario,
 			@Param("idPedido") int idPedido);
 
 	void removerPedidoComanda(
@@ -93,4 +94,14 @@ public interface ComandaMapper {
 
 	Item getPedidoById(
 			@Param("idPedido") int idPedido);
+
+	List<Item> getPedidosByUsuario(
+			@Param("idComanda") int idComanda, 
+			@Param("idUsuario") int idUsuario);
+
+	void updatePedidoUsuarioByIdPedido(
+			@Param("idComanda") int idComanda, 
+			@Param("idPedido") int idPedido, 
+			@Param("idUsuario") int idUsuario, 
+			@Param("porcPaga") double porcPaga);
 }

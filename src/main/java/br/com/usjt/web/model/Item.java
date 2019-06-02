@@ -8,6 +8,7 @@ public class Item {
 	private String nome;
 	private String tipo;
 	private double valor;
+	private double porcPaga;
 	private String status;
 	private String observacao;
 
@@ -23,6 +24,14 @@ public class Item {
 	private String nomeUsuario;
 	private String emailUsuario;
 	
+	public double getPorcPaga() {
+		return porcPaga;
+	}
+
+	public void setPorcPaga(double porcPaga) {
+		this.porcPaga = porcPaga;
+	}
+
 	public String getObservacao() {
 		return observacao;
 	}
