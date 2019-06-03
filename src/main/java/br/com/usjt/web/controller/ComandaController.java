@@ -199,6 +199,8 @@ public class ComandaController {
 				Item item = new Item();
 				item.setId(idPedido[i]);
 				itens.add(item);
+				
+				comandaDAO.updateStatusPedidoById(idPedido[i], "S");
 			}
 			comandaDAO.createItemPedidoUsuario(itens, 100, idUsuario, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
@@ -211,24 +213,36 @@ public class ComandaController {
 	}
 	
 	// remover um pedido da comanda do usuário
-		// retorna a nova lista de pedidos
-		@Path("/deselecionarPedidoUsuario")
-		public void deselecionarPedidoUsuario(int idPedido, int idComanda, int idUsuario) {
-			ComandaDAO comandaDAO = new ComandaDAO();
-			try {
-				comandaDAO.removerPedidoComandaByUsuario(idUsuario, idPedido);
-				List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
-				comandaDAO.updateComandaDtaAtualizacao(idComanda);
-				
-				int pedido[] = new int[1];
-				pedido[0] = idPedido;
-				
-				recalcularValorAPagar(idComanda, 0, pedido);
-				result.use(Results.json()).withoutRoot().from(pedidos).serialize();
-			} catch (Exception e) {
-				result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+	// retorna a nova lista de pedidos
+	@Path("/deselecionarPedidoUsuario")
+	public void deselecionarPedidoUsuario(int idPedido, int idComanda, int idUsuario) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			comandaDAO.removerPedidoComandaByUsuario(idUsuario, idPedido);
+			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
+			comandaDAO.updateComandaDtaAtualizacao(idComanda);
+			
+			boolean pedidoSelecionado = false;
+
+			for(Item pedido: pedidos) {
+				if(pedido.getIdPedido() == idPedido && pedido.getIdUsuario() != 0 && pedido.getIdUsuario() != idUsuario && !pedido.getStatusPedidoUsuario().equals("P")) {
+					pedidoSelecionado = true;
+				}
 			}
+			
+			if(!pedidoSelecionado) {
+				comandaDAO.updateStatusPedidoById(idPedido, "N");
+			}
+			
+			int pedido[] = new int[1];
+			pedido[0] = idPedido;
+			
+			recalcularValorAPagar(idComanda, 0, pedido);
+			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
+	}
 	
 	// irá vincular o codigo do usuário ao código da comanda que estiver ativa
 	// retorna se foi possível o vínculo
@@ -348,7 +362,7 @@ public class ComandaController {
 				for(Item item: itens) {
 					if(item.getIdPedido() == idPedido[i] && item.getIdUsuario() != 0) {
 						itemPedido.add(item);
-						if(item.getStatusPedido().equals("P")) {
+						if(item.getStatusPedidoUsuario().equals("P")) {
 							porcPaga += item.getPorcPaga();
 							contPedidosPago += 1;
 						}
@@ -357,7 +371,7 @@ public class ComandaController {
 				
 				porcAPagar = (100 - porcPaga) / (itemPedido.size() - contPedidosPago);
 				System.out.println(porcAPagar);
-				comandaDAO.updatePedidoUsuarioByIdPedido(idComanda, idPedido[i], idUsuario, porcAPagar);
+				if(idUsuario != 0)	comandaDAO.updatePedidoUsuarioByIdPedido(idComanda, idPedido[i], idUsuario, porcAPagar);
 			}
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
