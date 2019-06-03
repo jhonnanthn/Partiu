@@ -152,6 +152,17 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
+	
+	@Path("/getPedidoUsuarioBydId")
+	public void getPedidoUsuarioBydId(int idPedido) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			List<Item> pedido = comandaDAO.getPedidoUsuarioBydId(idPedido);
+			result.use(Results.json()).withoutRoot().from(pedido).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
 
 	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de
 	// itens à comanda
@@ -179,26 +190,46 @@ public class ComandaController {
 	// cria um Pedido referente aos itens selecionados pelo garcom, na adição de
 	// itens à comanda
 	// retorna a nova lista de pedidos
-	@Path("/createItemPedidoUsuario")
-	public void createItemPedidoUsuario(int[] idItens, int idUsuario, int idComanda) {
+	@Path("/selecionarPedidoUsuario")
+	public void selecionarPedidoUsuario(int[] idPedido, int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		List<Item> itens = new ArrayList<>();
 		try {
-			for (int i = 0; i < idItens.length; i++) {
+			for (int i = 0; i < idPedido.length; i++) {
 				Item item = new Item();
-				item.setId(idItens[i]);
+				item.setId(idPedido[i]);
 				itens.add(item);
 			}
 			comandaDAO.createItemPedidoUsuario(itens, 100, idUsuario, idComanda);
 			comandaDAO.updateComandaDtaAtualizacao(idComanda);
+			recalcularValorAPagar(idComanda, idUsuario, idPedido);
 			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
-			recalcularValorAPagar(idComanda, idUsuario, idItens);
 			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
-
+	
+	// remover um pedido da comanda do usuário
+		// retorna a nova lista de pedidos
+		@Path("/deselecionarPedidoUsuario")
+		public void deselecionarPedidoUsuario(int idPedido, int idComanda, int idUsuario) {
+			ComandaDAO comandaDAO = new ComandaDAO();
+			try {
+				comandaDAO.removerPedidoComandaByUsuario(idUsuario, idPedido);
+				List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
+				comandaDAO.updateComandaDtaAtualizacao(idComanda);
+				
+				int pedido[] = new int[1];
+				pedido[0] = idPedido;
+				
+				recalcularValorAPagar(idComanda, 0, pedido);
+				result.use(Results.json()).withoutRoot().from(pedidos).serialize();
+			} catch (Exception e) {
+				result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+			}
+		}
+	
 	// irá vincular o codigo do usuário ao código da comanda que estiver ativa
 	// retorna se foi possível o vínculo
 	@Path("/vincularUsuarioComanda")
@@ -252,25 +283,7 @@ public class ComandaController {
 		}
 	}
 
-	// remover um pedido da comanda do usuário
-	// retorna a nova lista de pedidos
-	@Path("/removerPedidoComandaByUsuario")
-	public void removerPedidoComanda(int idPedido, int idComanda, int idUsuario) {
-		ComandaDAO comandaDAO = new ComandaDAO();
-		try {
-			comandaDAO.removerPedidoComandaByUsuario(idUsuario, idPedido);
-			List<Item> pedidos = comandaDAO.getPedidosComanda(idComanda);
-			comandaDAO.updateComandaDtaAtualizacao(idComanda);
-			
-			int pedido[] = new int[1];
-			pedido[0] = idPedido;
-			recalcularValorAPagar(idComanda, 0, pedido);
-
-			result.use(Results.json()).withoutRoot().from(pedidos).serialize();
-		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
-		}
-	}
+	
 	
 	// remover um pedido da comanda
 	// retorna a nova lista de pedidos

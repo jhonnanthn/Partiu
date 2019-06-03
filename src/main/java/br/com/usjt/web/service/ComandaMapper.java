@@ -94,6 +94,9 @@ public interface ComandaMapper {
 
 	Item getPedidoById(
 			@Param("idPedido") int idPedido);
+	
+	List<Item> getPedidoUsuarioBydId(
+			@Param("idPedido") int idPedido);
 
 	List<Item> getPedidosByUsuario(
 			@Param("idComanda") int idComanda, 

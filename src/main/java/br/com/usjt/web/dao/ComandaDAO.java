@@ -229,6 +229,20 @@ public class ComandaDAO {
 		}
 	}
 
+	public List<Item> getPedidoUsuarioBydId(int idPedido) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Item> pedido = comandaMapper.getPedidoUsuarioBydId(idPedido);
+			return pedido;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+	
 	public Item getPedidoById(int idPedido) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
