@@ -26,7 +26,7 @@
 	</resultMap>
 
 	<select id="getRecomendacaoDiaSemana" resultMap="restaurante">
-		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 		FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
@@ -45,7 +45,7 @@
 	<select id="getRecomendacaoMaisVisitados" resultMap="restaurante">
 		select x.* from (
 			SELECT 
-				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, count(1) as line
 			FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
@@ -54,7 +54,7 @@
 			INNER JOIN comanda c ON c.id_garcom = u.id
 			LEFT JOIN avaliacao a ON a.id_comanda = c.id
 			group by
-				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep) x
 		order by line desc
    		limit 0,8
@@ -62,7 +62,7 @@
 	
 	<select id="getRecomendacaoVisitadoRecentemente" resultMap="restaurante">
 		SELECT 
-			distinct r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+			distinct r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 			e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 		FROM usuario u
 		INNER JOIN usuario_comanda com_user ON com_user.cod_usuario = u.id
@@ -77,7 +77,7 @@
 	</select>
 	
 	<select id="getRecomendacaoEspecialidadeUsuario" resultMap="restaurante">
-		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 		   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
 			FROM restaurante r
 				INNER JOIN endereco e ON r.id_endereco = e.id
@@ -98,11 +98,11 @@
 	
 	<select id="getRecomendacaoRestauranteAvaliado" resultMap="restaurante">
 		select distinct 
-			x.cnpj,	x.qtd_mesas, x.codigo_cardapio, x.razao_social, x.nom_fantasia, x.status,x.descricao, x.id_endereco,
+			x.cnpj,	x.qtd_mesas, x.codigo_cardapio, x.razao_social, x.logotipo, x.nom_fantasia, x.status,x.descricao, x.id_endereco,
 					x.id, x.logradouro, x.numero, x.complemento, x.bairro, x.cidade, x.uf, x.cep, x.avaliacao
 			from (
 						select 
-							r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+							r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 								e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, 
 								(select avg(av_est.av_estabelecimento)
 									from avaliacao av_est where av_est.id_comanda in 
@@ -118,7 +118,7 @@
 	        INNER JOIN funcionario_restaurante fr ON fr.id_funcionario = c.id_garcom
 	        INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
 			INNER JOIN endereco e ON r.id_endereco = e.id
-	        group by r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
+	        group by r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento, av.av_estabelecimento
 			order by avaliacao desc) x
 		limit 8
