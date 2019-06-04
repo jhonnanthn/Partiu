@@ -107,4 +107,5 @@ public interface ComandaMapper {
 			@Param("idPedido") int idPedido, 
 			@Param("idUsuario") int idUsuario, 
 			@Param("porcPaga") double porcPaga);
+	
 }
