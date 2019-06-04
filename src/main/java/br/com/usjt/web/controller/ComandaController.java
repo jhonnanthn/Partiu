@@ -371,7 +371,9 @@ public class ComandaController {
 				
 				porcAPagar = (100 - porcPaga) / (itemPedido.size() - contPedidosPago);
 				System.out.println(porcAPagar);
-				if(idUsuario != 0)	comandaDAO.updatePedidoUsuarioByIdPedido(idComanda, idPedido[i], idUsuario, porcAPagar);
+				comandaDAO.updatePedidoUsuarioByIdPedido(idComanda, idPedido[i], idUsuario, porcAPagar);
+//				if(idUsuario != 0)	comandaDAO.updatePedidoUsuarioByIdPedido(idComanda, idPedido[i], idUsuario, porcAPagar);
+
 			}
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
