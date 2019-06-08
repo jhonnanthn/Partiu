@@ -139,6 +139,24 @@ public class ComandaController {
 		}
 	}
 
+	// get Comanda pelo codigo AAA00; utilizado pelo cliente (inserir codigo
+	// comanda)
+	// retorna Comanda
+	@Path("/entrarComanda")
+	public void entrarComanda(String codigo, int idUsuario) {
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			int qntItemAPagar = comandaDAO.entrarComanda(codigo, idUsuario);
+			if(qntItemAPagar == 0) {
+				result.use(Results.json()).withoutRoot().from("NOTIFICAÇÃO: Comanda paga").serialize();
+			} else {
+				result.use(Results.json()).withoutRoot().from("NOTIFICAÇÃO: Usuário não pagou a comanda").serialize();
+			}
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
+	
 	// get Itens pedidos pelos clientes; Utilizado pelo Cliente para visualizar os
 	// itens atuais da comanda
 	// retorna List<> de Item

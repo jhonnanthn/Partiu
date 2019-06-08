@@ -53,6 +53,17 @@
 		p.id_comanda = #{idComanda}
 	</select>
 	
+	<select id="entrarComanda" resultType="Integer">
+		select
+			count(1)
+		from usuario_pedido up
+		inner join comanda c on c.id = up.id_comanda
+		where
+			c.codigo_comanda = #{codigo}
+		    and up.id_usuario = #{idUsuario}
+    			and up.status != 'P'
+	</select>
+	
 	<select id="getPedidosByUsuario" resultType="br.com.usjt.web.model.Item">
 		SELECT p.id as
 		idPedido,

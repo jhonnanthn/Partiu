@@ -281,4 +281,18 @@ public class ComandaDAO {
 			session.close();
 		}
 	}
+
+	public int entrarComanda(String codigo, int idUsuario) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			int comanda = comandaMapper.entrarComanda(codigo, idUsuario);
+			return comanda;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return -1;
+	}
 }
