@@ -76,5 +76,18 @@ public class RestauranteDAO {
 			session.close();
 		}
 	}
+
+	public List<Restaurante> getHorarioRestauranteByCnpj(long cnpj) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			List<Restaurante> restaurante = restauranteMapper.getHorarioRestauranteByCnpj(cnpj);
+			return restaurante;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 	
 }

@@ -143,5 +143,15 @@
 		WHERE cnpj_restaurante = #{cnpj}
 		ORDER BY categoria
 	</select>
-</mapper>
 
+	<select id="getHorarioRestauranteByCnpj" resultType="br.com.usjt.web.model.Restaurante">
+		select 
+			cnpj_restaurante as cnpj,
+			dia_semana as dia,
+			hra_entrada as hrEntrada,
+			hra_fim as hrFim
+		from horario_restaurante
+		where
+			cnpj_restaurante = #{cnpj}
+	</select>	
+</mapper>

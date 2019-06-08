@@ -67,6 +67,18 @@ public class RestaurantController {
 		}
 	}
 	
+	//get resturante de acordo com o cnpj
+	@Path("/getHorarioRestauranteByCnpj")
+	public void getHorarioRestauranteByCnpj(long cnpj) {
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			List<Restaurante> restaurante = restauranteDAO.getHorarioRestauranteByCnpj(cnpj);
+			result.use(Results.json()).withoutRoot().from(restaurante).include("endereco").serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
 	// get Itens de um Restaurante; Utilizado pelo garcom para ver itens disponíveis a serem adcionados
 	// retorna List<> de Itens
 	@Path("/getItensRestaurante")

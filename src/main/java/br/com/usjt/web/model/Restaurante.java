@@ -4,7 +4,7 @@ public class Restaurante {
 	
 	private long cnpj;
 	private double avaliacao;
-//	private int dia;
+	private int dia;
 	private int qtdMesas;
 	private String codigoComanda;
 	private String razaoSocial;
@@ -17,6 +17,12 @@ public class Restaurante {
 	private String especialidade;
 	private Endereco endereco;
 	
+	public int getDia() {
+		return dia;
+	}
+	public void setDia(int dia) {
+		this.dia = dia;
+	}
 	public double getAvaliacao() {
 		return avaliacao;
 	}
