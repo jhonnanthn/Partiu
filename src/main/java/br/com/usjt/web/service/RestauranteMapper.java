@@ -25,5 +25,7 @@ public interface RestauranteMapper {
 	//Lista itens do restaurante
 	List<Item> getItensRestaurante(
 			 @Param("cnpj") long cnpj);
-
+	
+	Restaurante getRestauranteByCnpj(
+			 @Param("cnpj") long cnpj);
 }

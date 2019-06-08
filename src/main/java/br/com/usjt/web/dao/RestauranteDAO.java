@@ -65,5 +65,16 @@ public class RestauranteDAO {
 			session.close();
 		}
 	}
+
+	public Restaurante getRestauranteByCnpj(long cnpj) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			Restaurante restaurante = restauranteMapper.getRestauranteByCnpj(cnpj);
+			return restaurante;
+		} finally {
+			session.close();
+		}
+	}
 	
 }
