@@ -6,6 +6,7 @@
 		<typeAlias alias="Restaurante" type="br.com.usjt.web.model.Restaurante" />
 		<typeAlias alias="Endereco" type="br.com.usjt.web.model.Endereco" />
 		<typeAlias alias="Comanda" type="br.com.usjt.web.model.Comanda" />
+		<typeAlias alias="Avaliacao" type="br.com.usjt.web.model.Avaliacao" />
 	</typeAliases>
 	<environments default="development">
 		<environment id="development">
@@ -22,5 +23,6 @@
 		<mapper resource="data/Endereco.xml" />
 		<mapper resource="data/Comanda.xml" />
 		<mapper resource="data/Recomendacao.xml" />
+		<mapper resource="data/Avaliacao.xml" />
 	</mappers>
 </configuration>

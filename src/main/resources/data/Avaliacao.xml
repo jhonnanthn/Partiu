@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//PT-BR"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="br.com.usjt.web.service.AvaliacaoMapper">
+	<select id="getAvaliacaoByCnpj" resultType="br.com.usjt.web.model.Avaliacao">
+		select
+			a.id,
+		    a.id_cliente as idCliente,
+		    a.id_comanda as idComanda,
+		    a.av_estabelecimento as avEstabelecimento,
+		    a.av_funcionario as avFuncionario,
+		    a.desc_estabelecimento as descEstabelecimento,
+		    a.desc_funcionario as descFuncionario,
+		    u.nome as cliente
+		from avaliacao a
+			inner join usuario u on u.id = a.id_cliente
+		where
+			id_comanda in
+				(
+					SELECT 
+						distinct up.id_comanda
+					from pedido p
+					left join usuario_pedido up on up.id_pedido = p.id and up.id_comanda = p.id_comanda
+					left join usuario
+					c ON c.id = up.id_usuario
+					left join item i ON i.id = p.id_item
+					WHERE
+					i.cnpj_restaurante = #{cnpj}
+				)
+	</select>
+	
+	<insert id="createAvaliacao">
+          insert into avaliacao (id_cliente, id_comanda, av_estabelecimento, av_funcionario, desc_estabelecimento, desc_funcionario)
+        		values (#{idCliente}, #{idComanda}, #{avEstabelecimento}, #{avFuncionario}, #{descEstabelecimento}, #{descFuncionario})
+	</insert>
+</mapper>
