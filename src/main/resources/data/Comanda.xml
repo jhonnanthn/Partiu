@@ -40,6 +40,7 @@
 		i.categoria,
 		i.nome,
 		i.tipo,
+		i.detalhe,
 		i.valor,
 		i.status,
 		c.nome as nomeUsuario,
@@ -83,6 +84,7 @@
 		i.tipo,
 		i.valor,
 		i.status,
+		i.detalhe,
 		c.nome as nomeUsuario,
 		c.email as emailUsuario
 		from pedido p
@@ -112,6 +114,7 @@
 		i.tipo,
 		i.valor,
 		i.status,
+		i.detalhe,
 		c.nome as nomeUsuario,
 		c.email as emailUsuario
 		from pedido p
@@ -340,7 +343,8 @@
             i.categoria,
             i.nome,
             i.tipo,
-            i.valor
+            i.valor,
+            i.detalhe
         from pedido p
 		 inner join item i on p.id_item = i.id
 		where

@@ -9,6 +9,7 @@ public class Item {
 	private String tipo;
 	private double valor;
 	
+	private String detalhe;
 	private String status;
 	private String observacao;
 
@@ -27,6 +28,14 @@ public class Item {
 	private String statusPedidoUsuario;
 	
 	
+	public String getDetalhe() {
+		return detalhe;
+	}
+
+	public void setDetalhe(String detalhe) {
+		this.detalhe = detalhe;
+	}
+
 	public String getStatusPedidoUsuario() {
 		return statusPedidoUsuario;
 	}
