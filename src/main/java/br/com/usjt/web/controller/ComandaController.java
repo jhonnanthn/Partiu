@@ -296,22 +296,27 @@ public class ComandaController {
 	@Path("/finalizarItemPedidoUsuario")
 	public void finalizarItemPedidoUsuario(int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
-		try {			
-			comandaDAO.finalizarItemPedidoUsuario(idComanda, idUsuario);
-			List<Usuario> usuarios = comandaDAO.getUsuarioByComanda(idComanda);
-			boolean finalizarComanda = true;
-			for (Usuario usuario : usuarios) {
-				if (Integer.parseInt(usuario.getStatus()) > 0) {
-					finalizarComanda = false;
+		int verificaStatus = comandaDAO.verificaStatusPedido(idComanda);
+		if(verificaStatus == 0) {
+			try {			
+				comandaDAO.finalizarItemPedidoUsuario(idComanda, idUsuario);
+				List<Usuario> usuarios = comandaDAO.getUsuarioByComanda(idComanda);
+				boolean finalizarComanda = true;
+				for (Usuario usuario : usuarios) {
+					if (Integer.parseInt(usuario.getStatus()) > 0) {
+						finalizarComanda = false;
+					}
 				}
+	
+				if (finalizarComanda) {
+					comandaDAO.finalizarComanda(idComanda);
+				}
+				result.use(Results.json()).withoutRoot().from("Comanda do usuário finalizada com sucesso.").serialize();
+			} catch (Exception e) {
+				result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 			}
-
-			if (finalizarComanda) {
-				comandaDAO.finalizarComanda(idComanda);
-			}
-			result.use(Results.json()).withoutRoot().from("Comanda do usuário finalizada com sucesso.").serialize();
-		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		} else {
+			result.use(Results.json()).withoutRoot().from("ERRO: Comanda possui pedido sem usuário.").serialize();
 		}
 	}
 

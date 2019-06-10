@@ -111,5 +111,8 @@ public interface ComandaMapper {
 	int entrarComanda(
 			@Param("codigo") String codigo, 
 			@Param("idUsuario") int idUsuario);
+
+	int verificaStatusPedido(
+			@Param("idComanda") int idComanda);
 	
 }

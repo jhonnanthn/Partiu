@@ -295,4 +295,18 @@ public class ComandaDAO {
 		}
 		return -1;
 	}
+
+	public int verificaStatusPedido(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			int pedido = comandaMapper.verificaStatusPedido(idComanda);
+			return pedido;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return -1;
+	}
 }

@@ -261,6 +261,12 @@
 		FROM usuario_comanda
 		WHERE cod_comanda = #{idComanda}
 	</select>
+	
+	<select id="verificaStatusPedido" resultType="Integer">
+		select count(1) from pedido p
+            where
+				id_comanda = #{idComanda} and id not in (select id_pedido from usuario_pedido where  id_comanda = #{idComanda})
+	</select>
 
 	<select id="getComandas" resultType="br.com.usjt.web.model.Comanda">
 		SELECT
