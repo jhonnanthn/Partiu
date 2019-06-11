@@ -138,6 +138,7 @@
 			nome,
 			tipo,
 			valor,
+			detalhe,
 			status
 		FROM item
 		WHERE cnpj_restaurante = #{cnpj}
