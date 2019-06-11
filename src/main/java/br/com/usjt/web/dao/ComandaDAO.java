@@ -195,6 +195,21 @@ public class ComandaDAO {
 			session.close();
 		}	
 	}
+	
+	public void finalizarPedidosComanda(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			comandaMapper.finalizarPedidosUsuario(idComanda);
+			comandaMapper.finalizarPedidos(idComanda);
+			comandaMapper.finalizarComanda(idComanda);
+			comandaMapper.updateComandaDtaAtualizacao(idComanda);
+			session.commit();
+		} finally {
+			session.close();
+		}	
+	}
+
 
 	public void removerPedidoComandaByUsuario(int idUsuario, int idPedido) {
 		SqlSession session = sqlSessionFactory.openSession();
@@ -262,6 +277,20 @@ public class ComandaDAO {
 		try {
 			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
 			List<Item> item = comandaMapper.getPedidosByUsuario(idComanda, idUsuario);
+			return item;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public List<Item> getPedidosEmAbertoByComanda(int idComanda) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Item> item = comandaMapper.getPedidosEmAbertoByComanda(idComanda);
 			return item;
 		} catch (Exception e) {
 			e.printStackTrace();

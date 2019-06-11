@@ -73,6 +73,12 @@ public interface ComandaMapper {
 
 	void finalizarComanda(
 			@Param("idComanda") int idComanda);
+	
+	void finalizarPedidosUsuario(
+			@Param("idComanda") int idComanda);
+	
+	void finalizarPedidos(
+			@Param("idComanda") int idComanda);
 
 	void removerPedidoComandaByUsuario(
 			@Param("idUsuario") int idUsuario,
@@ -113,6 +119,9 @@ public interface ComandaMapper {
 			@Param("idUsuario") int idUsuario);
 
 	int verificaStatusPedido(
+			@Param("idComanda") int idComanda);
+	
+	List<Item> getPedidosEmAbertoByComanda(
 			@Param("idComanda") int idComanda);
 	
 }

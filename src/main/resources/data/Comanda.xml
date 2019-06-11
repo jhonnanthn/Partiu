@@ -66,6 +66,38 @@
     			and up.status != 'P'
 	</select>
 	
+	<select id="getPedidosEmAbertoByComanda" resultType="br.com.usjt.web.model.Item">
+	SELECT p.id as
+		idPedido,
+		p.porc_desconto,
+		p.id_comanda,
+		p.data,
+        p.observacao,
+		p.status as statusPedido,
+		up.status as statusPedidoUsuario,
+		up.id_usuario as idUsuario,
+        up.porc_paga as porcPaga,
+		i.id,
+		i.cnpj_restaurante as cnpjRestaurante,
+		i.categoria,
+		i.nome,
+		i.tipo,
+		i.valor,
+		i.status,
+		i.detalhe,
+		c.nome as nomeUsuario,
+		c.email as emailUsuario
+		from pedido p
+		left join usuario_pedido up on
+		up.id_pedido = p.id and up.id_comanda = p.id_comanda
+		left join usuario
+		c ON c.id = up.id_usuario
+		left join item i ON i.id = p.id_item
+		WHERE
+		p.status != 'P' AND p.status != 'C' and p.id_comanda = #{idComanda};
+	
+	</select>
+	
 	<select id="getPedidosByUsuario" resultType="br.com.usjt.web.model.Item">
 		SELECT p.id as
 		idPedido,
@@ -216,6 +248,19 @@
 		UPDATE comanda SET
 		dta_saida = now(), status = 'F'
 		WHERE id = #{idComanda}
+	</update>
+	
+	<update id="finalizarPedidosUsuario">
+		UPDATE usuario_pedido SET status="P"  
+		WHERE status != 'P'
+		AND id_comanda = #{idComanda}
+	</update>
+
+	<update id="finalizarPedidos">
+		UPDATE pedido SET status="P"  
+		WHERE status != 'P' 
+		AND status != 'C' 
+		AND id_comanda = #{idComanda}
 	</update>
 
 	<update id="finalizarItemPedidoUsuario">
