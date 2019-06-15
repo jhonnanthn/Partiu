@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 import br.com.usjt.web.service.RecomendacaoMapper;
 public class RecomendacaoDAO {
@@ -65,6 +66,17 @@ public class RecomendacaoDAO {
 			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
 			List<Restaurante> restaurante = recomendacaoMapper.getRecomendacaoRestauranteAvaliado();
 			return restaurante;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Item> getScoreByEspecialidadeUsuario(int idUsuario) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			List<Item> itens = recomendacaoMapper.getScoreByEspecialidadeUsuario(idUsuario);
+			return itens;
 		} finally {
 			session.close();
 		}

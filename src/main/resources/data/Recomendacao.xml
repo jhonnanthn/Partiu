@@ -96,6 +96,25 @@
 			limit 8
 	</select>
 	
+	<select id="getScoreByEspecialidadeUsuario" resultType="br.com.usjt.web.model.Item">
+		SELECT esp.nome as especialidade, count(esp.nome) as score
+			FROM restaurante r
+				INNER JOIN endereco e ON r.id_endereco = e.id
+				INNER JOIN especialidade_restaurante esp_res ON esp_res.cnpj_restaurante = r.cnpj
+				INNER JOIN especialidade esp ON esp.id = esp_res.id_especialidade
+				WHERE esp.id in
+					(
+						select id_especialidade from especialidade_item esp_it
+							inner join item it on it.id = esp_it.id_especialidade
+							inner join pedido ped on ped.id_item = it.id
+							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and usu_ped.id_comanda = ped.id_comanda
+						  WHERE usu_ped.id_usuario = #{idUsuario}
+							GROUP BY esp_it.id_especialidade
+							ORDER BY COUNT(id_especialidade) DESC
+					)
+				group by esp.nome
+	</select>
+	
 	<select id="getRecomendacaoRestauranteAvaliado" resultMap="restaurante">
 		select distinct 
 			x.cnpj,	x.qtd_mesas, x.codigo_cardapio, x.razao_social, x.logotipo, x.nom_fantasia, x.status,x.descricao, x.id_endereco,

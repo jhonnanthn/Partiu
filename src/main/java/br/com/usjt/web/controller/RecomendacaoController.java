@@ -9,6 +9,7 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.com.usjt.web.dao.RecomendacaoDAO;
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 
 @Resource
@@ -59,6 +60,17 @@ public class RecomendacaoController {
 		try {
 			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoEspecialidadeUsuario(idUsuario);
 			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/getScoreByEspecialidadeUsuario")
+	public void getScoreByEspecialidadeUsuario(int idUsuario) {
+		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
+		try {
+			List<Item> itens = recomendacaoDAO.getScoreByEspecialidadeUsuario(idUsuario);
+			result.use(Results.json()).withoutRoot().from(itens).serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}

@@ -15,6 +15,7 @@ public class Item {
 
 	// Pedido
 	private int idPedido;
+	private String especialidade;
 	private double porc_desconto;
 	private String idComanda;
 	private String data;
@@ -26,8 +27,25 @@ public class Item {
 	private String emailUsuario;
 	private double porcPaga;
 	private String statusPedidoUsuario;
+	private double score;
 	
 	
+	public String getEspecialidade() {
+		return especialidade;
+	}
+
+	public double getScore() {
+		return score;
+	}
+
+	public void setEspecialidade(String especialidade) {
+		this.especialidade = especialidade;
+	}
+
+	public void setScore(double score) {
+		this.score = score;
+	}
+
 	public String getDetalhe() {
 		return detalhe;
 	}

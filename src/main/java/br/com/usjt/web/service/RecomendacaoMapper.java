@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 
 public interface RecomendacaoMapper {
@@ -18,6 +19,9 @@ public interface RecomendacaoMapper {
 			@Param("idUsuario") int idUsuario);
 
 	List<Restaurante> getRecomendacaoEspecialidadeUsuario(
+			@Param("idUsuario") int idUsuario);
+
+	List<Item> getScoreByEspecialidadeUsuario(
 			@Param("idUsuario") int idUsuario);
 
 }
