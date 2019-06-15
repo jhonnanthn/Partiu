@@ -1,5 +1,6 @@
 package br.com.usjt.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -70,7 +71,16 @@ public class RecomendacaoController {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
 			List<Item> itens = recomendacaoDAO.getScoreByEspecialidadeUsuario(idUsuario);
-			result.use(Results.json()).withoutRoot().from(itens).serialize();
+		    HashMap<Item, Double> hmap = new HashMap<Item, Double>();
+		    int qnt = 0;
+		    for(Item item: itens) {
+		    		qnt = qnt + (int) item.getScore();
+		    }
+			for(int i = 0; i < itens.size(); i++) {
+				itens.get(i).setScore((itens.get(i).getScore() / qnt) * 100);
+				hmap.put(itens.get(i), itens.get(i).getScore());
+			}
+			result.use(Results.json()).withoutRoot().from(hmap).serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
