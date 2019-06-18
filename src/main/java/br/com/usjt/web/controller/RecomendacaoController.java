@@ -81,7 +81,8 @@ public class RecomendacaoController {
 	public void restaurantesByScoreCollab(int idUsuario) {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
-			List<Restaurante> restaurantes = recomendacaoDAO.collabFiltering(idUsuario);
+			int idNeighbor = recomendacaoDAO.collabFiltering(idUsuario);
+			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoEspecialidadeUsuario(idNeighbor);
 			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();

@@ -234,7 +234,7 @@ public class RecomendacaoDAO {
 		return sortedMap;
 	}
 
-	public List<Restaurante> collabFiltering(int idUsuario) {
+	public int collabFiltering(int idUsuario) {
 
 		getAllPerfis();
 		SqlSession session = sqlSessionFactory.openSession();
@@ -257,7 +257,7 @@ public class RecomendacaoDAO {
 				Iterator<Entry<String, Double>> it = par1.getValue().entrySet().iterator();
 				while (it.hasNext()) {
 					HashMap.Entry par2 = (Map.Entry) it.next();
-					if (!(perfil.get(par2.getKey()) == null)) {
+					if (perfil.containsKey(par2.getKey())) {
 						try {
 							score += perfil.get(par2.getKey())
 									- diff((Double) par2.getValue(), perfil.get(par2.getKey()));
@@ -265,7 +265,7 @@ public class RecomendacaoDAO {
 							e.printStackTrace();
 						}
 					}
-					it.remove(); // avoids a ConcurrentModificationExceptio
+//					it.remove(); // avoids a ConcurrentModificationExceptio
 				}
 
 				System.out.print(("Vendo id " + par1.getKey()));
@@ -275,34 +275,11 @@ public class RecomendacaoDAO {
 					maiorId = par1.getKey();
 				}
 				// ------------------------
-				it1.remove();
+//				it1.remove();
 			}
 			System.out.println("Maior Score: id=" + maiorId + ", score=" + df.format(maiorScore));
 			// ----------------
-			HashMap<String, List<String>> restaurantesFormatados;
-//		if(perfisSingleton.getRestaurantes() == null) {
-//		System.out.println("Restaurantes Null");
-			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
-			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
-			List<Restaurante> restaurantesNaoFormatados = restauranteMapper.getRestaurantesEspecialidades();
-			restaurantesFormatados = new HashMap<String, List<String>>();
-			for (Restaurante r : restaurantesNaoFormatados) {
-				if (restaurantesFormatados.containsKey(Long.toString(r.getCnpj()))) {
-					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
-				} else {
-					restaurantesFormatados.put(Long.toString(r.getCnpj()), new ArrayList<String>());
-					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
-				}
-			}
-//			perfisSingleton.setRestaurantes(restaurantesFormatados);
-
-//		}else {
-//			restaurantesFormatados = perfisSingleton.getRestaurantes();
-//			System.out.println("Restaurantes Existem");
-//		}
-
-			List<String> listCnpj = restaurantesByScoreContent(perfil, restaurantesFormatados);
-			return recomendacaoMapper.getRestaurantesByCnpjs(listCnpj);
+			return maiorId;
 		} finally {
 			session.close();
 		}
