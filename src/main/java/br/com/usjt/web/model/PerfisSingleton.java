@@ -14,7 +14,6 @@ public final class PerfisSingleton {
 	public PerfisSingleton() {
 		System.out.println("Singleton Perfis Criado");
 		this.perfis = new HashMap<Integer, HashMap<String, Double>>();
-
 	}
 
 	public static synchronized PerfisSingleton getInstance() {
@@ -34,4 +33,5 @@ public final class PerfisSingleton {
 	public HashMap<String, Double> getPerfil(int idUsuario) {
 		return perfis.get(idUsuario);
 	}
+	
 }

@@ -26,4 +26,5 @@ public interface UsuarioMapper {
 	//atualiza usuario (Segundo Semestre)
 	void updateUsuario(
 			@Param("usuario") Usuario usuario);
+	List<Usuario> getIdsClientes();
 }

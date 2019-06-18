@@ -14,8 +14,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.PerfisSingleton;
 import br.com.usjt.web.model.Restaurante;
+import br.com.usjt.web.model.Usuario;
 import br.com.usjt.web.service.RecomendacaoMapper;
 import br.com.usjt.web.service.RestauranteMapper;
+import br.com.usjt.web.service.UsuarioMapper;
 
 public class RecomendacaoDAO {
 	private SqlSessionFactory sqlSessionFactory;
@@ -80,8 +82,26 @@ public class RecomendacaoDAO {
 			session.close();
 		}
 	}
-
-	// TODO enfiar perfis num singleton
+	
+	public void getAllPerfis() {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			System.out.println("Pegando Perfis Todos Usuarios");
+			PerfisSingleton singleton = PerfisSingleton.getInstance();
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			UsuarioMapper usuarioMapper = session.getMapper(UsuarioMapper.class);
+			
+			List<Usuario> usuarios = usuarioMapper.getIdsClientes();
+			for (Usuario u : usuarios) {
+				List<Item> itens = recomendacaoMapper.getScoreByEspecialidadeUsuario(u.getId());
+				HashMap<String, Double> perfil = calculatePerfil(itens);
+				singleton.putPerfil(u.getId(), perfil);
+				System.out.println(" -- Perfil Usuario "+u.getId()+" Feito");
+			}
+		} finally {
+			session.close();
+		}
+	}
 
 	public List<Restaurante> restaurantesByScoreContent(int idUsuario) {
 		SqlSession session = sqlSessionFactory.openSession();
@@ -96,18 +116,7 @@ public class RecomendacaoDAO {
 				System.out.println("Perfil Não Existe");
 
 				List<Item> itens = recomendacaoMapper.getScoreByEspecialidadeUsuario(idUsuario);
-				perfil = new HashMap<String, Double>();
-
-				// tratando para ser (0.0 - 1.0)
-				double total = 0;
-				for (Item i : itens) {
-					total += i.getScore();
-
-				}
-				for (Item i : itens) {
-					i.setScore(i.getScore() / total);
-					perfil.put(i.getEspecialidade(), i.getScore());
-				}
+				perfil = calculatePerfil(itens);
 				perfisSingleton.putPerfil(idUsuario, perfil);
 
 			} else {
@@ -131,6 +140,22 @@ public class RecomendacaoDAO {
 		}
 	}
 
+	// getIdsClientes
+	public static HashMap<String, Double> calculatePerfil(List<Item> itens) {
+		HashMap<String, Double> perfil = new HashMap<String, Double>();
+		// tratando para ser (0.0 - 1.0)
+		double total = 0;
+		for (Item i : itens) {
+			total += i.getScore();
+
+		}
+		for (Item i : itens) {
+			i.setScore(i.getScore() / total);
+			perfil.put(i.getEspecialidade(), i.getScore());
+		}
+		return perfil;
+	}
+
 	private List<String> restaurantesByScoreContent(HashMap<String, Double> perfil,
 			HashMap<String, List<String>> restaurantes) {
 		try {
@@ -143,7 +168,7 @@ public class RecomendacaoDAO {
 					if (perfil.containsKey(especialidade))
 						score += 1 * perfil.get(especialidade);
 				}
-//			System.out.println(pair.getKey() + ": " + score);
+//				System.out.println(pair.getKey() + ": " + score);
 				restauranteScore.put((String) pair.getKey(), score);
 				it.remove();
 			}
@@ -154,7 +179,7 @@ public class RecomendacaoDAO {
 			while (it2.hasNext() && count < 8) {
 				Map.Entry pair = (Map.Entry) it2.next();
 				cnpjs.add((String) pair.getKey());
-				System.out.println(((String) pair.getKey())+" : "+pair.getValue());
+				System.out.println(((String) pair.getKey()) + " : " + pair.getValue());
 				it2.remove();
 				count++;
 			}

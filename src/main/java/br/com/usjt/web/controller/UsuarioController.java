@@ -8,7 +8,9 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import br.com.usjt.web.dao.RecomendacaoDAO;
 import br.com.usjt.web.dao.UsuarioDAO;
+import br.com.usjt.web.model.PerfisSingleton;
 import br.com.usjt.web.model.Usuario;
 
 @Resource
@@ -22,6 +24,16 @@ public class UsuarioController {
 	@Path("/index")
 	public void index() {
 		result.use(Results.json()).withoutRoot().from("Endereco Inválido").serialize();
+	}
+	
+	@Path("/getPerfis")
+	public void getPerfis() {
+		long startTime = System.currentTimeMillis();
+		PerfisSingleton singleton = PerfisSingleton.getInstance();
+		RecomendacaoDAO dao = new RecomendacaoDAO();
+		dao.getAllPerfis();
+		long endTime = System.currentTimeMillis();
+		result.use(Results.json()).withoutRoot().from("Pefis Inicializados em "+(endTime-startTime)+"ms").serialize();
 	}
 
 	
