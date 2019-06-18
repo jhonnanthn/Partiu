@@ -31,4 +31,5 @@ public interface RestauranteMapper {
 	
 	List<Restaurante> getHorarioRestauranteByCnpj(
 			 @Param("cnpj") long cnpj);
+	List<Restaurante> getRestaurantesEspecialidades();
 }

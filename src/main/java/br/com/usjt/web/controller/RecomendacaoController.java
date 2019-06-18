@@ -66,31 +66,34 @@ public class RecomendacaoController {
 		}
 	}
 	
-	@Path("/getScoreByEspecialidadeUsuario")
-	public void getScoreByEspecialidadeUsuario(int idUsuario) {
+	@Path("/restaurantesByScoreContent")
+	public void restaurantesByScoreContent(int idUsuario) {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
-			List<Item> itens = recomendacaoDAO.getScoreByEspecialidadeUsuario(idUsuario);
-		    HashMap<Item, Double> hmap = new HashMap<Item, Double>();
-		    int qnt = 0;
-		    for(Item item: itens) {
-		    		qnt = qnt + (int) item.getScore();
-		    }
-			for(int i = 0; i < itens.size(); i++) {
-				itens.get(i).setScore((itens.get(i).getScore() / qnt) * 100);
-				hmap.put(itens.get(i), itens.get(i).getScore());
-			}
-			result.use(Results.json()).withoutRoot().from(hmap).serialize();
+			List<Restaurante> restaurantes = recomendacaoDAO.restaurantesByScoreContent(idUsuario);
+//		    HashMap<Item, Double> hmap = new HashMap<Item, Double>();
+//		    int qnt = 0;
+//		    for(Item item: itens) {
+//		    		qnt = qnt + (int) item.getScore();
+//		    }
+//			for(int i = 0; i < itens.size(); i++) {
+//				itens.get(i).setScore((itens.get(i).getScore() / qnt) * 100);
+//				hmap.put(itens.get(i), itens.get(i).getScore());
+//			}
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
+	
+	
 	
 	@Path("/getRecomendacaoRestauranteAvaliado")
 	public void getRecomendacaoRestauranteAvaliado() {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
 			List<Restaurante> restaurantes = recomendacaoDAO.getRecomendacaoRestauranteAvaliado();
+			
 			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();

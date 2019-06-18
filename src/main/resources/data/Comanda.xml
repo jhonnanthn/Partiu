@@ -95,7 +95,6 @@
 		left join item i ON i.id = p.id_item
 		WHERE
 		p.status != 'P' AND p.status != 'C' and p.id_comanda = #{idComanda};
-	
 	</select>
 	
 	<select id="getPedidosByUsuario" resultType="br.com.usjt.web.model.Item">

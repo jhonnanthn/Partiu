@@ -12,6 +12,7 @@
 		<result property="status" column="status" />
 		<result property="descricao" column="descricao" />
 		<result property="logo" column="logotipo" />
+		<result property="especialidade" column="especialidade"/>
 		<association property="endereco" javaType="br.com.usjt.web.model.Endereco">
 			<id property="id" column="id" />
 			<result property="logradouro" column="logradouro" />
@@ -155,4 +156,12 @@
 		where
 			cnpj_restaurante = #{cnpj}
 	</select>	
+	
+	<select id="getRestaurantesEspecialidades" resultType="br.com.usjt.web.model.Restaurante">
+	select r.cnpj as cnpj,
+	e.nome as especialidade
+	FROM restaurante r 
+	left join especialidade_restaurante er ON (er.cnpj_restaurante = r.cnpj)
+	inner join especialidade e ON (e.id = er.id_especialidade)
+	</select>
 </mapper>

@@ -17,6 +17,16 @@ public class Restaurante {
 	private String especialidade;
 	private Endereco endereco;
 	
+	private String[] especialidades;
+	
+	
+	
+	public String[] getEspecialidades() {
+		return especialidades;
+	}
+	public void setEspecialidades(String[] especialidades) {
+		this.especialidades = especialidades;
+	}
 	public int getDia() {
 		return dia;
 	}

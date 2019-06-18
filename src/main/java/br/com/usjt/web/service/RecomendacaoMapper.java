@@ -23,5 +23,9 @@ public interface RecomendacaoMapper {
 
 	List<Item> getScoreByEspecialidadeUsuario(
 			@Param("idUsuario") int idUsuario);
+	
+	List<Restaurante> getRestaurantesByCnpjs(
+			@Param("cnpjs") List<String> cnpjs);
+	
 
 }
