@@ -37,6 +37,7 @@
             
 			WHERE  DAYOFWEEK(sysdate()) = DAYOFWEEK(c.dta_entrada)
 			AND r.status = 'A'
+			AND c.dta_entrada between (sysdate()-60) and sysdate()
 			GROUP BY r.cnpj
 				ORDER BY avg(a.av_estabelecimento) DESC
                 LIMIT 8
@@ -53,6 +54,8 @@
 			LEFT JOIN usuario u ON u.id = fr.id_funcionario
 			INNER JOIN comanda c ON c.id_garcom = u.id
 			LEFT JOIN avaliacao a ON a.id_comanda = c.id
+			WHERE
+				c.dta_entrada between (sysdate()-60) and sysdate()
 			group by
 				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep) x
@@ -72,7 +75,8 @@
         INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
 		INNER JOIN endereco e ON r.id_endereco = e.id
            where
-			u.id = #{idUsuario}
+				u.id = #{idUsuario}
+            and c.dta_entrada between (sysdate()-60) and sysdate()
         limit 0,8
 	</select>
 	
@@ -90,6 +94,7 @@
 							inner join pedido ped on ped.id_item = it.id
 							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and usu_ped.id_comanda = ped.id_comanda
 						  WHERE usu_ped.id_usuario = #{idUsuario}
+								and ped.data between sysdate()-60 and sysdate()
 							GROUP BY esp_it.id_especialidade
 							ORDER BY COUNT(id_especialidade) DESC
 					)
@@ -109,6 +114,7 @@
 							inner join pedido ped on ped.id_item = it.id
 							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and usu_ped.id_comanda = ped.id_comanda
 						  WHERE usu_ped.id_usuario = #{idUsuario}
+						  		and ped.data between sysdate()-60 and sysdate()
 							GROUP BY esp_it.id_especialidade
 							ORDER BY COUNT(id_especialidade) DESC
 					)
@@ -137,6 +143,8 @@
 	        INNER JOIN funcionario_restaurante fr ON fr.id_funcionario = c.id_garcom
 	        INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
 			INNER JOIN endereco e ON r.id_endereco = e.id
+            where
+				c.dta_entrada between sysdate()-60 and sysdate()
 	        group by r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento, av.av_estabelecimento
 			order by avaliacao desc) x
@@ -144,7 +152,7 @@
 	</select>
 	
 	<select id="getRestaurantesByCnpjs" resultMap="restaurante">
-	SELECT 
+		SELECT 
 			r.cnpj,
 			r.qtd_mesas,
 			r.codigo_cardapio,
