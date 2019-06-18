@@ -1,5 +1,6 @@
 package br.com.usjt.web.dao;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -21,6 +23,8 @@ import br.com.usjt.web.service.UsuarioMapper;
 
 public class RecomendacaoDAO {
 	private SqlSessionFactory sqlSessionFactory;
+	private final DecimalFormat df = new DecimalFormat("#.###");
+	static PerfisSingleton singleton = PerfisSingleton.getInstance();
 
 	public RecomendacaoDAO() {
 		sqlSessionFactory = ConnectionFactory.getSqlSessionFactory();
@@ -82,7 +86,7 @@ public class RecomendacaoDAO {
 			session.close();
 		}
 	}
-	
+
 	public void getAllPerfis() {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
@@ -90,13 +94,13 @@ public class RecomendacaoDAO {
 			PerfisSingleton singleton = PerfisSingleton.getInstance();
 			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
 			UsuarioMapper usuarioMapper = session.getMapper(UsuarioMapper.class);
-			
+
 			List<Usuario> usuarios = usuarioMapper.getIdsClientes();
 			for (Usuario u : usuarios) {
 				List<Item> itens = recomendacaoMapper.getScoreByEspecialidadeUsuario(u.getId());
 				HashMap<String, Double> perfil = calculatePerfil(itens);
 				singleton.putPerfil(u.getId(), perfil);
-				System.out.println(" -- Perfil Usuario "+u.getId()+" Feito");
+				System.out.println(" -- Perfil Usuario " + u.getId() + " Feito");
 			}
 		} finally {
 			session.close();
@@ -109,7 +113,6 @@ public class RecomendacaoDAO {
 			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 
-			List<Restaurante> restaurantesNaoFormatados = restauranteMapper.getRestaurantesEspecialidades();
 			HashMap<String, Double> perfil;
 			PerfisSingleton perfisSingleton = PerfisSingleton.getInstance();
 			if (perfisSingleton.getPerfil(idUsuario) == null) {
@@ -124,7 +127,11 @@ public class RecomendacaoDAO {
 				perfil = perfisSingleton.getPerfil(idUsuario);
 			}
 
-			HashMap<String, List<String>> restaurantesFormatados = new HashMap<String, List<String>>();
+			HashMap<String, List<String>> restaurantesFormatados;
+//			if(perfisSingleton.getRestaurantes() == null) {
+//			System.out.println("Restaurantes Null");
+			List<Restaurante> restaurantesNaoFormatados = restauranteMapper.getRestaurantesEspecialidades();
+			restaurantesFormatados = new HashMap<String, List<String>>();
 			for (Restaurante r : restaurantesNaoFormatados) {
 				if (restaurantesFormatados.containsKey(Long.toString(r.getCnpj()))) {
 					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
@@ -133,6 +140,13 @@ public class RecomendacaoDAO {
 					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
 				}
 			}
+//				perfisSingleton.setRestaurantes(restaurantesFormatados);
+
+//			}else {
+//				restaurantesFormatados = perfisSingleton.getRestaurantes();
+//				System.out.println("Restaurantes Existem");
+//			}
+
 			List<String> listCnpj = restaurantesByScoreContent(perfil, restaurantesFormatados);
 			return recomendacaoMapper.getRestaurantesByCnpjs(listCnpj);
 		} finally {
@@ -179,7 +193,7 @@ public class RecomendacaoDAO {
 			while (it2.hasNext() && count < 8) {
 				Map.Entry pair = (Map.Entry) it2.next();
 				cnpjs.add((String) pair.getKey());
-				System.out.println(((String) pair.getKey()) + " : " + pair.getValue());
+//				System.out.println(((String) pair.getKey()) + " : " + pair.getValue());
 				it2.remove();
 				count++;
 			}
@@ -218,6 +232,88 @@ public class RecomendacaoDAO {
 			}
 		}
 		return sortedMap;
+	}
+
+	public List<Restaurante> collabFiltering(int idUsuario) {
+
+		getAllPerfis();
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			HashMap<Integer, HashMap<String, Double>> perfis = singleton.getPerfis();
+			HashMap<String, Double> perfil = singleton.getPerfil(idUsuario);
+
+			System.out.println("Fazendo comparacoes id = " + idUsuario);
+
+			Iterator it1 = perfis.entrySet().iterator();
+			System.out.println("Size perfis: " + perfis.size());
+			int maiorId = 0;
+			double maiorScore = 0.0;
+			while (it1.hasNext()) {
+				Map.Entry<Integer, HashMap<String, Double>> par1 = (Entry<Integer, HashMap<String, Double>>) it1.next();
+
+				// ----------------
+				double score = 0;
+
+				Iterator<Entry<String, Double>> it = par1.getValue().entrySet().iterator();
+				while (it.hasNext()) {
+					HashMap.Entry par2 = (Map.Entry) it.next();
+					if (!(perfil.get(par2.getKey()) == null)) {
+						try {
+							score += perfil.get(par2.getKey())
+									- diff((Double) par2.getValue(), perfil.get(par2.getKey()));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					it.remove(); // avoids a ConcurrentModificationExceptio
+				}
+
+				System.out.print(("Vendo id " + par1.getKey()));
+				System.out.println(" | ScoreSimilaridade: " + df.format(score));
+				if (score > maiorScore && par1.getKey() != idUsuario) {
+					maiorScore = score;
+					maiorId = par1.getKey();
+				}
+				// ------------------------
+				it1.remove();
+			}
+			System.out.println("Maior Score: id=" + maiorId + ", score=" + df.format(maiorScore));
+			// ----------------
+			HashMap<String, List<String>> restaurantesFormatados;
+//		if(perfisSingleton.getRestaurantes() == null) {
+//		System.out.println("Restaurantes Null");
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			RecomendacaoMapper recomendacaoMapper = session.getMapper(RecomendacaoMapper.class);
+			List<Restaurante> restaurantesNaoFormatados = restauranteMapper.getRestaurantesEspecialidades();
+			restaurantesFormatados = new HashMap<String, List<String>>();
+			for (Restaurante r : restaurantesNaoFormatados) {
+				if (restaurantesFormatados.containsKey(Long.toString(r.getCnpj()))) {
+					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
+				} else {
+					restaurantesFormatados.put(Long.toString(r.getCnpj()), new ArrayList<String>());
+					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
+				}
+			}
+//			perfisSingleton.setRestaurantes(restaurantesFormatados);
+
+//		}else {
+//			restaurantesFormatados = perfisSingleton.getRestaurantes();
+//			System.out.println("Restaurantes Existem");
+//		}
+
+			List<String> listCnpj = restaurantesByScoreContent(perfil, restaurantesFormatados);
+			return recomendacaoMapper.getRestaurantesByCnpjs(listCnpj);
+		} finally {
+			session.close();
+		}
+	}
+
+	private static double diff(Double x, Double y) {
+		if (y == null) {
+			return x;
+		} else {
+			return (x < y) ? y - x : x - y;
+		}
 	}
 
 }

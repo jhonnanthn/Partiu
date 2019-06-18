@@ -209,7 +209,7 @@ public class ComandaController {
 	// itens à comanda
 	// retorna a nova lista de pedidos
 	@Path("/selecionarPedidoUsuario")
-	public void selecionarPedidoUsuario(int[] idPedido, int idUsuario, int idComanda) {
+	public synchronized void selecionarPedidoUsuario(int[] idPedido, int idUsuario, int idComanda) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		List<Item> itens = new ArrayList<>();
 		try {
@@ -233,7 +233,7 @@ public class ComandaController {
 	// remover um pedido da comanda do usuário
 	// retorna a nova lista de pedidos
 	@Path("/deselecionarPedidoUsuario")
-	public void deselecionarPedidoUsuario(int idPedido, int idComanda, int idUsuario) {
+	public synchronized void deselecionarPedidoUsuario(int idPedido, int idComanda, int idUsuario) {
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
 			comandaDAO.removerPedidoComandaByUsuario(idUsuario, idPedido);

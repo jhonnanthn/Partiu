@@ -71,21 +71,22 @@ public class RecomendacaoController {
 		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
 		try {
 			List<Restaurante> restaurantes = recomendacaoDAO.restaurantesByScoreContent(idUsuario);
-//		    HashMap<Item, Double> hmap = new HashMap<Item, Double>();
-//		    int qnt = 0;
-//		    for(Item item: itens) {
-//		    		qnt = qnt + (int) item.getScore();
-//		    }
-//			for(int i = 0; i < itens.size(); i++) {
-//				itens.get(i).setScore((itens.get(i).getScore() / qnt) * 100);
-//				hmap.put(itens.get(i), itens.get(i).getScore());
-//			}
 			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
 		}catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
 	}
 	
+	@Path("/restaurantesByScoreCollab")
+	public void restaurantesByScoreCollab(int idUsuario) {
+		RecomendacaoDAO recomendacaoDAO = new RecomendacaoDAO();
+		try {
+			List<Restaurante> restaurantes = recomendacaoDAO.collabFiltering(idUsuario);
+			result.use(Results.json()).withoutRoot().from(restaurantes).include("endereco").serialize();
+		}catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
+		}
+	}
 	
 	
 	@Path("/getRecomendacaoRestauranteAvaliado")
