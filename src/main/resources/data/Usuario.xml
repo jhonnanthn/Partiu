@@ -96,34 +96,56 @@
 	</select>
 
 
-	<!-- createUsuario() referente ao segundo semestre -->
+	<!-- createUsuario() -->
 	<insert id="createUsuario">
 		INSERT
 		INTO usuario
 		(
-		tipo,
-		cpf,
-		nome,
-		dta_nascimento,
-		email,
-		ddd,
-		telefone,
-		genero,
-		senha,
-		endereco
-		) VALUES(
-		#{usuario.tipo}
-		#{usuario.cpf},
-		upper(#{usuario.nome}),
-		str_to_date(#{usuario.dta_nascimento}, '%d/%m/%Y'),
-		lower(#{usuario.email}),
-		#{usuario.ddd},
-		#{usuario.telefone},
-		#{usuario.genero},
-		#{usuario.senha}
-		#{usuario.endereco.id}
+			tipo,
+			cpf,
+			nome,
+			dta_nascimento,
+			email,
+			ddd,
+			telefone,
+			genero,
+			senha,
+			endereco
+		) VALUES (
+			#{tipo},
+			#{cpf},
+			upper(#{nome}),
+			str_to_date(#{dta_nascimento}, '%d/%m/%Y'),
+			lower(#{email}),
+			#{ddd},
+			#{telefone},
+			#{genero},
+			#{senha},
+			(select max(id) from endereco)
 		)
-
+	</insert>
+	
+	<!-- createEndereco() -->
+	<insert id="createEndereco">
+		INSERT
+		INTO endereco
+		(
+			logradouro,
+			numero,
+			complemento,
+		    bairro,
+		    cidade,
+		    uf,
+		    cep
+		) VALUES (
+			upper(#{logradouro}),
+			#{numero},
+			upper(#{complemento}),
+			upper(#{bairro}),
+			upper(#{cidade}),
+			upper(#{uf}),
+			#{cep}
+		)
 	</insert>
 
 	<insert id="updateCliente">

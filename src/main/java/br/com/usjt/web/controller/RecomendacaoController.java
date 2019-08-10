@@ -1,16 +1,12 @@
 package br.com.usjt.web.controller;
 
-import java.util.HashMap;
 import java.util.List;
-
 import com.google.inject.Inject;
-
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.com.usjt.web.dao.RecomendacaoDAO;
-import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 
 @Resource

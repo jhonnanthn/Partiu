@@ -49,27 +49,26 @@ public class UsuarioController {
 			}else {
 				result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario inválido!").serialize();
 			}
-
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
 		}
-
 	}
 
 	//Nao Usado
 	@Path("/logout")
 	public void logout() {
-
 	}
-
 	
 	//Segundo Semestre
 	@Path("/createUsuario")
-	public void createUsuario(Usuario usuario) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
+	public void createUsuario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd, String telefone, 
+			String genero, String senha, String logradouro, String numero, String complemento, String bairro, String cidade,
+			String uf, String cep) {
 
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
-			usuarioDAO.createUsuario(usuario);
+			usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha);
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: "+e.getMessage()).serialize();
@@ -89,7 +88,6 @@ public class UsuarioController {
 	}
 	
 	// get usuario por parametro e valor
-	
 	@Path("/getUsuario")
 	public void getUsuarioByParameter(String variavel, String valor) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -101,4 +99,3 @@ public class UsuarioController {
 		}
 	}
 }
-

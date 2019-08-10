@@ -15,11 +15,12 @@ public class UsuarioDAO {
 		sqlSessionFactory = ConnectionFactory.getSqlSessionFactory();
 	}
 	
-	public void createUsuario(Usuario usuario) {
+	public void createUsuario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
+			String telefone, String genero, String senha) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
-			UsuarioMapper.createUsuario(usuario);
+			UsuarioMapper.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha);
 			session.commit();
 		} finally {
 			session.close();
@@ -54,6 +55,18 @@ public class UsuarioDAO {
 			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
 			Usuario Usuario = UsuarioMapper.getUsuarioOnLogin(email, senha);
 			return Usuario;
+		} finally {
+			session.close();
+		}
+	}
+
+	public void createEndereco(String logradouro, String numero, String complemento, String bairro, String cidade,
+			String uf, String cep) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
+			UsuarioMapper.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+			session.commit();
 		} finally {
 			session.close();
 		}
