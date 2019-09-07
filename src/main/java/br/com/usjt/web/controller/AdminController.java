@@ -30,7 +30,7 @@ public class AdminController {
 	@Path("/loginAdmin")
 	public void login(String email, String senha) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
-
+		
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
 			Usuario usuario = usuarioDAO.getUsuarioOnLogin(email, senha);
