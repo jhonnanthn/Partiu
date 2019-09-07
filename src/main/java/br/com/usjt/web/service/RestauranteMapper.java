@@ -8,9 +8,17 @@ import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 
 public interface RestauranteMapper {
-	//nao usado
+
 	void createRestaurante(
-			@Param("restaurante") Restaurante restaurante);
+			@Param("cnpj") String cnpj,
+			@Param("codigoComanda") String codigoComanda,
+			@Param("razaoSocial") String razaoSocial,
+			@Param("nomeFantasia") String nomeFantasia,
+			@Param("qntMesas") String qntMesas,
+			@Param("logotipo") String logotipo,
+			@Param("descricao") String descricao,
+			@Param("status") String status);
+	
 	//retorna restaurante referente a um garcom
 	Restaurante getRestauranteByIdGarcom(
 			@Param("idGarcom")int idGarcom);
@@ -32,4 +40,14 @@ public interface RestauranteMapper {
 	List<Restaurante> getHorarioRestauranteByCnpj(
 			 @Param("cnpj") long cnpj);
 	List<Restaurante> getRestaurantesEspecialidades();
+	
+	void updateRestaurante(
+			@Param("cnpj") String cnpj, 
+			@Param("codigoComanda") String codigoComanda, 
+			@Param("razaoSocial") String razaoSocial, 
+			@Param("nomeFantasia") String nomeFantasia, 
+			@Param("qntMesas") String qntMesas,
+			@Param("logotipo") String logotipo, 
+			@Param("descricao") String descricao, 
+			@Param("status") String status);
 }

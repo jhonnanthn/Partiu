@@ -38,17 +38,29 @@
 			descricao,
 			status
 		) VALUES(
-		#{restaurante.cnpj},
-		#{restaurante.codigoComanda},
-		#{restaurante.razaoSocial},
-		#{restaurante.nomeFantasia},
-		(select max(id) from endereco),
-		#{restaurante.qtdMesas},
-		#{restaurante.logo},
-		#{restaurante.descricao},
-		#{restaurante.status}
+			#{cnpj},
+			#{codigoComanda},
+			#{razaoSocial},
+			#{nomeFantasia},
+			(select max(id) from endereco),
+			#{qtdMesas},
+			#{logo},
+			#{descricao},
+			#{status}
 		)
 	</insert>
+	
+	<update id="updateRestaurante">
+		update restaurante
+			set codigo_cardapio = #{codigoComanda},
+			razao_social = #{razaoSocial},
+			nom_fantasia = #{nomeFantasia},
+			qtd_mesas = #{qntMesas},
+			logotipo = #{logotipo},
+			descricao = #{descricao},
+			status = #{status}
+		where cnpj = #{cnpj}
+	</update>
 
 	<select id="getRestauranteByIdGarcom" resultMap="restaurante">
 		SELECT 

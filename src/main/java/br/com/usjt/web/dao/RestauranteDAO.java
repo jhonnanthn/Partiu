@@ -2,6 +2,7 @@ package br.com.usjt.web.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -16,15 +17,17 @@ public class RestauranteDAO {
 		sqlSessionFactory = ConnectionFactory.getSqlSessionFactory();
 	}
 	
-	public void createRestaurante(Restaurante restaurante) {
+	public void createRestaurante(String cnpj, String codigoComanda, String razaoSocial, String nomeFantasia, 
+			String qntMesas, String logotipo, String descricao, String status, String logradouro, String numero,
+			String complemento, String bairro, String cidade, String uf, String cep) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 			EnderecoMapper enderecoMapper = session.getMapper(EnderecoMapper.class);
 			//cria endereco antes
-			enderecoMapper.createEndereco(restaurante.getEndereco());
+			enderecoMapper.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
 			//cria restaurante. id do restaurante é o ultimo criado
-			restauranteMapper.createRestaurante(restaurante);
+			restauranteMapper.createRestaurante(cnpj, codigoComanda, razaoSocial, nomeFantasia, qntMesas, logotipo, descricao, status);
 			session.commit();
 		} finally {
 			session.close();
@@ -88,6 +91,33 @@ public class RestauranteDAO {
 		} finally {
 			session.close();
 		}
+	}
+
+	public void updateRestaurante(String cnpj, String codigoComanda, String razaoSocial, String nomeFantasia,
+			String qntMesas, String logotipo, String descricao, String status) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			restauranteMapper.updateRestaurante(cnpj, codigoComanda, razaoSocial, nomeFantasia,
+					qntMesas, logotipo, descricao, status);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void updateEndereco(String id, String logradouro, String numero, String complemento, String bairro, String cidade,
+			String uf, String cep) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			EnderecoMapper enderecoMapper = session.getMapper(EnderecoMapper.class);
+			//cria endereco antes
+			enderecoMapper.updateEndereco(id, logradouro, numero, complemento, bairro, cidade, uf, cep);
+			session.commit();
+		} finally {
+			session.close();
+		}
+		
 	}
 	
 }

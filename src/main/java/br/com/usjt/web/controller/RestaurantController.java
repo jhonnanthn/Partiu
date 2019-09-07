@@ -17,13 +17,38 @@ public class RestaurantController {
 	@Inject
 	Result result;
 	
-	// Não utilizado
 	@Path("/createRestaurante")
-	public void createRestaurante(Restaurante restaurante) {
+	public void createRestaurante(String cnpj, String codigoComanda, String razaoSocial, String nomeFantasia, 
+			String qntMesas, String logotipo, String descricao, String status, String logradouro, String numero,
+			String complemento, String bairro, String cidade, String uf, String cep) {
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
-			restauranteDAO.createRestaurante(restaurante);		
+			restauranteDAO.createRestaurante(cnpj, codigoComanda, razaoSocial, nomeFantasia, qntMesas, logotipo, descricao, status,
+					logradouro, numero, complemento, bairro, cidade, uf, cep);		
 			result.use(Results.json()).withoutRoot().from("Restaurante criado com sucesso").serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+
+	@Path("/updateRestaurante")
+	public void updateRestaurante(String cnpj, String codigoComanda, String razaoSocial, String nomeFantasia, 
+			String qntMesas, String logotipo, String descricao, String status) {
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			restauranteDAO.updateRestaurante(cnpj, codigoComanda, razaoSocial, nomeFantasia, qntMesas, logotipo, descricao, status);		
+			result.use(Results.json()).withoutRoot().from("Dados alterados com sucesso").serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/updateEndereco")
+	public void updateEndereco(String id, String logradouro, String numero, String complemento, String bairro, String cidade, String uf, String cep) {
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			restauranteDAO.updateEndereco(id, logradouro, numero, complemento, bairro, cidade, uf, cep);		
+			result.use(Results.json()).withoutRoot().from("Dados alterados com sucesso").serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
 		}
