@@ -31,7 +31,8 @@ public interface UsuarioMapper {
 			@Param("ddd") String ddd, 
 			@Param("telefone") String telefone, 
 			@Param("genero") String genero, 
-			@Param("senha") String senha);
+			@Param("senha") String senha, 
+			@Param("createEndereco") boolean createEndereco);
 	
 	//cria endereco
 	void createEndereco(

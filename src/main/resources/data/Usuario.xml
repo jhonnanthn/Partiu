@@ -30,28 +30,30 @@
 
 	<select id="getUsuarioByParameter" resultMap="usuario">
 		select
-		usu.id,
-		usu.tipo,
-		usu.cpf,
-		usu.nome,
-		date_format(usu.dta_nascimento, '%d/%m/%Y') as dta_nascimento,
-		usu.email,
-		usu.ddd,
-		usu.telefone,
-		usu.genero,
-		usu.senha,
-		usu.endereco,
-		end.id as id_endereco,
-		end.logradouro,
-		end.numero,
-		end.complemento,
-		end.bairro,
-		end.cidade,
-		end.uf,
-		end.cep
+			usu.id,
+			usu.tipo,
+			usu.cpf,
+			usu.nome,
+			date_format(usu.dta_nascimento, '%d/%m/%Y') as dta_nascimento,
+			usu.email,
+			usu.ddd,
+			usu.telefone,
+			usu.genero,
+			usu.senha,
+			usu.endereco,
+			end.id as id_endereco,
+			end.logradouro,
+			end.numero,
+			end.complemento,
+			end.bairro,
+			end.cidade,
+			end.uf,
+			end.cep
 		from usuario usu
 		left join endereco end
-		on usu.endereco = end.id
+			on usu.endereco = end.id
+        left join funcionario_restaurante fr
+        		on fr.id_funcionario = usu.id
 		<if test="variavel != null">
 			where
 			<choose>
@@ -60,6 +62,9 @@
 				</when>
 				<when test="variavel == 'email'">
 					usu.email = #{valor}
+				</when>
+				<when test="variavel == 'cnpj'">
+					fr.cnpj_restaurante = #{valor}
 				</when>
 			</choose>
 		</if>
@@ -109,8 +114,10 @@
 			ddd,
 			telefone,
 			genero,
-			senha,
-			endereco
+			senha
+			<if test="createEndereco == true">
+				,endereco
+			</if>
 		) VALUES (
 			#{tipo},
 			#{cpf},
@@ -120,8 +127,10 @@
 			#{ddd},
 			#{telefone},
 			#{genero},
-			#{senha},
-			(select max(id) from endereco)
+			#{senha}
+			<if test="createEndereco == true">
+				,(select max(id) from endereco)
+			</if>
 		)
 	</insert>
 	

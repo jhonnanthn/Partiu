@@ -70,11 +70,16 @@ public class UsuarioController {
 	public void createUsuario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
 			String telefone, String genero, String senha, String logradouro, String numero, String complemento,
 			String bairro, String cidade, String uf, String cep) {
-
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		boolean createEndereco = false;
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
-			usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
-			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha);
+			if(!(logradouro == null && numero == null && complemento == null &&
+					bairro == null && cidade == null && cidade == null && uf == null && cep == null)) {
+				usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+				createEndereco = true;
+			}
+			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
@@ -96,6 +101,7 @@ public class UsuarioController {
 	// get usuario por parametro e valor
 	@Path("/getUsuario")
 	public void getUsuarioByParameter(String variavel, String valor) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
 			List<Usuario> usuario = usuarioDAO.getUsuarioByParameter(variavel, valor);

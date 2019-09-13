@@ -16,11 +16,11 @@ public class UsuarioDAO {
 	}
 	
 	public void createUsuario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
-			String telefone, String genero, String senha) {
+			String telefone, String genero, String senha, boolean createEndereco) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			UsuarioMapper UsuarioMapper = session.getMapper(UsuarioMapper.class);
-			UsuarioMapper.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha);
+			UsuarioMapper.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
 			session.commit();
 		} finally {
 			session.close();
