@@ -338,4 +338,18 @@ public class ComandaDAO {
 		}
 		return -1;
 	}
+
+	public List<Comanda> getComandasByCpf(long cpf) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ComandaMapper comandaMapper = session.getMapper(ComandaMapper.class);
+			List<Comanda> comanda = comandaMapper.getComandasByCpf(cpf);
+			return comanda;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }

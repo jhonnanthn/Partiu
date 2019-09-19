@@ -123,5 +123,8 @@ public interface ComandaMapper {
 	
 	List<Item> getPedidosEmAbertoByComanda(
 			@Param("idComanda") int idComanda);
+
+	List<Comanda> getComandasByCpf(
+			@Param("cpf") long cpf);
 	
 }

@@ -158,6 +158,31 @@
 		p.id = #{idPedido}
 	</select>
 
+	<select id="getComandasByCpf" resultType="br.com.usjt.web.model.Comanda">
+		select distinct comanda.* from (
+			SELECT
+		        com.codigo_comanda as codigo,
+				date_format(dta_entrada, '%d/%m/%Y %H:%i') as dtaEntrada,
+				date_format(dta_saida, '%d/%m/%Y %H:%i') as dtaSaida,
+				date_format(dta_atualizacao, '%d/%m/%Y %H:%i') as dtaAtualizacao,
+		        com.status,
+		        com.id,
+		        com.mesa,
+		        com.id_garcom as idGarcom,
+		        r.nom_fantasia as nomeRestaurante
+			from pedido p
+			left join usuario_pedido up on
+			up.id_pedido = p.id and up.id_comanda = p.id_comanda
+			left join usuario c ON c.id = up.id_usuario
+	        left join comanda com
+	        on com.id = p.id_comanda
+	        left join restaurante r
+	        on r.codigo_cardapio = SUBSTR(com.codigo_comanda, 1, 3)
+	        where
+				c.cpf = #{cpf}
+			order by com.status, com.dta_saida desc
+		) comanda
+	</select>
 
 	<insert id="createComanda">
 		INSERT

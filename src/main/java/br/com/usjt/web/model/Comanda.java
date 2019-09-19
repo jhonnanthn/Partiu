@@ -10,6 +10,15 @@ public class Comanda {
 	private String dtaEntrada;
 	private String dtaSaida;
 	private String dtaAtualizacao;
+	private String nomeRestaurante;
+
+	public String getNomeRestaurante() {
+		return nomeRestaurante;
+	}
+
+	public void setNomeRestaurante(String nomeRestaurante) {
+		this.nomeRestaurante = nomeRestaurante;
+	}
 
 	public int getId() {
 		return id;

@@ -98,6 +98,21 @@ public class ComandaController {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
+	
+	// getComandas por status e id; Utilizado para listar as comandas
+	// para o usuário
+	// Retorna List<> de comandas
+	@Path("/getComandasByCpf")
+	public void getComandasByCpf(long cpf) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			List<Comanda> comandas = comandaDAO.getComandasByCpf(cpf);
+			result.use(Results.json()).withoutRoot().from(comandas).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
 
 	// getComanda por id
 	// Retorna List<> de comandas
