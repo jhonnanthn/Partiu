@@ -47,6 +47,7 @@ public class UsuarioController {
 	// errado)
 	@Path("/login")
 	public void login(String email, String senha) {		
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		try {
 			Usuario usuario = usuarioDAO.getUsuarioOnLogin(email, senha);

@@ -58,6 +58,7 @@ public class RestaurantController {
 	// retorna Restaurante
 	@Path("/getRestauranteByIdGarcom")
 	public void getRestauranteByIdGarcom(int idGarcom) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
 			Restaurante restaurante = restauranteDAO.getRestauranteByIdGarcom(idGarcom);
