@@ -109,6 +109,7 @@ public class RestaurantController {
 	// retorna List<> de Itens
 	@Path("/getItensRestaurante")
 	public void getItensRestaurante(long cnpj) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try {
 			List<Item> itens = restauranteDAO.getItensRestaurante(cnpj);

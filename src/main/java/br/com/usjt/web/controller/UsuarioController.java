@@ -86,6 +86,29 @@ public class UsuarioController {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
+	
+	//TODO Criar Funcionario, para podermos passar o cnpj e vincular ao restaurante na criação pelo painel
+	@Path("/createFuncionario")
+	public void createFuncionario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
+			String telefone, String genero, String senha, String logradouro, String numero, String complemento,
+			String bairro, String cidade, String uf, String cep, String cnpj) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		boolean createEndereco = false;
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		try {
+			if(!(logradouro == null && numero == null && complemento == null &&
+					bairro == null && cidade == null && cidade == null && uf == null && cep == null)) {
+				usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+				createEndereco = true;
+			}
+			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+			// vincular com restaurante apos criar usuario
+
+			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
 
 	// Segundo Semestre
 	@Path("/updateUsuario")
