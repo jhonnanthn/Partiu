@@ -1,19 +1,15 @@
 package br.com.usjt.web.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 
-import br.com.caelum.vraptor.Options;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.core.RequestInfo;
-import br.com.caelum.vraptor.http.route.Router;
-import br.com.caelum.vraptor.resource.HttpMethod;
 import br.com.caelum.vraptor.view.Results;
 import br.com.usjt.web.dao.RecomendacaoDAO;
+import br.com.usjt.web.dao.RestauranteDAO;
 import br.com.usjt.web.dao.UsuarioDAO;
 import br.com.usjt.web.model.PerfisSingleton;
 import br.com.usjt.web.model.Usuario;
@@ -70,17 +66,22 @@ public class UsuarioController {
 	@Path("/createUsuario")
 	public void createUsuario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
 			String telefone, String genero, String senha, String logradouro, String numero, String complemento,
-			String bairro, String cidade, String uf, String cep) {
+			String bairro, String cidade, String uf, String cep, String cnpj) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		boolean createEndereco = false;
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try {
 			if(!(logradouro == null && numero == null && complemento == null &&
 					bairro == null && cidade == null && cidade == null && uf == null && cep == null)) {
 				usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
 				createEndereco = true;
 			}
-			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+			if(tipo.contentEquals("1")) {
+				usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+			} else if(tipo.contentEquals("2")){
+				restauranteDAO.createFuncionario(cnpj, tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+			}
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();

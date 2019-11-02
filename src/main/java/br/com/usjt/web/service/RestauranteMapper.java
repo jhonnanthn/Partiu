@@ -18,6 +18,24 @@ public interface RestauranteMapper {
 			@Param("logotipo") String logotipo,
 			@Param("descricao") String descricao,
 			@Param("status") String status);
+
+	//cria funcionario
+	void createFuncionario(
+			@Param("tipo") String tipo, 
+			@Param("cpf") String cpf, 
+			@Param("nome") String nome, 
+			@Param("dta_nascimento") String dta_nascimento, 
+			@Param("email") String email, 
+			@Param("ddd") String ddd, 
+			@Param("telefone") String telefone, 
+			@Param("genero") String genero, 
+			@Param("senha") String senha, 
+			@Param("cnpj") String cnpj, 
+			@Param("createEndereco") boolean createEndereco);
+	
+	//vincular funcionario ao restaurante
+	void vincularFuncionarioRestaurante(
+			@Param("cpf") String cpf);
 	
 	//retorna restaurante referente a um garcom
 	Restaurante getRestauranteByIdGarcom(

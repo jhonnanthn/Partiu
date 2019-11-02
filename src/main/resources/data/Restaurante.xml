@@ -50,6 +50,52 @@
 		)
 	</insert>
 	
+	<!-- createFuncionario() -->
+	<insert id="createFuncionario">
+		INSERT
+		INTO usuario
+		(
+			tipo,
+			cpf,
+			nome,
+			dta_nascimento,
+			email,
+			ddd,
+			telefone,
+			genero,
+			senha
+			<if test="createEndereco == true">
+				,endereco
+			</if>
+		) VALUES (
+			#{tipo},
+			#{cpf},
+			upper(#{nome}),
+			str_to_date(#{dta_nascimento}, '%d/%m/%Y'),
+			lower(#{email}),
+			#{ddd},
+			#{telefone},
+			#{genero},
+			#{senha}
+			<if test="createEndereco == true">
+				,(select max(id) from endereco)
+			</if>
+		)
+	</insert>
+	
+	<!-- createFuncionario() -->
+	<insert id="vincularFuncionarioRestaurante">
+		INSERT
+		INTO funcionario_restaurante
+		(
+			id_funcionario, 
+			cnpj_restaurante
+		) VALUES (
+			(select MAX(id) from usuario),
+			#{cnpj}
+		)
+	</insert>
+	
 	<update id="updateRestaurante">
 		update restaurante
 			set codigo_cardapio = #{codigoComanda},

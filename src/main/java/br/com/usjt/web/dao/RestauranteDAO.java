@@ -10,6 +10,7 @@ import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
 import br.com.usjt.web.service.EnderecoMapper;
 import br.com.usjt.web.service.RestauranteMapper;
+import br.com.usjt.web.service.UsuarioMapper;
 public class RestauranteDAO {
 	private SqlSessionFactory sqlSessionFactory;
 
@@ -28,6 +29,19 @@ public class RestauranteDAO {
 			enderecoMapper.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
 			//cria restaurante. id do restaurante é o ultimo criado
 			restauranteMapper.createRestaurante(cnpj, codigoComanda, razaoSocial, nomeFantasia, qntMesas, logotipo, descricao, status);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void createFuncionario(String cnpj, String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
+			String telefone, String genero, String senha, boolean createEndereco) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			restauranteMapper.createFuncionario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, cnpj, createEndereco);
+			restauranteMapper.vincularFuncionarioRestaurante(cpf);
 			session.commit();
 		} finally {
 			session.close();
