@@ -19,4 +19,6 @@ public interface AvaliacaoMapper {
 
 	List<Avaliacao> getAvaliacaoByCnpj(
 			@Param("cnpj") long cnpj);
+	
+	List<Avaliacao> getAvaliacoesTodas();
 }

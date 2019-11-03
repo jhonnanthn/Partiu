@@ -13,14 +13,15 @@ public class AvaliacaoDAO {
 	public AvaliacaoDAO() {
 		sqlSessionFactory = ConnectionFactory.getSqlSessionFactory();
 	}
-	
-	//cria Avaliacao
+
+	// cria Avaliacao
 	public void createAvaliacao(int idCliente, int idComanda, int avEstabelecimento, int avFuncionario,
 			String descEstabelecimento, String descFuncionario) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			AvaliacaoMapper avaliacaoMapper = session.getMapper(AvaliacaoMapper.class);
-			avaliacaoMapper.createAvaliacao(idCliente, idComanda, avEstabelecimento, avFuncionario, descEstabelecimento, descFuncionario);
+			avaliacaoMapper.createAvaliacao(idCliente, idComanda, avEstabelecimento, avFuncionario, descEstabelecimento,
+					descFuncionario);
 			session.commit();
 		} finally {
 			session.close();
@@ -35,5 +36,17 @@ public class AvaliacaoDAO {
 			return avaliacao;
 		} finally {
 			session.close();
-		}	}
+		}
+	}
+	
+	public List<Avaliacao> getAvaliacoesTodas() {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			AvaliacaoMapper avaliacaoMapper = session.getMapper(AvaliacaoMapper.class);
+			List<Avaliacao> avaliacao = avaliacaoMapper.getAvaliacoesTodas();
+			return avaliacao;
+		} finally {
+			session.close();
+		}
+	}
 }
