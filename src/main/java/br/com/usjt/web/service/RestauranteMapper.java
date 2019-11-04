@@ -30,12 +30,11 @@ public interface RestauranteMapper {
 			@Param("telefone") String telefone, 
 			@Param("genero") String genero, 
 			@Param("senha") String senha, 
-			@Param("cnpj") String cnpj, 
 			@Param("createEndereco") boolean createEndereco);
 	
 	//vincular funcionario ao restaurante
 	void vincularFuncionarioRestaurante(
-			@Param("cpf") String cpf);
+			@Param("cnpj") String cnpj);
 	
 	//retorna restaurante referente a um garcom
 	Restaurante getRestauranteByIdGarcom(

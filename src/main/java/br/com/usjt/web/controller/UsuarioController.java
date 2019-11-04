@@ -77,10 +77,11 @@ public class UsuarioController {
 				usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
 				createEndereco = true;
 			}
-			if(tipo.contentEquals("1")) {
+			if(tipo.contentEquals("cliente")) {
 				usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
-			} else if(tipo.contentEquals("2")){
+			} else if(!tipo.contentEquals("cliente")){
 				restauranteDAO.createFuncionario(cnpj, tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+				restauranteDAO.vincularFuncionarioRestaurante(cnpj);
 			}
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
 		} catch (Exception e) {
