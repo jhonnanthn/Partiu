@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import br.com.usjt.web.model.Item;
 import br.com.usjt.web.model.Restaurante;
+import br.com.usjt.web.model.Usuario;
 import br.com.usjt.web.service.EnderecoMapper;
 import br.com.usjt.web.service.RestauranteMapper;
 import br.com.usjt.web.service.UsuarioMapper;
@@ -40,8 +41,18 @@ public class RestauranteDAO {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
-			restauranteMapper.createFuncionario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, cnpj, createEndereco);
-			restauranteMapper.vincularFuncionarioRestaurante(cpf);
+			//cria usuário. id do usuário é o ultimo criado
+			restauranteMapper.createFuncionario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+	public void vincularFuncionarioRestaurante(String cnpj) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			restauranteMapper.vincularFuncionarioRestaurante(cnpj);
 			session.commit();
 		} finally {
 			session.close();

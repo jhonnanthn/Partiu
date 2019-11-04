@@ -92,7 +92,7 @@
 			cnpj_restaurante
 		) VALUES (
 			(select MAX(id) from usuario),
-			#{cnpj}
+			CONVERT(#{cnpj}, CHAR(14))
 		)
 	</insert>
 	
