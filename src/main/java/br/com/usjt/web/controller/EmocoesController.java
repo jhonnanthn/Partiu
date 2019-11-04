@@ -19,6 +19,8 @@ public class EmocoesController {
 	@Inject
 	Result result;
 
+	
+	//treina o algoritimo carregando os dados do banco
 	@Path("/trainBayes")
 	public void trainBayes() {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
@@ -57,13 +59,16 @@ public class EmocoesController {
 
 	}
 	
-
+	//retorna uma string mal formatada com os tokens e frequencias
 	@Path("/getBayesTable")
 	public void getBayesTable() {
+		
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 	
 		NaiveBayes bayes = NaiveBayes.getInstance();
+		if (bayes.isEmpty()) trainBayes();
 		result.use(Results.json()).withoutRoot().from(bayes.showTokenTable()).serialize();
 		
 	}
+	
 }

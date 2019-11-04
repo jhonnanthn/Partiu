@@ -9,7 +9,31 @@ public class Avaliacao {
 	private String avFuncionario;
 	private String descEstabelecimento;
 	private String descFuncionario;
+	
+	private int bayesEstabelecimento;
+	private int bayesFuncionario;
+	
+	
 
+	@Override
+	public String toString() {
+		return "Avaliacao [id=" + id + ", idCliente=" + idCliente + ", cliente=" + cliente + ", idComanda=" + idComanda
+				+ ", avEstabelecimento=" + avEstabelecimento + ", avFuncionario=" + avFuncionario
+				+ ", descEstabelecimento=" + descEstabelecimento + ", descFuncionario=" + descFuncionario
+				+ ", bayesEstabelecimento=" + bayesEstabelecimento + ", bayesFuncionario=" + bayesFuncionario + "]";
+	}
+	public int getBayesEstabelecimento() {
+		return bayesEstabelecimento;
+	}
+	public void setBayesEstabelecimento(int bayesEstabelecimento) {
+		this.bayesEstabelecimento = bayesEstabelecimento;
+	}
+	public int getBayesFuncionario() {
+		return bayesFuncionario;
+	}
+	public void setBayesFuncionario(int bayesFuncionario) {
+		this.bayesFuncionario = bayesFuncionario;
+	}
 	public String getCliente() {
 		return cliente;
 	}

@@ -24,6 +24,14 @@ public class NaiveBayes {
 			singleton = new NaiveBayes();
 		return singleton;
 	}
+	
+	public boolean isEmpty() {
+		return (!(this.entries>0));
+	}
+		
+	public Map<String, int[]> getBayes() {
+		return bayes;
+	}
 
 	private NaiveBayes() {
 		this.bayes = new HashMap<String, int[]>();
@@ -281,7 +289,7 @@ public class NaiveBayes {
 				maiorRatingIndex = i;
 			}
 		}
-		insert(f, maiorRatingIndex);
+//		insert(f, maiorRatingIndex);
 		return maiorRatingIndex;
 	}
 
