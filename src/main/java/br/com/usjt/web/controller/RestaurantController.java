@@ -122,6 +122,7 @@ public class RestaurantController {
 	//get resturante de acordo com o cnpj
 	@Path("/getRestauranteByCnpj")
 	public void getRestauranteByCnpj(long cnpj) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
 			Restaurante restaurante = restauranteDAO.getRestauranteByCnpj(cnpj);
