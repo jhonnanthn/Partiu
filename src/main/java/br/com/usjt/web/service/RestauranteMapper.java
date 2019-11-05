@@ -67,4 +67,17 @@ public interface RestauranteMapper {
 			@Param("logotipo") String logotipo, 
 			@Param("descricao") String descricao, 
 			@Param("status") String status);
+	
+	void updateItem(
+			@Param("id") int id,
+			@Param("cnpj_restaurante") long cnpj,
+			@Param("categoria") String categoria,
+			@Param("detalhe") String detalhe,
+			@Param("nome") String nome,
+			@Param("valor") double valor,
+			@Param("status") String status
+			);
+	
+	Item getItemById(
+			 @Param("id") int id);
 }

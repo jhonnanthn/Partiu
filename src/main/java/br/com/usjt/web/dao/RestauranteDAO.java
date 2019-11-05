@@ -93,6 +93,19 @@ public class RestauranteDAO {
 			session.close();
 		}
 	}
+	
+	public Item getItemById(int id) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			Item item = restauranteMapper.getItemById(id);
+			return item;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 
 	public Restaurante getRestauranteByCnpj(long cnpj) {
 		SqlSession session = sqlSessionFactory.openSession();
@@ -125,6 +138,17 @@ public class RestauranteDAO {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 			restauranteMapper.updateRestaurante(cnpj, codigoComanda, razaoSocial, nomeFantasia,
 					qntMesas, logotipo, descricao, status);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void updateItem(Item item) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			restauranteMapper.updateItem(item.getId(), item.getCnpjRestaurante(), item.getCategoria(), item.getDetalhe(), item.getNome(), item.getValor(), item.getStatus());
 			session.commit();
 		} finally {
 			session.close();

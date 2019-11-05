@@ -54,6 +54,44 @@ public class RestaurantController {
 		}
 	}
 	
+	//atualiza status de um item e retorna a lista atualizada
+	@Path("/updateStatusItem")
+	public void updateStatusItem(int id, String status) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			Item item = restauranteDAO.getItemById(id);
+			item.setStatus(status);
+			restauranteDAO.updateItem(item);
+			List<Item> itensAtualizados = restauranteDAO.getItensRestaurante(item.getCnpjRestaurante());
+			result.use(Results.json()).withoutRoot().from(itensAtualizados).serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
+	//atualiza todos os dados de um item e retorna a lista atualizada
+	@Path("/updateItem")
+	public void updateItem(int id, long cnpj, String categoria, String detalhe, String nome, double valor, String status) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			Item item = new Item();
+			item.setId(id);
+			item.setCnpjRestaurante(cnpj);
+			item.setCategoria(categoria);
+			item.setDetalhe(detalhe);
+			item.setNome(nome);
+			item.setValor(valor);
+			item.setStatus(status);
+			restauranteDAO.updateItem(item);	
+			List<Item> itensAtualizados = restauranteDAO.getItensRestaurante(item.getCnpjRestaurante());
+			result.use(Results.json()).withoutRoot().from(itensAtualizados).serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
 	// get Restaurante pela idGarcom; Cada garcom só faz parte de 1 restaurante.
 	// retorna Restaurante
 	@Path("/getRestauranteByIdGarcom")

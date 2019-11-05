@@ -107,6 +107,16 @@
 			status = #{status}
 		where cnpj = #{cnpj}
 	</update>
+	
+	<update id="updateItem">
+		update item
+			set categoria = #{categoria},
+			detalhe = #{detalhe},
+			nome = #{nome},
+			valor = #{valor},
+			status = #{status}
+		where id = #{id}
+	</update>
 
 	<select id="getRestauranteByIdGarcom" resultMap="restaurante">
 		SELECT 
@@ -203,6 +213,21 @@
 		WHERE cnpj_restaurante = #{cnpj}
 		ORDER BY categoria
 	</select>
+	
+	<select id="getItemById" resultType="br.com.usjt.web.model.Item">
+		SELECT
+			id,
+			cnpj_restaurante as cnpjRestaurante,
+			categoria,
+			nome,
+			tipo,
+			valor,
+			detalhe,
+			status
+		FROM item
+		WHERE id = #{id}
+	</select>
+	
 
 	<select id="getHorarioRestauranteByCnpj" resultType="br.com.usjt.web.model.Restaurante">
 		select 
