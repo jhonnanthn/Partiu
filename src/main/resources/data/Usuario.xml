@@ -157,18 +157,29 @@
 		)
 	</insert>
 
-	<insert id="updateCliente">
+	<update id="updateUsuario">
 		UPDATE usuario set
-		tipo=#{usuario.tipo},
-		cpf=#{usuario.tipo},
-		nome=upper(#{usuario.nome}),
-		dta_nascimento=str_to_date(#{usuario.dta_nascimento}, '%d/%m/%Y'),
-		email=lower(#{usuario.email}),
-		ddd=#{usuario.ddd},
-		telefone=#{usuario.telefone},
-		genero=#{usuario.genero},
-		senha=#{usuario.senha},
-		endereco=#{usuario.endereco.id}
-		where id = #{usuario.id}
+		tipo=#{tipo},
+		cpf=#{cpf},
+		nome=upper(#{nome}),
+		dta_nascimento=str_to_date(#{dta_nascimento}, '%d/%m/%Y'),
+		email=lower(#{email}),
+		ddd=#{ddd},
+		telefone=#{telefone},
+		genero=#{genero},
+		senha=#{senha}
+		where id = #{id}
+	</update>
+	
+	<insert id="updateEndereco">
+		UPDATE endereco set
+		logradouro=upper(#{logradouro}),
+		numero=#{numero},
+		complemento=upper(#{complemento}),
+		bairro=upper(#{bairro}),
+		cidade=lower(#{cidade}),
+		uf=#{uf},
+		cep=#{cep}
+		where id = #{id}
 	</insert>
 </mapper>

@@ -48,11 +48,23 @@ public class RestauranteDAO {
 			session.close();
 		}
 	}
+	
 	public void vincularFuncionarioRestaurante(String cnpj) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
 			restauranteMapper.vincularFuncionarioRestaurante(cnpj);
+			session.commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void updateVincularFuncionarioRestaurante(String funcionarioId, String status) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			RestauranteMapper restauranteMapper = session.getMapper(RestauranteMapper.class);
+			restauranteMapper.updateVincularFuncionarioRestaurante(funcionarioId, status);
 			session.commit();
 		} finally {
 			session.close();

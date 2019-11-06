@@ -91,4 +91,8 @@ public interface RestauranteMapper {
 	
 	Item getItemById(
 			 @Param("id") int id);
+
+	void updateVincularFuncionarioRestaurante(
+			@Param("funcionarioId") String funcionarioId, 
+			@Param("status") String status);
 }

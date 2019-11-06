@@ -33,6 +33,30 @@ public interface UsuarioMapper {
 			@Param("genero") String genero, 
 			@Param("senha") String senha, 
 			@Param("createEndereco") boolean createEndereco);
+
+	//cria usuario
+	void updateUsuario(
+			@Param("id") String id, 
+			@Param("tipo") String tipo, 
+			@Param("cpf") String cpf, 
+			@Param("nome") String nome, 
+			@Param("dta_nascimento") String dta_nascimento, 
+			@Param("email") String email, 
+			@Param("ddd") String ddd, 
+			@Param("telefone") String telefone, 
+			@Param("genero") String genero, 
+			@Param("senha") String senha);
+	
+	//cria endereco
+	void updateEndereco(
+			@Param("id") String id, 
+			@Param("logradouro") String logradouro, 
+			@Param("numero") String numero, 
+			@Param("complemento") String complemento, 
+			@Param("bairro") String bairro, 
+			@Param("cidade") String cidade, 
+			@Param("uf") String uf, 
+			@Param("cep") String cep);
 	
 	//cria endereco
 	void createEndereco(
@@ -43,9 +67,4 @@ public interface UsuarioMapper {
 			@Param("cidade") String cidade, 
 			@Param("uf") String uf, 
 			@Param("cep") String cep);
-	
-	//atualiza usuario (Segundo Semestre)
-	void updateUsuario(
-			@Param("usuario") Usuario usuario);
-	
 }
