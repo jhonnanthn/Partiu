@@ -50,40 +50,7 @@
 		)
 	</insert>
 	
-	<!-- createFuncionario() -->
-	<insert id="createFuncionario">
-		INSERT
-		INTO usuario
-		(
-			tipo,
-			cpf,
-			nome,
-			dta_nascimento,
-			email,
-			ddd,
-			telefone,
-			genero,
-			senha
-			<if test="createEndereco == true">
-				,endereco
-			</if>
-		) VALUES (
-			#{tipo},
-			#{cpf},
-			upper(#{nome}),
-			str_to_date(#{dta_nascimento}, '%d/%m/%Y'),
-			lower(#{email}),
-			#{ddd},
-			#{telefone},
-			#{genero},
-			#{senha}
-			<if test="createEndereco == true">
-				,(select max(id) from endereco)
-			</if>
-		)
-	</insert>
-	
-	<!-- createFuncionario() -->
+	<!-- vincularFuncionarioRestaurante() -->
 	<insert id="vincularFuncionarioRestaurante">
 		INSERT
 		INTO funcionario_restaurante
@@ -116,6 +83,12 @@
 			valor = #{valor},
 			status = #{status}
 		where id = #{id}
+	</update>
+	
+	<update id="updateVincularFuncionarioRestaurante">
+		update funcionario_restaurante
+			set status = #{status}
+		where id_funcionario = #{funcionarioId}
 	</update>
 
 	<select id="getRestauranteByIdGarcom" resultMap="restaurante">

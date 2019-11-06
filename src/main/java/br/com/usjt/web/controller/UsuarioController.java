@@ -77,10 +77,9 @@ public class UsuarioController {
 				usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
 				createEndereco = true;
 			}
-			if(tipo.contentEquals("cliente")) {
-				usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
-			} else if(!tipo.contentEquals("cliente")){
-				restauranteDAO.createFuncionario(cnpj, tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
+
+			if(!tipo.contentEquals("cliente")){
 				restauranteDAO.vincularFuncionarioRestaurante(cnpj);
 			}
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
@@ -89,36 +88,21 @@ public class UsuarioController {
 		}
 	}
 	
-	//TODO Criar Funcionario, para podermos passar o cnpj e vincular ao restaurante na criação pelo painel
-	@Path("/createFuncionario")
-	public void createFuncionario(String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
-			String telefone, String genero, String senha, String logradouro, String numero, String complemento,
-			String bairro, String cidade, String uf, String cep, String cnpj) {
-		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
-		boolean createEndereco = false;
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		try {
-			if(!(logradouro == null && numero == null && complemento == null &&
-					bairro == null && cidade == null && cidade == null && uf == null && cep == null)) {
-				usuarioDAO.createEndereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
-				createEndereco = true;
-			}
-			usuarioDAO.createUsuario(tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha, createEndereco);
-			// vincular com restaurante apos criar usuario
-
-			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario criado com sucesso").serialize();
-		} catch (Exception e) {
-			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
-		}
-	}
-
-	// Segundo Semestre
 	@Path("/updateUsuario")
-	public void updateUsuario(Usuario usuario) {
+	public void updateUsuario(String id, String idEndereco, String tipo, String cpf, String nome, String dta_nascimento, String email, String ddd,
+			String telefone, String genero, String senha, String logradouro, String numero, String complemento,
+			String bairro, String cidade, String uf, String cep, String cnpj, String status) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try {
-			usuarioDAO.updateUsuario(usuario);
-			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Alterado com sucesso").serialize();
+			usuarioDAO.updateUsuario(id, tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha);
+			usuarioDAO.updateEndereco(idEndereco, logradouro, numero, complemento, bairro, cidade, uf, cep);
+
+			if(!tipo.contentEquals("cliente")){
+				restauranteDAO.updateVincularFuncionarioRestaurante(id, status);
+			}
+			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario editado com sucesso").serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
