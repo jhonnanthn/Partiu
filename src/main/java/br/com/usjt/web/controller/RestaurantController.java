@@ -72,7 +72,7 @@ public class RestaurantController {
 	
 	//atualiza todos os dados de um item e retorna a lista atualizada
 	@Path("/updateItem")
-	public void updateItem(int id, long cnpj, String categoria, String detalhe, String nome, double valor, String status) {
+	public void updateItem(int id, String cnpj, String categoria, String detalhe, String nome, double valor, String status) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
@@ -87,6 +87,37 @@ public class RestaurantController {
 			restauranteDAO.updateItem(item);	
 			List<Item> itensAtualizados = restauranteDAO.getItensRestaurante(item.getCnpjRestaurante());
 			result.use(Results.json()).withoutRoot().from(itensAtualizados).serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/getItem")
+	public void getItem(int id){
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			Item item = restauranteDAO.getItemById(id);	
+			result.use(Results.json()).withoutRoot().from(item).serialize();
+		} catch(Exception e) {
+			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/createItem")
+	public void createItem(String cnpj, String categoria, String detalhe, String nome, double valor, String status) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try{
+			Item item = new Item();
+			item.setCnpjRestaurante(cnpj);
+			item.setCategoria(categoria);
+			item.setDetalhe(detalhe);
+			item.setNome(nome);
+			item.setValor(valor);
+			item.setStatus(status);
+			restauranteDAO.createItem(item);	
+			result.use(Results.json()).withoutRoot().from("Item Criado").serialize();
 		} catch(Exception e) {
 			result.use(Results.json()).withoutRoot().from(e.getMessage()).serialize();
 		}
@@ -121,7 +152,7 @@ public class RestaurantController {
 	
 	//get resturante de acordo com o cnpj
 	@Path("/getRestauranteByCnpj")
-	public void getRestauranteByCnpj(long cnpj) {
+	public void getRestauranteByCnpj(String cnpj) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
@@ -134,7 +165,7 @@ public class RestaurantController {
 	
 	//get resturante de acordo com o cnpj
 	@Path("/getHorarioRestauranteByCnpj")
-	public void getHorarioRestauranteByCnpj(long cnpj) {
+	public void getHorarioRestauranteByCnpj(String cnpj) {
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try{
 			List<Restaurante> restaurante = restauranteDAO.getHorarioRestauranteByCnpj(cnpj);
@@ -147,7 +178,7 @@ public class RestaurantController {
 	// get Itens de um Restaurante; Utilizado pelo garcom para ver itens disponíveis a serem adcionados
 	// retorna List<> de Itens
 	@Path("/getItensRestaurante")
-	public void getItensRestaurante(long cnpj) {
+	public void getItensRestaurante(String cnpj) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
 		try {

@@ -117,6 +117,25 @@
 			status = #{status}
 		where id = #{id}
 	</update>
+	
+	<insert id="createItem">
+		INSERT INTO item
+			(cnpj_restaurante,
+			 categoria,
+			 detalhe,
+			 tipo,
+			 nome,
+			 valor,
+			 status) 
+			VALUES (
+			#{cnpj_restaurante},
+			#{categoria},
+			#{detalhe},
+			#{tipo},
+			#{nome},
+			#{valor},
+			#{status})
+	</insert>
 
 	<select id="getRestauranteByIdGarcom" resultMap="restaurante">
 		SELECT 

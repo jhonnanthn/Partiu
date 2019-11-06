@@ -3,7 +3,7 @@ package br.com.usjt.web.model;
 public class Item {
 
 	private int id;
-	private long cnpjRestaurante;
+	private String cnpjRestaurante;
 	private String categoria;
 	private String nome;
 	private String tipo;
@@ -110,11 +110,11 @@ public class Item {
 		this.id = id;
 	}
 
-	public long getCnpjRestaurante() {
+	public String getCnpjRestaurante() {
 		return cnpjRestaurante;
 	}
 
-	public void setCnpjRestaurante(long cnpjRestaurante) {
+	public void setCnpjRestaurante(String cnpjRestaurante) {
 		this.cnpjRestaurante = cnpjRestaurante;
 	}
 
@@ -204,7 +204,7 @@ public class Item {
 		super();
 	}
 
-	public Item(int id, long cnpjRestaurante, String categoria, String nome, String tipo, double valor, String status,
+	public Item(int id, String cnpjRestaurante, String categoria, String nome, String tipo, double valor, String status,
 			int idPedido, double porc_desconto, String idComanda, String data, String statusPedido, int idUsuario,
 			String nomeUsuario, String emailUsuario) {
 		super();

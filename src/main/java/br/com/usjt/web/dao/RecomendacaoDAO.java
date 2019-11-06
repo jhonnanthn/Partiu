@@ -133,11 +133,11 @@ public class RecomendacaoDAO {
 			List<Restaurante> restaurantesNaoFormatados = restauranteMapper.getRestaurantesEspecialidades();
 			restaurantesFormatados = new HashMap<String, List<String>>();
 			for (Restaurante r : restaurantesNaoFormatados) {
-				if (restaurantesFormatados.containsKey(Long.toString(r.getCnpj()))) {
-					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
+				if (restaurantesFormatados.containsKey(r.getCnpj())) {
+					restaurantesFormatados.get(r.getCnpj()).add(r.getEspecialidade());
 				} else {
-					restaurantesFormatados.put(Long.toString(r.getCnpj()), new ArrayList<String>());
-					restaurantesFormatados.get(Long.toString(r.getCnpj())).add(r.getEspecialidade());
+					restaurantesFormatados.put(r.getCnpj(), new ArrayList<String>());
+					restaurantesFormatados.get(r.getCnpj()).add(r.getEspecialidade());
 				}
 			}
 //				perfisSingleton.setRestaurantes(restaurantesFormatados);

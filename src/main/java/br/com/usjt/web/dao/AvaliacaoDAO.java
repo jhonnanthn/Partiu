@@ -28,7 +28,7 @@ public class AvaliacaoDAO {
 		}
 	}
 
-	public List<Avaliacao> getAvaliacaoByCnpj(long cnpj) {
+	public List<Avaliacao> getAvaliacaoByCnpj(String cnpj) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			AvaliacaoMapper avaliacaoMapper = session.getMapper(AvaliacaoMapper.class);

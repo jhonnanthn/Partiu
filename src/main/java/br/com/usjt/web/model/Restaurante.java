@@ -2,7 +2,7 @@ package br.com.usjt.web.model;
 
 public class Restaurante {
 	
-	private long cnpj;
+	private String cnpj;
 	private double avaliacao;
 	private int dia;
 	private int qtdMesas;
@@ -63,10 +63,10 @@ public class Restaurante {
 	public void setHrFim(String hrFim) {
 		this.hrFim = hrFim;
 	}
-	public long getCnpj() {
+	public String getCnpj() {
 		return cnpj;
 	}
-	public void setCnpj(long cnpj) {
+	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
 	public String getCodigoComanda() {

@@ -49,13 +49,13 @@ public interface RestauranteMapper {
 	
 	//Lista itens do restaurante
 	List<Item> getItensRestaurante(
-			 @Param("cnpj") long cnpj);
+			 @Param("cnpj") String cnpj);
 	
 	Restaurante getRestauranteByCnpj(
-			 @Param("cnpj") long cnpj);
+			 @Param("cnpj") String cnpj);
 	
 	List<Restaurante> getHorarioRestauranteByCnpj(
-			 @Param("cnpj") long cnpj);
+			 @Param("cnpj") String cnpj);
 	List<Restaurante> getRestaurantesEspecialidades();
 	
 	void updateRestaurante(
@@ -70,13 +70,24 @@ public interface RestauranteMapper {
 	
 	void updateItem(
 			@Param("id") int id,
-			@Param("cnpj_restaurante") long cnpj,
+			@Param("cnpj_restaurante") String cnpj,
 			@Param("categoria") String categoria,
 			@Param("detalhe") String detalhe,
 			@Param("nome") String nome,
 			@Param("valor") double valor,
 			@Param("status") String status
 			);
+	
+	void createItem(
+			@Param("cnpj_restaurante") String cnpj,
+			@Param("categoria") String categoria,
+			@Param("detalhe") String detalhe,
+			@Param("tipo") int tipo,
+			@Param("nome") String nome,
+			@Param("valor") double valor,
+			@Param("status") String status
+			);
+	
 	
 	Item getItemById(
 			 @Param("id") int id);

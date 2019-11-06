@@ -44,7 +44,7 @@ public class AvaliacaoController {
 	}
 
 	@Path("/getAvaliacaoByCnpj")
-	public void getAvaliacaoByCnpj(long cnpj) {
+	public void getAvaliacaoByCnpj(String cnpj) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		AvaliacaoDAO avaliacaoDAO = new AvaliacaoDAO();
 		try {

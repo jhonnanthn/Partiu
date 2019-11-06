@@ -18,7 +18,7 @@ public interface AvaliacaoMapper {
 			@Param("descFuncionario") String descFuncionario);
 
 	List<Avaliacao> getAvaliacaoByCnpj(
-			@Param("cnpj") long cnpj);
+			@Param("cnpj") String cnpj);
 	
 	List<Avaliacao> getAvaliacoesTodas();
 }
