@@ -123,7 +123,7 @@
 		) VALUES (
 			#{tipo},
 			#{cpf},
-			upper(#{nome}),
+			#{nome},
 			str_to_date(#{dta_nascimento}, '%d/%m/%Y'),
 			lower(#{email}),
 			#{ddd},
@@ -149,12 +149,12 @@
 		    uf,
 		    cep
 		) VALUES (
-			upper(#{logradouro}),
+			#{logradouro},
 			#{numero},
-			upper(#{complemento}),
-			upper(#{bairro}),
-			upper(#{cidade}),
-			upper(#{uf}),
+			#{complemento},
+			#{bairro},
+			#{cidade},
+			#{uf},
 			#{cep}
 		)
 	</insert>
@@ -175,11 +175,11 @@
 	
 	<insert id="updateEndereco">
 		UPDATE endereco set
-		logradouro=upper(#{logradouro}),
+		logradouro=#{logradouro},
 		numero=#{numero},
-		complemento=upper(#{complemento}),
-		bairro=upper(#{bairro}),
-		cidade=lower(#{cidade}),
+		complemento=#{complemento},
+		bairro=#{bairro},
+		cidade=#{cidade},
 		uf=#{uf},
 		cep=#{cep}
 		where id = #{id}
