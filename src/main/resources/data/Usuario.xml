@@ -16,6 +16,7 @@
 		<result property="telefone" column="telefone" />
 		<result property="genero" column="genero" />
 		<result property="senha" column="senha" />
+		<result property="status" column="status_funcionario" />
 		<association property="endereco"
 			javaType="br.com.usjt.web.model.Endereco">
 			<id property="id" column="id_endereco" />
@@ -48,7 +49,8 @@
 			end.bairro,
 			end.cidade,
 			end.uf,
-			end.cep
+			end.cep,
+			fr.status as status_funcionario
 		from usuario usu
 		left join endereco end
 			on usu.endereco = end.id
@@ -161,7 +163,7 @@
 		UPDATE usuario set
 		tipo=#{tipo},
 		cpf=#{cpf},
-		nome=upper(#{nome}),
+		nome=#{nome},
 		dta_nascimento=str_to_date(#{dta_nascimento}, '%d/%m/%Y'),
 		email=lower(#{email}),
 		ddd=#{ddd},

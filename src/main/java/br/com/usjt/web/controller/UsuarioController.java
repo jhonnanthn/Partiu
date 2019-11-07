@@ -95,8 +95,10 @@ public class UsuarioController {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		RestauranteDAO restauranteDAO = new RestauranteDAO();
-		try {
+		try {	
+			
 			usuarioDAO.updateUsuario(id, tipo, cpf, nome, dta_nascimento, email, ddd, telefone, genero, senha);
+			if(!(idEndereco=="" || idEndereco == null))
 			usuarioDAO.updateEndereco(idEndereco, logradouro, numero, complemento, bairro, cidade, uf, cep);
 
 			if(!tipo.contentEquals("cliente")){
@@ -104,10 +106,27 @@ public class UsuarioController {
 			}
 			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario editado com sucesso").serialize();
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
 		}
 	}
 
+
+	@Path("/updateStatusFuncionario")
+	public void updateStatusFuncionario(String id, String status, String cnpj) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		RestauranteDAO restauranteDAO = new RestauranteDAO();
+		try {	
+			restauranteDAO.updateVincularFuncionarioRestaurante(id, status);
+			List<Usuario> funcs = usuarioDAO.getUsuarioByParameter("cnpj", cnpj);
+			result.use(Results.json()).withoutRoot().from(funcs).serialize();
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
+	
 	// get usuario por parametro e valor
 	@Path("/getUsuario")
 	public void getUsuarioByParameter(String variavel, String valor) {
