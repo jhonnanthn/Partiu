@@ -88,7 +88,7 @@
 		u.endereco,
 		fr.status as status
 		from usuario u
-		inner join funcionario_restaurante fr on u.id = fr.id_funcionario
+		left join funcionario_restaurante fr on u.id = fr.id_funcionario
 		where
 		u.email = #{email}
 		AND
