@@ -103,11 +103,23 @@ public class ComandaController {
 	// para o usuário
 	// Retorna List<> de comandas
 	@Path("/getComandasByCpf")
-	public void getComandasByCpf(long cpf) {
+	public void getComandasByCpf(String cpf) {
 		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
 		ComandaDAO comandaDAO = new ComandaDAO();
 		try {
 			List<Comanda> comandas = comandaDAO.getComandasByCpf(cpf);
+			result.use(Results.json()).withoutRoot().from(comandas).serialize();
+		} catch (Exception e) {
+			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();
+		}
+	}
+	
+	@Path("/getComandasById")
+	public void getComandasById(int id) {
+		result.use(Results.status()).header("Access-Control-Allow-Origin", "*");
+		ComandaDAO comandaDAO = new ComandaDAO();
+		try {
+			List<Comanda> comandas = comandaDAO.getComandasById(id);
 			result.use(Results.json()).withoutRoot().from(comandas).serialize();
 		} catch (Exception e) {
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();

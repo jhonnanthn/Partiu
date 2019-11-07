@@ -5,7 +5,7 @@ public class Usuario {
 	private int id;
 	private int id_comanda;
 	private String tipo;
-	private long cpf;
+	private String cpf;
 	private String nome;
 	private String dta_nascimento;
 	private String email;
@@ -40,10 +40,10 @@ public class Usuario {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	public long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
-	public void setCpf(long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	public String getNome() {
@@ -94,7 +94,7 @@ public class Usuario {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	public Usuario(int id, String tipo, long cpf, String nome, String dta_nascimento, String email, int ddd,
+	public Usuario(int id, String tipo, String cpf, String nome, String dta_nascimento, String email, int ddd,
 			int telefone, char genero, String senha, Endereco endereco) {
 		super();
 		this.id = id;

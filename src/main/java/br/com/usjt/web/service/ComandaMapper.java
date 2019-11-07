@@ -125,6 +125,10 @@ public interface ComandaMapper {
 			@Param("idComanda") int idComanda);
 
 	List<Comanda> getComandasByCpf(
-			@Param("cpf") long cpf);
+			@Param("cpf") String cpf);
+	
+
+	List<Comanda> getComandasById(
+			@Param("id") int id);
 	
 }

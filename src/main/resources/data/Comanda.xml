@@ -183,6 +183,27 @@
 			order by com.status, com.dta_saida desc
 		) comanda
 	</select>
+	
+	<select id="getComandasById" resultType="br.com.usjt.web.model.Comanda">
+		SELECT 
+		c.codigo_comanda as codigo,
+				date_format(c.dta_entrada, '%d/%m/%Y %H:%i') as dtaEntrada,
+				date_format(c.dta_saida, '%d/%m/%Y %H:%i') as dtaSaida,
+				date_format(c.dta_atualizacao, '%d/%m/%Y %H:%i') as dtaAtualizacao,
+		        c.status,
+		        c.id,
+		        c.mesa,
+		        c.id_garcom as idGarcom	,
+		        r.nom_fantasia as nomeRestaurante
+		 FROM usuario u 
+left join usuario_comanda uc on u.id = uc.cod_usuario 
+left join comanda c on c.id = uc.cod_comanda
+left join usuario g on g.id = c.id_garcom
+left join funcionario_restaurante fr on fr.id_funcionario = g.id
+left join restaurante r on r.cnpj = fr.cnpj_restaurante
+where uc.cod_usuario = #{id}
+order by c.status, c.dta_entrada desc
+	</select>
 
 	<insert id="createComanda">
 		INSERT
