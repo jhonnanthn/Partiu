@@ -75,22 +75,24 @@
 	<select id="getUsuarioOnLogin"
 		resultType="br.com.usjt.web.model.Usuario">
 		select
-		id,
-		tipo,
-		cpf,
-		nome,
-		date_format(dta_nascimento, '%d/%m/%Y') as dta_nascimento,
-		email,
-		ddd,
-		telefone,
-		genero,
-		senha,
-		endereco
-		from usuario
+		u.id,
+		u.tipo,
+		u.cpf,
+		u.nome,
+		date_format(u.dta_nascimento, '%d/%m/%Y') as dta_nascimento,
+		u.email,
+		u.ddd,
+		u.telefone,
+		u.genero,
+		u.senha,
+		u.endereco,
+		fr.status as status
+		from usuario u
+		inner join funcionario_restaurante fr on u.id = fr.id_funcionario
 		where
-		email = #{email}
+		u.email = #{email}
 		AND
-		senha = #{senha}
+		u.senha = #{senha}
 	</select>
 
 	<select id="getIdsClientes"
