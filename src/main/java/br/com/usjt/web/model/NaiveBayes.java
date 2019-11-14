@@ -24,11 +24,11 @@ public class NaiveBayes {
 			singleton = new NaiveBayes();
 		return singleton;
 	}
-	
+
 	public boolean isEmpty() {
-		return (!(this.entries>0));
+		return (!(this.entries > 0));
 	}
-		
+
 	public Map<String, int[]> getBayes() {
 		return bayes;
 	}
@@ -95,37 +95,37 @@ public class NaiveBayes {
 		 * "estamos", "estas", "estava", "estavam", "este", "esteja", "estejam",
 		 * "estejamos", "estes", "esteve", "estive", "estivemos", "estiver", "estivera",
 		 * "estiveram", "estiverem", "estivermos", "estivesse", "estivessem",
-		 * "estivéramos", "estivéssemos", "estou", "está", "estávamos", "estão",
-		 * "eu", "fazendo", "fazer", "feita", "feitas", "feito", "feitos", "ficamos",
-		 * "fico", "fiquei", "foi", "fomos", "for", "fora", "foram", "forem", "formos",
-		 * "fosse", "fossem", "fui", "fôramos", "fôssemos", "grande", "grandes",
-		 * "haja", "hajam", "hajamos", "havemos", "hei", "houve", "houvemos", "houver",
-		 * "houvera", "houveram", "houverei", "houverem", "houveremos", "houveria",
-		 * "houveriam", "houvermos", "houverá", "houverão", "houveríamos",
-		 * "houvesse", "houvessem", "houvéramos", "houvéssemos", "há", "hão",
-		 * "isso", "isto", "já", "la", "lhe", "lhes", "lo", "lá", "mais", "mas", "me",
-		 * "mesma", "mesmas", "mesmo", "mesmos", "meu", "meus", "minha", "minhas",
-		 * "muita", "muitas", "muito", "muitos", "na", "nas", "nem", "nenhum", "nessa",
-		 * "nessas", "nesta", "nestas", "ninguém", "no", "nos", "nossa", "nossas",
-		 * "nosso", "nossos", "num", "numa", "nunca", "não", "nós", "o", "os", "ou",
-		 * "outra", "outras", "outro", "outros", "para", "pela", "pelas", "pelo",
-		 * "pelos", "pequena", "pequenas", "pequeno", "pequenos", "per", "perante",
-		 * "pode", "podendo", "poder", "poderia", "poderiam", "podia", "podiam", "pois",
-		 * "por", "porque", "porém", "posso", "pouca", "poucas", "pouco", "poucos",
-		 * "primeiro", "primeiros", "própria", "próprias", "próprio", "próprios",
-		 * "pude", "quais", "qual", "quando", "quanto", "quantos", "que", "quem", "se",
-		 * "seja", "sejam", "sejamos", "sem", "sempre", "sendo", "serei", "seremos",
-		 * "seria", "seriam", "será", "serão", "seríamos", "seu", "seus", "si",
-		 * "sido", "sob", "sobre", "somos", "sou", "sua", "suas", "são", "só",
-		 * "talvez", "também", "tampouco", "te", "tem", "temos", "tendo", "tenha",
-		 * "tenham", "tenhamos", "tenho", "ter", "terei", "teremos", "teria", "teriam",
-		 * "terá", "terão", "teríamos", "teu", "teus", "teve", "ti", "tido", "tinha",
-		 * "tinham", "tive", "tivemos", "tiver", "tivera", "tiveram", "tiverem",
-		 * "tivermos", "tivesse", "tivessem", "tivéramos", "tivéssemos", "toda",
-		 * "todas", "todavia", "todo", "todos", "tu", "tua", "tuas", "tudo", "tém",
-		 * "tínhamos", "um", "uma", "umas", "uns", "vendo", "ver", "vez", "vindo",
-		 * "vir", "você", "vocês", "vos", "vou", "vós", "à", "às", "é", "éramos",
-		 * "última", "últimas", "último", "últimos", "\t", "\n", "" }));
+		 * "estivéramos", "estivéssemos", "estou", "está", "estávamos", "estão", "eu",
+		 * "fazendo", "fazer", "feita", "feitas", "feito", "feitos", "ficamos", "fico",
+		 * "fiquei", "foi", "fomos", "for", "fora", "foram", "forem", "formos", "fosse",
+		 * "fossem", "fui", "fôramos", "fôssemos", "grande", "grandes", "haja", "hajam",
+		 * "hajamos", "havemos", "hei", "houve", "houvemos", "houver", "houvera",
+		 * "houveram", "houverei", "houverem", "houveremos", "houveria", "houveriam",
+		 * "houvermos", "houverá", "houverão", "houveríamos", "houvesse", "houvessem",
+		 * "houvéramos", "houvéssemos", "há", "hão", "isso", "isto", "já", "la", "lhe",
+		 * "lhes", "lo", "lá", "mais", "mas", "me", "mesma", "mesmas", "mesmo",
+		 * "mesmos", "meu", "meus", "minha", "minhas", "muita", "muitas", "muito",
+		 * "muitos", "na", "nas", "nem", "nenhum", "nessa", "nessas", "nesta", "nestas",
+		 * "ninguém", "no", "nos", "nossa", "nossas", "nosso", "nossos", "num", "numa",
+		 * "nunca", "não", "nós", "o", "os", "ou", "outra", "outras", "outro", "outros",
+		 * "para", "pela", "pelas", "pelo", "pelos", "pequena", "pequenas", "pequeno",
+		 * "pequenos", "per", "perante", "pode", "podendo", "poder", "poderia",
+		 * "poderiam", "podia", "podiam", "pois", "por", "porque", "porém", "posso",
+		 * "pouca", "poucas", "pouco", "poucos", "primeiro", "primeiros", "própria",
+		 * "próprias", "próprio", "próprios", "pude", "quais", "qual", "quando",
+		 * "quanto", "quantos", "que", "quem", "se", "seja", "sejam", "sejamos", "sem",
+		 * "sempre", "sendo", "serei", "seremos", "seria", "seriam", "será", "serão",
+		 * "seríamos", "seu", "seus", "si", "sido", "sob", "sobre", "somos", "sou",
+		 * "sua", "suas", "são", "só", "talvez", "também", "tampouco", "te", "tem",
+		 * "temos", "tendo", "tenha", "tenham", "tenhamos", "tenho", "ter", "terei",
+		 * "teremos", "teria", "teriam", "terá", "terão", "teríamos", "teu", "teus",
+		 * "teve", "ti", "tido", "tinha", "tinham", "tive", "tivemos", "tiver",
+		 * "tivera", "tiveram", "tiverem", "tivermos", "tivesse", "tivessem",
+		 * "tivéramos", "tivéssemos", "toda", "todas", "todavia", "todo", "todos", "tu",
+		 * "tua", "tuas", "tudo", "tém", "tínhamos", "um", "uma", "umas", "uns",
+		 * "vendo", "ver", "vez", "vindo", "vir", "você", "vocês", "vos", "vou", "vós",
+		 * "à", "às", "é", "éramos", "última", "últimas", "último", "últimos", "\t",
+		 * "\n", "" }));
 		 */
 //		this.bayes.put("bom", new int[] { 0, 1, 5, 8 }); // 14 +10 +9 +17 +10 43 60
 //		this.bayes.put("horrível", new int[] { 7, 3, 0, 0 });
@@ -137,11 +137,11 @@ public class NaiveBayes {
 	}
 
 	private String[] getTokens(String frase) {
-		
-		if(frase.isEmpty()|| frase == null) {
+
+		if (frase.isEmpty() || frase == null) {
 			return new String[] {};
 		}
-		
+
 		System.out.println(frase);
 
 		frase = frase.toLowerCase();
@@ -252,18 +252,19 @@ public class NaiveBayes {
 	};
 
 	private void insert(String[] words, int rating) {
-		for (String s : words) {
-			if (this.bayes.containsKey(s)) {
-				int[] temp = this.bayes.get(s);
-				temp[rating] += 1;
-			} else {
-				int[] temp = new int[] { 0, 0, 0, 0 };
-				temp[rating]++;
-				this.bayes.put(s, temp);
+		if (rating != -1) {
+			for (String s : words) {
+				if (this.bayes.containsKey(s)) {
+					int[] temp = this.bayes.get(s);
+					temp[rating] += 1;
+				} else {
+					int[] temp = new int[] { 0, 0, 0, 0 };
+					temp[rating]++;
+					this.bayes.put(s, temp);
+				}
+				this.entries++;
 			}
-			this.entries++;
 		}
-
 	};
 
 	public int getRating(String frase) {
@@ -298,10 +299,10 @@ public class NaiveBayes {
 		System.out.println("Tokens\t0\t1\t2\t3");
 		for (Map.Entry<String, int[]> entry : this.bayes.entrySet()) {
 			System.out.print(entry.getKey() + ":\t");
-			retorno +=  entry.getKey() + ":";
+			retorno += entry.getKey() + ":";
 			for (int i : entry.getValue()) {
 				System.out.print(i + "\t");
-				retorno +=  i + ",";
+				retorno += i + ",";
 			}
 			System.out.println();
 			retorno += ";";
