@@ -22,6 +22,7 @@
 			<id property="id" column="id_endereco" />
 			<result property="logradouro" column="logradouro" />
 			<result property="numero" column="numero" />
+			<result property="uf" column="uf" />
 			<result property="complemento" column="complemento" />
 			<result property="bairro" column="bairro" />
 			<result property="cidade" column="cidade" />
