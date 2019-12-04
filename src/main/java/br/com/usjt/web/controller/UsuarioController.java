@@ -104,7 +104,8 @@ public class UsuarioController {
 			if(!tipo.contentEquals("cliente")){
 				restauranteDAO.updateVincularFuncionarioRestaurante(id, status);
 			}
-			result.use(Results.json()).withoutRoot().from("NOTIFICACAO: Usuario editado com sucesso").serialize();
+			Usuario usuario = usuarioDAO.getUsuarioByParameter("id", id).get(0);
+			result.use(Results.json()).withoutRoot().from(usuario).include("endereco").serialize();
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.use(Results.json()).withoutRoot().from("ERRO: " + e.getMessage()).serialize();

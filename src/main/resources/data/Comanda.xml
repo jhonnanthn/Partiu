@@ -30,7 +30,7 @@
 		idPedido,
 		p.porc_desconto,
 		p.id_comanda,
-        p.observacao,
+        p.observacao as observacao,
 		p.data,
 		p.status as statusPedido,
 		up.status as statusPedidoUsuario,
@@ -73,7 +73,7 @@
 		p.porc_desconto,
 		p.id_comanda,
 		p.data,
-        p.observacao,
+        p.observacao as observacao,
 		p.status as statusPedido,
 		up.status as statusPedidoUsuario,
 		up.id_usuario as idUsuario,
@@ -104,7 +104,7 @@
 		p.porc_desconto,
 		p.id_comanda,
 		p.data,
-        p.observacao,
+        p.observacao as observacao,
 		p.status as statusPedido,
 		up.status as statusPedidoUsuario,
 		up.id_usuario as idUsuario,
@@ -126,7 +126,7 @@
 		c ON c.id = up.id_usuario
 		left join item i ON i.id = p.id_item
 		WHERE
-		p.id_comanda = #{idComanda} AND up.id_usuario = #{idUsuario}
+		p.id_comanda = #{idComanda} AND up.id_usuario = #{idUsuario} AND p.status!='P'
 	</select>
 	
 	<select id="getPedidoUsuarioBydId" resultType="br.com.usjt.web.model.Item">
@@ -134,7 +134,7 @@
 		p.porc_desconto,
 		p.id_comanda,
 		p.data,
-        p.observacao,
+        p.observacao as observacao,
 		p.status as statusPedido,
 		up.status as statusPedidoUsuario,
 		up.id_usuario as idUsuario,
@@ -432,11 +432,10 @@ order by c.status, c.dta_entrada desc
 	    select
 			p.id,
             p.id_item,
-        		p.observacao,
             date_format(p.data, '%d/%m/%Y %H:%i') as data,
             p.porc_desconto,
             p.status,
-            p.observacao,
+            p.observacao as observacao,
             i.categoria,
             i.nome,
             i.tipo,

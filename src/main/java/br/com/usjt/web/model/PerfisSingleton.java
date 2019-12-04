@@ -50,8 +50,8 @@ public final class PerfisSingleton {
 		Iterator it = perfil.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println("Print Perfil");
-			System.out.println(pair.getKey()+" : "+pair.getValue());
+//			System.out.println("Print Perfil");
+//			System.out.println(pair.getKey()+" : "+pair.getValue());
 			it.remove();
 		}
 	}
