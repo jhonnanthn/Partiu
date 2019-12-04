@@ -115,17 +115,11 @@ public class RecomendacaoDAO {
 
 			HashMap<String, Double> perfil;
 			PerfisSingleton perfisSingleton = PerfisSingleton.getInstance();
-			if (perfisSingleton.getPerfil(idUsuario) == null) {
-				System.out.println("Perfil Não Existe");
 
-				List<Item> itens = recomendacaoMapper.getScoreByEspecialidadeUsuario(idUsuario);
-				perfil = calculatePerfil(itens);
-				perfisSingleton.putPerfil(idUsuario, perfil);
-
-			} else {
-				System.out.println("Perfil Existe");
-				perfil = perfisSingleton.getPerfil(idUsuario);
-			}
+			List<Item> itens = recomendacaoMapper.getScoreByEspecialidadeUsuario(idUsuario);
+//			perfil = perfisSingleton.getPerfil(idUsuario);
+			perfil = calculatePerfil(itens);
+			perfisSingleton.putPerfil(idUsuario, perfil);
 
 			HashMap<String, List<String>> restaurantesFormatados;
 //			if(perfisSingleton.getRestaurantes() == null) {
@@ -146,8 +140,10 @@ public class RecomendacaoDAO {
 //				restaurantesFormatados = perfisSingleton.getRestaurantes();
 //				System.out.println("Restaurantes Existem");
 //			}
-
-			List<String> listCnpj = restaurantesByScoreContent(perfil, restaurantesFormatados);
+			List<String> listCnpj = new ArrayList<String>();
+			if (!perfil.isEmpty()) {
+				listCnpj = restaurantesByScoreContent(perfil, restaurantesFormatados);
+			}
 			return recomendacaoMapper.getRestaurantesByCnpjs(listCnpj);
 		} finally {
 			session.close();

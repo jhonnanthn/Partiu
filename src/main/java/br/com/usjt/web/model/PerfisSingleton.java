@@ -48,10 +48,10 @@ public final class PerfisSingleton {
 
 	public static void printPerfil(HashMap<String,Double> perfil) {
 		Iterator it = perfil.entrySet().iterator();
+		System.out.println("Print Perfil");
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-//			System.out.println("Print Perfil");
-//			System.out.println(pair.getKey()+" : "+pair.getValue());
+			System.out.println(pair.getKey()+" : "+pair.getValue());
 			it.remove();
 		}
 	}
