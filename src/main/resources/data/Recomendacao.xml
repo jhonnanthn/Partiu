@@ -27,7 +27,7 @@
 
 	<select id="getRecomendacaoDiaSemana" resultMap="restaurante">
 		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+	   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, avg(a.av_estabelecimento) as avaliacao
 		FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
 			INNER JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
@@ -47,7 +47,7 @@
 		select x.* from (
 			SELECT 
 				r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, count(1) as line
+				e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, count(1) as line, avg(a.av_estabelecimento) as avaliacao
 			FROM restaurante r
 			INNER JOIN endereco e ON r.id_endereco = e.id
 			LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
@@ -66,10 +66,11 @@
 	<select id="getRecomendacaoVisitadoRecentemente" resultMap="restaurante">
 		SELECT 
 			distinct r.cnpj,	r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-			e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+			e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, avg(a.av_estabelecimento) as avaliacao
 		FROM usuario u
 		INNER JOIN usuario_comanda com_user ON com_user.cod_usuario = u.id
 		INNER JOIN comanda c on c.id = com_user.cod_comanda
+		LEFT JOIN avaliacao a ON a.id_comanda = c.id
            
         INNER JOIN funcionario_restaurante fr ON fr.id_funcionario = c.id_garcom
         INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
@@ -77,16 +78,21 @@
            where
 				u.id = #{idUsuario}
             and c.dta_entrada between (DATE_SUB(sysdate(), INTERVAL 3 MONTH)) and (sysdate()+1)
+        group by r.cnpj
         limit 0,8
 	</select>
 	
 	<select id="getRecomendacaoEspecialidadeUsuario" resultMap="restaurante">
 		SELECT r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
-		   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep
+		   		   e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, avg(a.av_estabelecimento) as avaliacao
 			FROM restaurante r
 				INNER JOIN endereco e ON r.id_endereco = e.id
 				INNER JOIN especialidade_restaurante esp_res ON esp_res.cnpj_restaurante = r.cnpj
 				INNER JOIN especialidade esp ON esp.id = esp_res.id_especialidade
+				LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
+				LEFT JOIN usuario u ON u.id = fr.id_funcionario
+				left JOIN comanda c ON c.id_garcom = u.id
+				LEFT JOIN avaliacao a ON a.id_comanda = c.id
 				WHERE esp.id in
 					(
 						select id_especialidade from especialidade_item esp_it
@@ -94,31 +100,35 @@
 							inner join pedido ped on ped.id_item = it.id
 							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and usu_ped.id_comanda = ped.id_comanda
 						  WHERE usu_ped.id_usuario = #{idUsuario}
-								and ped.data between sysdate()-60 and sysdate()
+								and ped.data between (DATE_SUB(sysdate(), INTERVAL 3 MONTH)) and (sysdate()+1)
 							GROUP BY esp_it.id_especialidade
 							ORDER BY COUNT(id_especialidade) DESC
 					)
+			group by r.cnpj		
 			limit 8
 	</select>
 	
 	<select id="getScoreByEspecialidadeUsuario" resultType="br.com.usjt.web.model.Item">
-		SELECT esp.nome as especialidade, count(esp.nome) as score
-			FROM restaurante r
-				INNER JOIN endereco e ON r.id_endereco = e.id
-				INNER JOIN especialidade_restaurante esp_res ON esp_res.cnpj_restaurante = r.cnpj
-				INNER JOIN especialidade esp ON esp.id = esp_res.id_especialidade
-				WHERE esp.id in
-					(
-						select id_especialidade from especialidade_item esp_it
-							inner join item it on it.id = esp_it.id_especialidade
-							inner join pedido ped on ped.id_item = it.id
-							inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and usu_ped.id_comanda = ped.id_comanda
-						  WHERE usu_ped.id_usuario = #{idUsuario}
-						  		and ped.data between sysdate()-60 and sysdate()
-							GROUP BY esp_it.id_especialidade
-							ORDER BY COUNT(id_especialidade) DESC
-					)
-				group by esp.nome
+	SELECT esp.nome as especialidade, count(esp.nome) as score
+	FROM restaurante r
+	INNER JOIN endereco e ON r.id_endereco = e.id
+	INNER JOIN especialidade_restaurante esp_res ON esp_res.cnpj_restaurante =
+	r.cnpj
+	INNER JOIN especialidade esp ON esp.id = esp_res.id_especialidade
+	WHERE esp.id in
+	(
+	select id_especialidade from especialidade_item esp_it
+	inner join item it on it.id = esp_it.id_especialidade
+	inner join pedido ped on ped.id_item = it.id
+	inner join usuario_pedido usu_ped on usu_ped.id_pedido = ped.id and
+	usu_ped.id_comanda = ped.id_comanda
+	WHERE usu_ped.id_usuario = #{idUsuario}
+	and ped.data between (DATE_SUB(sysdate(), INTERVAL 3 MONTH)) and
+	(sysdate()+1)
+	GROUP BY esp_it.id_especialidade
+	ORDER BY COUNT(id_especialidade) DESC
+	)
+	group by esp.nome
 	</select>
 	
 	<select id="getRecomendacaoRestauranteAvaliado" resultMap="restaurante">
@@ -144,7 +154,7 @@
 	        INNER JOIN restaurante r on r.cnpj = fr. cnpj_restaurante
 			INNER JOIN endereco e ON r.id_endereco = e.id
             where
-				c.dta_entrada between sysdate()-60 and sysdate()
+				c.dta_entrada between (DATE_SUB(sysdate(), INTERVAL 3 MONTH)) and (sysdate()+1)
 	        group by r.cnpj, r.qtd_mesas, r.codigo_cardapio, r.razao_social, r.logotipo, r.nom_fantasia, r.status,r.descricao, r.id_endereco,
 					e.id, e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.uf, e.cep, av.av_estabelecimento, av.av_estabelecimento
 			order by avaliacao desc) x
@@ -169,12 +179,16 @@
 	        e.bairro,
 	        e.cidade,
 	        e.uf,
-	        e.cep
-		FROM restaurante r
-			left JOIN funcionario_restaurante fr
-			  on r.cnpj = fr.cnpj_restaurante
+	        e.cep,
+	        avg(a.av_estabelecimento) as avaliacao
+	        from restaurante r
+		LEFT JOIN funcionario_restaurante fr ON r.cnpj = fr.cnpj_restaurante
+		LEFT JOIN usuario u ON u.id = fr.id_funcionario
+				left JOIN comanda c ON c.id_garcom = u.id
+				LEFT JOIN avaliacao a ON a.id_comanda = c.id
 			inner join endereco e
 			  on r.id_endereco = e.id
+			 
 		where
 		
 			r.cnpj in 
@@ -183,5 +197,6 @@
 					#{cnpj}
 				</foreach>
 			)
+		group by r.cnpj
 	</select>
 </mapper>
